@@ -1,0 +1,492 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 5: Tool Use (Function Calling) | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="LLMs are frozen in time and disconnected from the world. Tool use breaks those walls — letting agents call APIs, run code, query databases, and trigger real actions."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/tool-use/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/kohshh-portfolio/books/">bookshelf</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/kohshh-portfolio/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  29 MIN READ  ·  JANUARY 21, 2026</p> <h1 class="post-title">Chapter 5: Tool Use (Function Calling)</h1> <p class="post-lead">LLMs are frozen in time and disconnected from the world. Tool use breaks those walls — letting agents call APIs, run code, query databases, and trigger real actions.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">January 21, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Ftool-use%2F&amp;text=Chapter+5%3A+Tool+Use+%28Function+Calling%29" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Ftool-use%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-wall-every-llm-hits">The Wall Every LLM Hits</a></li> <li class="toc-entry toc-h2"><a href="#how-function-calling-works-the-6-steps">How Function Calling Works: The 6 Steps</a></li> <li class="toc-entry toc-h2"> <a href="#the-three-categories-of-tools">The Three Categories of Tools</a> <ul> <li class="toc-entry toc-h4"><a href="#information-retrieval">Information Retrieval</a></li> <li class="toc-entry toc-h4"><a href="#action-execution">Action Execution</a></li> <li class="toc-entry toc-h4"><a href="#code-execution">Code Execution</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#watch-it-happen-live-function-call-simulator">Watch It Happen: Live Function Call Simulator</a></li> <li class="toc-entry toc-h2"> <a href="#six-use-cases">Six Use Cases</a> <ul> <li class="toc-entry toc-h4"><a href="#real-time-data">Real-Time Data</a></li> <li class="toc-entry toc-h4"><a href="#database-queries">Database Queries</a></li> <li class="toc-entry toc-h4"><a href="#calculations">Calculations</a></li> <li class="toc-entry toc-h4"><a href="#sending-communications">Sending Communications</a></li> <li class="toc-entry toc-h4"><a href="#code-execution-1">Code Execution</a></li> <li class="toc-entry toc-h4"><a href="#system-control">System Control</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#langchain-tool--agentexecutor">LangChain: @tool + AgentExecutor</a> <ul> <li class="toc-entry toc-h3"><a href="#defining-a-tool">Defining a Tool</a></li> <li class="toc-entry toc-h3"><a href="#building-the-agent">Building the Agent</a></li> <li class="toc-entry toc-h3"><a href="#the-execution-loop-visualized">The Execution Loop Visualized</a></li> <li class="toc-entry toc-h3"><a href="#running-queries">Running Queries</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#crewai-tool--role-based-agents">CrewAI: @tool + Role-Based Agents</a> <ul> <li class="toc-entry toc-h3"><a href="#defining-the-tool">Defining the Tool</a></li> <li class="toc-entry toc-h3"><a href="#the-agent-task-and-crew">The Agent, Task, and Crew</a></li> <li class="toc-entry toc-h3"><a href="#crewai-agent-task-crew-relationship">CrewAI Agent-Task-Crew Relationship</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#google-adk-built-in-tools--code-execution">Google ADK: Built-in Tools + Code Execution</a> <ul> <li class="toc-entry toc-h3"><a href="#google-search-zero-configuration">Google Search (Zero Configuration)</a></li> <li class="toc-entry toc-h3"><a href="#code-execution-built-in-sandboxed-interpreter">Code Execution (Built-in Sandboxed Interpreter)</a></li> <li class="toc-entry toc-h3"><a href="#adk-tool-execution-flow">ADK Tool Execution Flow</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#framework-comparison">Framework Comparison</a></li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">29 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Ftool-use%2F&amp;text=Chapter+5%3A+Tool+Use+%28Function+Calling%29" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Ftool-use%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="the-wall-every-llm-hits">The Wall Every LLM Hits</h2> <p>Every pattern in this series — <a href="/kohshh-portfolio/blog/2026/prompt-chaining/">chaining</a>, <a href="/kohshh-portfolio/blog/2026/routing/">routing</a>, <a href="/kohshh-portfolio/blog/2026/parallelization/">parallelization</a>, <a href="/kohshh-portfolio/blog/2026/reflection/">reflection</a> — operates entirely inside the model’s head. Input goes in, text comes out. The model reasons over what it already knows.</p> <p>That’s a wall.</p> <p>The model’s knowledge is frozen at its training cutoff. It can’t check today’s stock price. It can’t query your company’s database. It can’t send an email. It can’t run your Python code. For all its sophistication, without external connections it’s an encyclopedia — impressively complete, but static.</p> <p><strong>Tool use</strong> is what breaks the wall. Instead of generating a text answer, the model generates a <em>function call</em> — a structured request to execute an external piece of code. The framework runs the function, returns the result, and the model incorporates it into its response.</p> <p>This is how an LLM becomes an <strong>agent</strong> that can sense, reason, and act.</p> <hr> <h2 id="how-function-calling-works-the-6-steps">How Function Calling Works: The 6 Steps</h2> <div class="tool-lifecycle-wrapper"> <div class="tool-lifecycle-header"> <span class="tool-lifecycle-title">TOOL CALL LIFECYCLE</span> <button class="tool-lifecycle-btn" id="lifecycleBtn">▶ Animate</button> </div> <div class="tool-lifecycle-body"> <div class="tool-lifecycle-grid"> <div class="tl-step" id="tlStep0"> <div class="tl-step-num">01</div> <div class="tl-step-name">User Query</div> <div class="tl-step-detail">"What's the weather in London?"</div> </div> <div class="tl-arrow" id="tlArr01">→</div> <div class="tl-step" id="tlStep1"> <div class="tl-step-num">02</div> <div class="tl-step-name">LLM Decides</div> <div class="tl-step-detail">Reads query + tool definitions. Picks <code>get_weather</code>.</div> </div> <div class="tl-arrow" id="tlArr12">→</div> <div class="tl-step" id="tlStep2"> <div class="tl-step-num">03</div> <div class="tl-step-name">JSON Generated</div> <div class="tl-step-detail"><code>{"name":"get_weather","args":{"city":"London"}}</code></div> </div> <div class="tl-arrow tl-arrow-down" id="tlArrDown">↓</div> <div class="tl-step" id="tlStep5"> <div class="tl-step-num">06</div> <div class="tl-step-name">Final Response</div> <div class="tl-step-detail">"It's 15°C and cloudy in London right now."</div> </div> <div class="tl-arrow tl-arrow-rev" id="tlArr45">←</div> <div class="tl-step" id="tlStep4"> <div class="tl-step-num">05</div> <div class="tl-step-name">LLM Processes</div> <div class="tl-step-detail">Receives tool result, formulates response.</div> </div> <div class="tl-arrow tl-arrow-rev" id="tlArr34">←</div> <div class="tl-step" id="tlStep3"> <div class="tl-step-num">04</div> <div class="tl-step-name">Tool Executes</div> <div class="tl-step-detail">Framework calls actual weather API. Returns JSON result.</div> </div> </div> </div> </div> <style>.tool-lifecycle-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.tool-lifecycle-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.tool-lifecycle-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.tool-lifecycle-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s}.tool-lifecycle-btn:hover{background:rgba(38,152,186,0.15);border-color:#2698ba;color:#2698ba}.tool-lifecycle-body{padding:1.25rem 1rem}.tool-lifecycle-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;grid-template-rows:auto auto auto;gap:.5rem .4rem;align-items:center}.tl-step{border:1.5px solid var(--global-divider-color);border-radius:8px;padding:.85rem .75rem;background:rgba(128,128,128,0.03);text-align:center;transition:border-color .3s,background .3s}.tl-step.active{border-color:#2698ba;background:rgba(38,152,186,0.08)}.tl-step.done{border-color:rgba(38,152,186,0.4)}.tl-step-num{font-family:monospace;font-size:.6rem;font-weight:700;color:var(--global-text-color-light);margin-bottom:.3rem;letter-spacing:.1em}.tl-step.active .tl-step-num{color:#2698ba}.tl-step-name{font-size:.78rem;font-weight:700;color:var(--global-text-color);margin-bottom:.3rem}.tl-step-detail{font-size:.66rem;color:var(--global-text-color-light);line-height:1.45}.tl-step-detail code{font-size:.63rem;background:rgba(38,152,186,0.1);border-radius:3px;padding:.05em .3em;color:#7dcfff;border:none!important}.tl-arrow{font-size:1.1rem;color:var(--global-text-color-light);text-align:center;transition:color .3s}.tl-arrow.active{color:#2698ba}.tl-arrow-down{grid-column:5;grid-row:1 / span 2;align-self:center;justify-self:center;writing-mode:horizontal-tb;font-size:1.4rem;padding:.2rem}.tl-arrow-rev{font-size:1.1rem}@media(max-width:600px){.tool-lifecycle-grid{grid-template-columns:1fr}.tl-arrow-down,.tl-arrow-rev{display:none}.tl-arrow{display:none}}</style> <script>
+(function(){
+  var btn = document.getElementById('lifecycleBtn');
+  if (!btn) return;
+  var steps = [0,1,2,3,4,5].map(function(i){ return document.getElementById('tlStep'+i); });
+  var arrs  = ['01','12','Down','34','45'].map(function(s){ return document.getElementById('tlArr'+s); });
+
+  function reset() {
+    steps.forEach(function(s){ if(s){ s.classList.remove('active','done'); }});
+    arrs.forEach(function(a){ if(a){ a.classList.remove('active'); }});
+  }
+
+  var ORDER = [0,1,2,3,4,5];
+  var ARR_ORDER = [0,1,4,3,2]; // which arrow index lights up after each step
+
+  async function run() {
+    reset();
+    btn.disabled = true;
+    btn.textContent = '⏳ Running…';
+
+    for (var i = 0; i < ORDER.length; i++) {
+      var s = steps[ORDER[i]];
+      if (s) s.classList.add('active');
+      if (ARR_ORDER[i] !== undefined && arrs[ARR_ORDER[i]]) arrs[ARR_ORDER[i]].classList.add('active');
+      await new Promise(function(r){ setTimeout(r, 650); });
+      if (s) { s.classList.remove('active'); s.classList.add('done'); }
+    }
+
+    btn.textContent = '↺ Replay';
+    btn.disabled = false;
+  }
+
+  btn.addEventListener('click', function(){ if (!btn.disabled) run(); });
+})();
+</script> <p>The critical insight is in <strong>step 3</strong>: the LLM does not run the tool — it <em>describes</em> which tool to run and with what arguments, as structured JSON. The framework does the actual execution. This separation keeps the model stateless and the tool execution safe and auditable.</p> <hr> <h2 id="the-three-categories-of-tools">The Three Categories of Tools</h2> <div class="tool-categories"> <div class="tool-cat tool-cat-blue"> <div class="tool-cat-icon">🔍</div> <h4>Information Retrieval</h4> <p>Pull live data the model doesn't have. APIs, databases, search engines, knowledge bases.</p> <div class="tool-cat-examples"> <span>Weather API</span><span>Stock prices</span><span>Google Search</span><span>Company DB</span> </div> </div> <div class="tool-cat tool-cat-purple"> <div class="tool-cat-icon">⚡</div> <h4>Action Execution</h4> <p>Trigger real-world effects. Send messages, update records, control systems.</p> <div class="tool-cat-examples"> <span>Send email</span><span>Post Slack msg</span><span>Smart home</span><span>Payment API</span> </div> </div> <div class="tool-cat tool-cat-green"> <div class="tool-cat-icon">💻</div> <h4>Code Execution</h4> <p>Run code in a sandboxed interpreter. Get deterministic results for calculations, data processing.</p> <div class="tool-cat-examples"> <span>Python sandbox</span><span>SQL runner</span><span>Math eval</span><span>Data analysis</span> </div> </div> </div> <style>.tool-categories{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;margin:1.5rem 0}.tool-cat{border-radius:8px;padding:1.1rem;border:1px solid var(--global-divider-color);display:flex;flex-direction:column;gap:.5rem}.tool-cat-blue{border-left:3px solid #2698ba}.tool-cat-purple{border-left:3px solid #c97af2}.tool-cat-green{border-left:3px solid #4fc97e}.tool-cat-icon{font-size:1.2rem}.tool-cat h4{font-size:.9rem;font-weight:700;margin:0;color:var(--global-text-color)}.tool-cat p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}.tool-cat-examples{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.25rem}.tool-cat-examples span{font-size:.65rem;font-family:monospace;padding:.15em .5em;border-radius:3px;background:rgba(128,128,128,0.1);color:var(--global-text-color-light);border:1px solid var(--global-divider-color)}</style> <hr> <h2 id="watch-it-happen-live-function-call-simulator">Watch It Happen: Live Function Call Simulator</h2> <p>Pick a query. Watch the agent decide which tool to call, generate the JSON, get a result, and respond.</p> <div class="tool-sim-wrapper"> <div class="tool-sim-header"> <span class="tool-sim-title">FUNCTION CALL SIMULATOR</span> <button class="tool-sim-run" id="simRunBtn" disabled>▶ Run</button> </div> <div class="tool-sim-queries"> <button class="tool-sim-q active" data-idx="0" onclick="simSelect(0)">🌤 Weather</button> <button class="tool-sim-q" data-idx="1" onclick="simSelect(1)">📈 Stock Price</button> <button class="tool-sim-q" data-idx="2" onclick="simSelect(2)">📧 Send Email</button> <button class="tool-sim-q" data-idx="3" onclick="simSelect(3)">🔢 Calculator</button> </div> <div class="tool-sim-body"> <div class="tool-sim-input" id="simInput"> <span class="sim-badge">USER QUERY</span> <span class="sim-query-text" id="simQueryText">What's the weather in Tokyo right now?</span> </div> <div class="tool-sim-steps" id="simSteps"> <div class="sim-step" id="simStep0" style="display:none"> <div class="sim-step-label">TOOL SELECTED</div> <div class="sim-step-content" id="simToolName"></div> </div> <div class="sim-step" id="simStep1" style="display:none"> <div class="sim-step-label">FUNCTION CALL — JSON</div> </div> <div class="sim-step" id="simStep2" style="display:none"> <div class="sim-step-label">TOOL RESULT</div> </div> <div class="sim-step sim-step-final" id="simStep3" style="display:none"> <div class="sim-step-label">FINAL RESPONSE</div> <div class="sim-final-text" id="simFinal"></div> </div> </div> </div> </div> <style>.tool-sim-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.tool-sim-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.tool-sim-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.tool-sim-run{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s}.tool-sim-run:not(:disabled):hover{background:rgba(38,152,186,0.15);border-color:#2698ba;color:#2698ba}.tool-sim-run:disabled{opacity:.4;cursor:default}.tool-sim-queries{display:flex;border-bottom:1px solid var(--global-divider-color);overflow-x:auto}.tool-sim-q{flex:1;min-width:100px;padding:.55rem .5rem;font-family:monospace;font-size:.7rem;border:0;border-right:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color-light);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}.tool-sim-q:last-child{border-right:0}.tool-sim-q.active{background:rgba(38,152,186,0.1);color:#2698ba;font-weight:700}.tool-sim-q:hover:not(.active){background:rgba(128,128,128,0.08);color:var(--global-text-color)}.tool-sim-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.75rem}.tool-sim-input{border:1px solid var(--global-divider-color);border-radius:6px;padding:.6rem .9rem;display:flex;align-items:center;gap:.75rem;background:rgba(128,128,128,0.04)}.sim-badge{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:#2698ba;flex-shrink:0}.sim-query-text{font-family:monospace;font-size:.82rem;color:var(--global-text-color)}.tool-sim-steps{display:flex;flex-direction:column;gap:.65rem}.sim-step{border:1px solid var(--global-divider-color);border-radius:7px;overflow:hidden;animation:simFadeIn .3s ease}@keyframes simFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.sim-step-final{border-color:#4fc97e}.sim-step-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .75rem;background:rgba(128,128,128,0.06);color:var(--global-text-color-light);border-bottom:1px solid var(--global-divider-color)}.sim-step-content{padding:.6rem .75rem;font-size:.82rem;font-family:monospace;color:#c97af2;font-weight:700}.sim-json{background:transparent!important;border:none!important;border-radius:0!important;padding:.7rem .75rem!important;margin:0!important;font-size:.76rem!important;color:#cdd6f4!important;line-height:1.6!important;position:static!important}.sim-json::before{display:none!important}.sim-result{color:#4fc97e!important}.sim-final-text{padding:.7rem .75rem;font-size:.85rem;color:var(--global-text-color);line-height:1.6}</style> <script>
+var SIM_DATA = [
+  {
+    query:    "What's the weather in Tokyo right now?",
+    tool:     "get_weather",
+    json:     '{\n  "name": "get_weather",\n  "arguments": {\n    "city": "Tokyo",\n    "units": "celsius"\n  }\n}',
+    result:   '{\n  "temperature": 22,\n  "condition": "Partly cloudy",\n  "humidity": 68,\n  "wind_kph": 14\n}',
+    response: "The current weather in Tokyo is 22°C and partly cloudy, with 68% humidity and light winds at 14 km/h."
+  },
+  {
+    query:    "What's the current stock price of AAPL?",
+    tool:     "get_stock_price",
+    json:     '{\n  "name": "get_stock_price",\n  "arguments": {\n    "ticker": "AAPL",\n    "exchange": "NASDAQ"\n  }\n}',
+    result:   '{\n  "ticker": "AAPL",\n  "price": 187.42,\n  "change": "+1.23%",\n  "volume": "54.2M"\n}',
+    response: "Apple (AAPL) is currently trading at $187.42 on the NASDAQ, up 1.23% today with a volume of 54.2 million shares."
+  },
+  {
+    query:    "Send an email to sarah@co.com about the 3pm meeting",
+    tool:     "send_email",
+    json:     '{\n  "name": "send_email",\n  "arguments": {\n    "to": "sarah@co.com",\n    "subject": "Meeting at 3pm today",\n    "body": "Hi Sarah, just a reminder about our meeting today at 3pm. See you then!"\n  }\n}',
+    result:   '{\n  "status": "sent",\n  "message_id": "msg_8f2a1b3c",\n  "timestamp": "2026-04-12T09:14:02Z"\n}',
+    response: "Done — email sent to sarah@co.com with subject 'Meeting at 3pm today'. Message ID: msg_8f2a1b3c."
+  },
+  {
+    query:    "Calculate a 15% tip on a $87.50 bill",
+    tool:     "calculator",
+    json:     '{\n  "name": "calculator",\n  "arguments": {\n    "expression": "87.50 * 0.15",\n    "precision": 2\n  }\n}',
+    result:   '{\n  "result": 13.13,\n  "expression": "87.50 * 0.15",\n  "total_with_tip": 100.63\n}',
+    response: "A 15% tip on $87.50 is $13.13. Your total bill including the tip would be $100.63."
+  }
+];
+
+var simIdx = 0;
+var simRunning = false;
+
+function simSelect(idx) {
+  simIdx = idx;
+  document.querySelectorAll('.tool-sim-q').forEach(function(b){ b.classList.remove('active'); });
+  var chosen = document.querySelector('[data-idx="'+idx+'"]');
+  if (chosen) chosen.classList.add('active');
+  document.getElementById('simQueryText').textContent = SIM_DATA[idx].query;
+  [0,1,2,3].forEach(function(i){
+    var el = document.getElementById('simStep'+i);
+    if (el) el.style.display = 'none';
+  });
+  document.getElementById('simRunBtn').disabled = false;
+  document.getElementById('simRunBtn').textContent = '▶ Run';
+}
+
+function delay(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+
+document.addEventListener('DOMContentLoaded', function(){
+  var runBtn = document.getElementById('simRunBtn');
+  if (!runBtn) return;
+
+  simSelect(0);
+
+  runBtn.addEventListener('click', async function(){
+    if (simRunning) return;
+    simRunning = true;
+    runBtn.disabled = true;
+    runBtn.textContent = '⏳ Calling…';
+
+    var d = SIM_DATA[simIdx];
+    [0,1,2,3].forEach(function(i){
+      var el = document.getElementById('simStep'+i);
+      if (el) el.style.display = 'none';
+    });
+
+    await delay(400);
+
+    // Step 0: tool selected
+    document.getElementById('simToolName').textContent = d.tool + '()';
+    var s0 = document.getElementById('simStep0');
+    s0.style.display = 'block';
+    await delay(600);
+
+    // Step 1: JSON call
+    document.getElementById('simJSON').textContent = d.json;
+    var s1 = document.getElementById('simStep1');
+    s1.style.display = 'block';
+    await delay(700);
+
+    // Step 2: result
+    document.getElementById('simResult').textContent = d.result;
+    var s2 = document.getElementById('simStep2');
+    s2.style.display = 'block';
+    await delay(700);
+
+    // Step 3: final response
+    document.getElementById('simFinal').textContent = d.response;
+    var s3 = document.getElementById('simStep3');
+    s3.style.display = 'block';
+
+    simRunning = false;
+    runBtn.textContent = '↺ Run Again';
+    runBtn.disabled = false;
+  });
+});
+</script> <p>The JSON in step 3 is the LLM’s actual output — not prose, but a structured object your code can parse. The framework reads <code class="language-plaintext highlighter-rouge">"name"</code> to know which function to call, and <code class="language-plaintext highlighter-rouge">"arguments"</code> to know what to pass it.</p> <hr> <h2 id="six-use-cases">Six Use Cases</h2> <div class="tool-usecases-grid"> <div class="tool-uc-card"> <span class="tool-uc-num">01</span> <h4>Real-Time Data</h4> <p>Weather, stock prices, sports scores, news — anything the model's training data can't contain.</p> <span class="tool-uc-tool">Tool: external REST API</span> </div> <div class="tool-uc-card"> <span class="tool-uc-num">02</span> <h4>Database Queries</h4> <p>Query company-specific data — orders, inventory, customer records — that will never be in training data.</p> <span class="tool-uc-tool">Tool: SQL / NoSQL query</span> </div> <div class="tool-uc-card"> <span class="tool-uc-num">03</span> <h4>Calculations</h4> <p>Complex math, statistics, currency conversions — offload to deterministic code, not probabilistic generation.</p> <span class="tool-uc-tool">Tool: code interpreter</span> </div> <div class="tool-uc-card"> <span class="tool-uc-num">04</span> <h4>Sending Communications</h4> <p>Email, Slack, SMS — the agent generates the content, the tool actually sends it.</p> <span class="tool-uc-tool">Tool: messaging API</span> </div> <div class="tool-uc-card"> <span class="tool-uc-num">05</span> <h4>Code Execution</h4> <p>Run user-provided code in a sandbox, debug errors, analyze outputs — beyond what the model can simulate.</p> <span class="tool-uc-tool">Tool: sandboxed interpreter</span> </div> <div class="tool-uc-card"> <span class="tool-uc-num">06</span> <h4>System Control</h4> <p>Smart home, IoT, browser automation — the agent instructs, the tool acts in the physical or digital world.</p> <span class="tool-uc-tool">Tool: device / browser API</span> </div> </div> <style>.tool-usecases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.85rem;margin:1.5rem 0}.tool-uc-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.tool-uc-num{font-family:monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#2698ba}.tool-uc-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.tool-uc-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}.tool-uc-tool{font-size:.68rem;font-family:monospace;color:#4fc97e;margin-top:auto;padding-top:.35rem;border-top:1px solid var(--global-divider-color)}</style> <hr> <h2 id="langchain-tool--agentexecutor">LangChain: <code class="language-plaintext highlighter-rouge">@tool</code> + <code class="language-plaintext highlighter-rouge">AgentExecutor</code> </h2> <p>LangChain makes tool definition as simple as a Python decorator. The framework handles everything else: tool registration, LLM binding, execution, and response formatting.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">asyncio</span>
+<span class="kn">from</span> <span class="n">langchain_google_genai</span> <span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+<span class="kn">from</span> <span class="n">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="n">langchain_core.tools</span> <span class="kn">import</span> <span class="n">tool</span> <span class="k">as</span> <span class="n">langchain_tool</span>
+<span class="kn">from</span> <span class="n">langchain.agents</span> <span class="kn">import</span> <span class="n">create_tool_calling_agent</span><span class="p">,</span> <span class="n">AgentExecutor</span>
+</code></pre></div></div> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">langchain_core.tools.tool</code>?</strong> The <code class="language-plaintext highlighter-rouge">@tool</code> decorator inspects the function and converts it into a <code class="language-plaintext highlighter-rouge">StructuredTool</code> object that contains the function name, the parameters schema (extracted from type hints), and the description (extracted from the docstring). The LLM reads all three to decide when and how to call it.</p> </blockquote> <h3 id="defining-a-tool">Defining a Tool</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@langchain_tool</span>
+<span class="k">def</span> <span class="nf">search_information</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Provides factual information on a given topic.
+    Use this tool to answer questions like </span><span class="sh">'</span><span class="s">capital of France</span><span class="sh">'</span><span class="s">
+    or </span><span class="sh">'</span><span class="s">weather in London</span><span class="sh">'</span><span class="s">.
+    </span><span class="sh">"""</span>
+    <span class="n">simulated_results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">weather in london</span><span class="sh">"</span><span class="p">:</span>   <span class="sh">"</span><span class="s">Cloudy, 15°C.</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">capital of france</span><span class="sh">"</span><span class="p">:</span>   <span class="sh">"</span><span class="s">The capital of France is Paris.</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">population of earth</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Approximately 8 billion people.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">simulated_results</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span>
+        <span class="n">query</span><span class="p">.</span><span class="nf">lower</span><span class="p">(),</span>
+        <span class="sa">f</span><span class="sh">"</span><span class="s">No specific data for </span><span class="sh">'</span><span class="si">{</span><span class="n">query</span><span class="si">}</span><span class="sh">'</span><span class="s">.</span><span class="sh">"</span>
+    <span class="p">)</span>
+
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">search_information</span><span class="p">]</span>
+</code></pre></div></div> <blockquote> <p><strong>The docstring is critical.</strong> When the LLM receives the tool definition, it sees:</p> <ul> <li> <code class="language-plaintext highlighter-rouge">name</code>: <code class="language-plaintext highlighter-rouge">"search_information"</code> — what to put in <code class="language-plaintext highlighter-rouge">"name"</code> of the JSON call</li> <li> <code class="language-plaintext highlighter-rouge">description</code>: the full docstring — the LLM reads this to decide <em>when</em> to use the tool</li> <li> <code class="language-plaintext highlighter-rouge">parameters</code>: <code class="language-plaintext highlighter-rouge">{"query": {"type": "string"}}</code> — extracted from type hints</li> </ul> <p>A vague docstring → wrong tool usage. A precise docstring → accurate routing. The docstring IS the tool’s interface contract with the LLM.</p> </blockquote> <h3 id="building-the-agent">Building the Agent</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm</span> <span class="o">=</span> <span class="nc">ChatGoogleGenerativeAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">agent_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span>      <span class="sh">"</span><span class="s">You are a helpful assistant.</span><span class="sh">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="sh">"</span><span class="s">human</span><span class="sh">"</span><span class="p">,</span>       <span class="sh">"</span><span class="s">{input}</span><span class="sh">"</span><span class="p">),</span>
+    <span class="p">(</span><span class="sh">"</span><span class="s">placeholder</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">{agent_scratchpad}</span><span class="sh">"</span><span class="p">),</span>   <span class="c1"># ← the agent's working memory
+</span><span class="p">])</span>
+
+<span class="n">agent</span> <span class="o">=</span> <span class="nf">create_tool_calling_agent</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">agent_prompt</span><span class="p">)</span>
+<span class="n">agent_executor</span> <span class="o">=</span> <span class="nc">AgentExecutor</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>What is <code class="language-plaintext highlighter-rouge">{agent_scratchpad}</code>?</strong> This placeholder is where the agent writes its intermediate steps — the tool calls it made, the results it received, and its reasoning about what to do next. Without it, the agent has no place to “think” between steps. It’s the equivalent of scratch paper for multi-step reasoning.</p> <p><strong><code class="language-plaintext highlighter-rouge">AgentExecutor</code> is the loop.</strong> It repeatedly calls the agent until either:</p> <ol> <li>The agent produces a final answer (no more tool calls needed)</li> <li>A max iteration limit is hit</li> </ol> <p>Each iteration: agent runs → decides tool → executor calls tool → result fed back → agent runs again.</p> </blockquote> <h3 id="the-execution-loop-visualized">The Execution Loop Visualized</h3> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">TOOL CALL LIFECYCLE</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body"> <div class="ns-node ns-node-cyan"> <div class="ns-node-title">01 · User Query</div> <div class="ns-node-sub">"What's the weather in London?"</div> </div> <div class="ns-arrow"></div> <div class="ns-node"> <div class="ns-node-title">02 · LLM Receives Query + Tool Definitions</div> <div class="ns-node-sub">Model reads available tools and their descriptions</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-amber"> <div class="ns-node-title">03 · LLM Decides: Tool Needed</div> <div class="ns-node-sub">Selects <code>get_weather</code> based on docstring match</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-purple"> <div class="ns-node-title">04 · JSON Call Generated</div> <div class="ns-node-sub">{"name":"get_weather","args":{"city":"London"}}</div> </div> <div class="ns-arrow"></div> <div class="ns-node"> <div class="ns-node-title">05 · Framework Executes Tool</div> <div class="ns-node-sub">Calls actual API · returns structured result</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-green"> <div class="ns-node-title">06 · LLM Formulates Response</div> <div class="ns-node-sub">"It's 15°C and cloudy in London right now."</div> </div> </div> </div> <h3 id="running-queries">Running Queries</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">run_agent</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">agent_executor</span><span class="p">.</span><span class="nf">ainvoke</span><span class="p">({</span><span class="sh">"</span><span class="s">input</span><span class="sh">"</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">output</span><span class="sh">"</span><span class="p">])</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">await</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">gather</span><span class="p">(</span>
+        <span class="nf">run_agent</span><span class="p">(</span><span class="sh">"</span><span class="s">What is the capital of France?</span><span class="sh">"</span><span class="p">),</span>
+        <span class="nf">run_agent</span><span class="p">(</span><span class="sh">"</span><span class="s">What</span><span class="sh">'</span><span class="s">s the weather like in London?</span><span class="sh">"</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nf">main</span><span class="p">())</span>
+</code></pre></div></div> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">ainvoke</code> and <code class="language-plaintext highlighter-rouge">gather</code>?</strong> <code class="language-plaintext highlighter-rouge">ainvoke</code> is the async version of <code class="language-plaintext highlighter-rouge">invoke</code>. Using <code class="language-plaintext highlighter-rouge">asyncio.gather</code> fires multiple agent queries concurrently — each agent call is I/O-bound (waiting for the LLM API), so they run in parallel without blocking each other. This is the <a href="/kohshh-portfolio/blog/2026/parallelization/">parallelization</a> pattern applied to tool-using agents.</p> </blockquote> <hr> <h2 id="crewai-tool--role-based-agents">CrewAI: <code class="language-plaintext highlighter-rouge">@tool</code> + Role-Based Agents</h2> <p>CrewAI takes a different philosophy: agents are defined by <strong>role</strong>, <strong>goal</strong>, and <strong>backstory</strong> — almost like hiring a specialist. Tools are assigned to an agent’s persona rather than to a chain.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">crewai</span> <span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">Crew</span>
+<span class="kn">from</span> <span class="n">crewai.tools</span> <span class="kn">import</span> <span class="n">tool</span>
+</code></pre></div></div> <h3 id="defining-the-tool">Defining the Tool</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@tool</span><span class="p">(</span><span class="sh">"</span><span class="s">Stock Price Lookup Tool</span><span class="sh">"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_stock_price</span><span class="p">(</span><span class="n">ticker</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Fetches the latest simulated stock price for a given ticker.
+    Returns the price as a float. Raises ValueError if not found.
+    </span><span class="sh">"""</span>
+    <span class="n">prices</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">AAPL</span><span class="sh">"</span><span class="p">:</span> <span class="mf">178.15</span><span class="p">,</span> <span class="sh">"</span><span class="s">GOOGL</span><span class="sh">"</span><span class="p">:</span> <span class="mf">1750.30</span><span class="p">,</span> <span class="sh">"</span><span class="s">MSFT</span><span class="sh">"</span><span class="p">:</span> <span class="mf">425.50</span><span class="p">}</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">prices</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">ticker</span><span class="p">.</span><span class="nf">upper</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">price</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nc">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Ticker </span><span class="sh">'</span><span class="si">{</span><span class="n">ticker</span><span class="si">}</span><span class="sh">'</span><span class="s"> not found.</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">price</span>
+</code></pre></div></div> <blockquote> <p><strong>Why raise <code class="language-plaintext highlighter-rouge">ValueError</code> instead of returning a string?</strong> Returning a string like <code class="language-plaintext highlighter-rouge">"Not found"</code> makes the agent think it has a valid answer — it might confidently report a price of “Not found”. Raising an exception forces the agent to handle the failure explicitly, leading to better error acknowledgment in the final response.</p> </blockquote> <h3 id="the-agent-task-and-crew">The Agent, Task, and Crew</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">financial_analyst</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">role</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Senior Financial Analyst</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">goal</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Analyze stock data and report key prices accurately.</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">backstory</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Experienced analyst adept at using data sources to find stock information.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">verbose</span>   <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">tools</span>     <span class="o">=</span> <span class="p">[</span><span class="n">get_stock_price</span><span class="p">],</span>
+    <span class="n">allow_delegation</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">role</code>, <code class="language-plaintext highlighter-rouge">goal</code>, <code class="language-plaintext highlighter-rouge">backstory</code>?</strong> CrewAI injects these into the agent’s system prompt. The role frames what the agent IS (“Senior Financial Analyst”). The goal tells it what it’s trying to achieve. The backstory adds professional context that influences how it reasons and writes. Together they create a coherent persona — not just a generic assistant.</p> <p><strong><code class="language-plaintext highlighter-rouge">allow_delegation=False</code></strong>: prevents the agent from spawning sub-agents. Keep it <code class="language-plaintext highlighter-rouge">False</code> for simple single-agent tasks.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">task</span> <span class="o">=</span> <span class="nc">Task</span><span class="p">(</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sh">"</span><span class="s">Find the simulated stock price for Apple (ticker: AAPL). </span><span class="sh">"</span>
+        <span class="sh">"</span><span class="s">Use the Stock Price Lookup Tool. </span><span class="sh">"</span>
+        <span class="sh">"</span><span class="s">If the ticker is not found, report that clearly.</span><span class="sh">"</span>
+    <span class="p">),</span>
+    <span class="n">expected_output</span> <span class="o">=</span> <span class="sh">"</span><span class="s">A single sentence stating the AAPL price. e.g. </span><span class="sh">'</span><span class="s">The simulated stock price for AAPL is $178.15.</span><span class="sh">'"</span><span class="p">,</span>
+    <span class="n">agent</span> <span class="o">=</span> <span class="n">financial_analyst</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">crew</span> <span class="o">=</span> <span class="nc">Crew</span><span class="p">(</span>
+    <span class="n">agents</span> <span class="o">=</span> <span class="p">[</span><span class="n">financial_analyst</span><span class="p">],</span>
+    <span class="n">tasks</span>  <span class="o">=</span> <span class="p">[</span><span class="n">task</span><span class="p">],</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">crew</span><span class="p">.</span><span class="nf">kickoff</span><span class="p">()</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">expected_output</code></strong>: This is a key CrewAI feature. It tells the agent exactly what format the output should take. The agent evaluates its own output against this expectation — essentially a built-in reflection step.</p> <p><strong><code class="language-plaintext highlighter-rouge">crew.kickoff()</code></strong>: Starts the execution. CrewAI handles the agent loop internally, including tool invocation, result parsing, and task completion detection.</p> </blockquote> <h3 id="crewai-agent-task-crew-relationship">CrewAI Agent-Task-Crew Relationship</h3> <pre><code class="language-mermaid">graph TD
+    A([User Request]) --&gt; CR[Crew]
+    CR --&gt; T[Task — find AAPL price]
+    T --&gt; AG[Agent — Senior Financial Analyst]
+    AG --&gt; TOOL[get_stock_price tool]
+    TOOL --&gt; AG
+    AG --&gt; T
+    T --&gt; CR
+    CR --&gt; OUT([Result])
+    style CR fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
+    style AG fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
+    style TOOL fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
+    style OUT fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <hr> <h2 id="google-adk-built-in-tools--code-execution">Google ADK: Built-in Tools + Code Execution</h2> <p>The ADK provides <strong>pre-built tools</strong> that require zero custom code. You just import them and pass them to an agent.</p> <h3 id="google-search-zero-configuration">Google Search (Zero Configuration)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">Agent</span>
+<span class="kn">from</span> <span class="n">google.adk.tools</span> <span class="kn">import</span> <span class="n">google_search</span>
+
+<span class="n">root_agent</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">basic_search_agent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Answers questions by searching the internet.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Answer questions by searching the web.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">tools</span>       <span class="o">=</span> <span class="p">[</span><span class="n">google_search</span><span class="p">],</span>   <span class="c1"># one line — full search capability
+</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">google_search</code> is a pre-built ADK tool</strong> — it connects to the Google Search API automatically, handles authentication, pagination, and result formatting. No API key configuration, no schema definition, no docstring to write. You get production-quality web search in one import.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">call_agent</span><span class="p">(</span><span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">session_service</span> <span class="o">=</span> <span class="nc">InMemorySessionService</span><span class="p">()</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session_service</span><span class="p">.</span><span class="nf">create_session</span><span class="p">(</span>
+        <span class="n">app_name</span><span class="o">=</span><span class="n">APP_NAME</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">USER_ID</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">SESSION_ID</span>
+    <span class="p">)</span>
+    <span class="n">runner</span>  <span class="o">=</span> <span class="nc">Runner</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">root_agent</span><span class="p">,</span> <span class="n">app_name</span><span class="o">=</span><span class="n">APP_NAME</span><span class="p">,</span> <span class="n">session_service</span><span class="o">=</span><span class="n">session_service</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">types</span><span class="p">.</span><span class="nc">Content</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="sh">'</span><span class="s">user</span><span class="sh">'</span><span class="p">,</span> <span class="n">parts</span><span class="o">=</span><span class="p">[</span><span class="n">types</span><span class="p">.</span><span class="nc">Part</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">query</span><span class="p">)])</span>
+
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">runner</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">USER_ID</span><span class="p">,</span> <span class="n">session_id</span><span class="o">=</span><span class="n">SESSION_ID</span><span class="p">,</span> <span class="n">new_message</span><span class="o">=</span><span class="n">content</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="p">.</span><span class="nf">is_final_response</span><span class="p">():</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">text</span><span class="p">)</span>
+
+<span class="n">asyncio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nf">call_agent</span><span class="p">(</span><span class="sh">"</span><span class="s">What</span><span class="sh">'</span><span class="s">s the latest AI news?</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">InMemorySessionService</code></strong>: stores conversation state in RAM. Every <code class="language-plaintext highlighter-rouge">run()</code> call has a <code class="language-plaintext highlighter-rouge">session_id</code> — this is how the agent maintains multi-turn context. Sessions are covered in depth in Chapter 8.</p> <p><strong><code class="language-plaintext highlighter-rouge">event.is_final_response()</code></strong>: the ADK streams events as the agent works. Most events are intermediate (tool calls, reasoning steps). Only one event marks the final answer. Always filter for this before reading the output.</p> </blockquote> <h3 id="code-execution-built-in-sandboxed-interpreter">Code Execution (Built-in Sandboxed Interpreter)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LlmAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.code_executors</span> <span class="kn">import</span> <span class="n">BuiltInCodeExecutor</span>
+
+<span class="n">code_agent</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>          <span class="o">=</span> <span class="sh">"</span><span class="s">calculator_agent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>         <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">code_executor</span> <span class="o">=</span> <span class="nc">BuiltInCodeExecutor</span><span class="p">(),</span>    <span class="c1"># sandboxed Python
+</span>    <span class="n">instruction</span>   <span class="o">=</span> <span class="sh">"""</span><span class="s">You are a calculator agent.
+When given a math problem, write Python code to solve it.
+Return only the final numerical result as plain text.</span><span class="sh">"""</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">BuiltInCodeExecutor</code></strong>: gives the agent a sandboxed Python interpreter. The agent writes Python code, the executor runs it securely, and the result is returned. This is how the agent handles:</p> <ul> <li>Exact arithmetic (no rounding errors from the LLM)</li> <li>Data manipulation (sorting, filtering, aggregation)</li> <li>Problems that require deterministic computation</li> </ul> <p>The LLM is good at reasoning <em>about</em> code. <code class="language-plaintext highlighter-rouge">BuiltInCodeExecutor</code> makes it actually <em>run</em> code. The combination is far more powerful than either alone.</p> </blockquote> <h3 id="adk-tool-execution-flow">ADK Tool Execution Flow</h3> <pre><code class="language-mermaid">graph TD
+    U([Query: "10 factorial?"]) --&gt; R[Runner]
+    R --&gt; A[LlmAgent]
+    A --&gt;|writes Python code| CE[BuiltInCodeExecutor]
+    CE --&gt;|executes in sandbox| PY[Python: math.factorial 10]
+    PY --&gt;|result: 3628800| CE
+    CE --&gt; A
+    A --&gt;|"10! = 3,628,800"| R
+    R --&gt; OUT([Final Response])
+    style A  fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
+    style CE fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
+    style PY fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
+    style OUT fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <hr> <h2 id="framework-comparison">Framework Comparison</h2> <div class="tool-fw-compare-wrapper"> <div class="tool-fw-compare-header"> <span class="tool-fw-compare-title">FRAMEWORK CAPABILITY COMPARISON</span> <span class="tool-fw-compare-sub">Hover a bar to see details</span> </div> <div style="overflow-x:auto;padding:0.75rem;"> <canvas id="fwCompareChart" width="640" height="300"></canvas> </div> <div class="tool-fw-legend"> <div class="tool-fw-leg-item"> <span class="tool-fw-dot" style="background:#2698ba"></span>LangChain</div> <div class="tool-fw-leg-item"> <span class="tool-fw-dot" style="background:#c97af2"></span>CrewAI</div> <div class="tool-fw-leg-item"> <span class="tool-fw-dot" style="background:#4fc97e"></span>Google ADK</div> </div> <div class="tool-fw-tooltip" id="fwTooltip" style="display:none"></div> </div> <style>.tool-fw-compare-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0;position:relative}.tool-fw-compare-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05);flex-wrap:wrap;gap:.4rem}.tool-fw-compare-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.tool-fw-compare-sub{font-size:.65rem;color:var(--global-text-color-light);opacity:.7}.tool-fw-legend{display:flex;gap:1.25rem;padding:.6rem 1.1rem;border-top:1px solid var(--global-divider-color);flex-wrap:wrap}.tool-fw-leg-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--global-text-color-light)}.tool-fw-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}.tool-fw-tooltip{position:fixed;background:var(--global-bg-color);border:1px solid var(--global-divider-color);border-radius:6px;padding:.5rem .75rem;font-size:.73rem;color:var(--global-text-color);pointer-events:none;z-index:200;max-width:230px;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.35)}</style> <script>
+(function(){
+  var canvas = document.getElementById('fwCompareChart');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var tooltip = document.getElementById('fwTooltip');
+
+  var dims = ['Custom Tools', 'Built-in Tools', 'Multi-Agent', 'Async Support', 'Enterprise Scale'];
+  var frameworks = ['LangChain', 'CrewAI', 'Google ADK'];
+  var colors = ['#2698ba', '#c97af2', '#4fc97e'];
+
+  // scores[dim][framework]: 1-5
+  var scores = [
+    [5, 4, 4],  // Custom Tools
+    [3, 2, 5],  // Built-in Tools
+    [4, 5, 5],  // Multi-Agent
+    [5, 3, 4],  // Async Support
+    [3, 3, 5],  // Enterprise Scale
+  ];
+
+  var descriptions = [
+    ['Excellent — @tool decorator, custom schemas, flexible binding.', 'Good — @tool decorator with role-aware context.', 'Good — FunctionTool with docstring schema.'],
+    ['Moderate — community tool integrations, not pre-packaged.', 'Limited — mostly relies on LangChain tools.', 'Excellent — google_search, code executor, VSearch built-in.'],
+    ['Good — LangGraph for complex graphs, native agent chaining.', 'Excellent — Crew/Agent/Task model built for teams of agents.', 'Excellent — ParallelAgent, SequentialAgent, LlmAgent natively.'],
+    ['Excellent — full async/await, ainvoke, astream throughout.', 'Moderate — some async support, primarily sync kickoff.', 'Good — async runner, run_async for streaming events.'],
+    ['Moderate — requires custom infra for production scale.', 'Moderate — growing enterprise adoption.', 'Excellent — Google Cloud native, Vertex AI integration.'],
+  ];
+
+  var dpr = window.devicePixelRatio || 1;
+  var W = Math.min(640, canvas.parentElement.getBoundingClientRect().width - 24);
+  var H = 300;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+
+  var ML = 110, MR = 20, MT = 28, MB = 40;
+  var PW = W - ML - MR, PH = H - MT - MB;
+  var nDims = dims.length, nFW = frameworks.length;
+  var groupW = PW / nDims;
+  var barW = (groupW * 0.7) / nFW;
+  var barGap = (groupW * 0.3) / (nFW + 1);
+  var hitRects = [];
+
+  function getTheme() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      text:  s.getPropertyValue('--global-text-color').trim()       || '#e0e0e0',
+      muted: s.getPropertyValue('--global-text-color-light').trim() || '#888',
+      div:   s.getPropertyValue('--global-divider-color').trim()    || '#333',
+    };
+  }
+
+  function draw(hoverDim, hoverFW) {
+    ctx.clearRect(0, 0, W, H);
+    hitRects = [];
+    var th = getTheme();
+
+    // Y grid
+    for (var v = 1; v <= 5; v++) {
+      var gy = MT + (1 - (v-1)/4) * PH;
+      ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+      ctx.setLineDash([3,3]);
+      ctx.beginPath(); ctx.moveTo(ML, gy); ctx.lineTo(ML+PW, gy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = th.muted; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+      ctx.fillText(v, ML-6, gy + 3.5);
+    }
+
+    // Bars
+    for (var di = 0; di < nDims; di++) {
+      var gx = ML + di * groupW;
+      for (var fi = 0; fi < nFW; fi++) {
+        var bx = gx + barGap*(fi+1) + barW*fi;
+        var score = scores[di][fi];
+        var bh = (score-1)/4 * PH;
+        var by = MT + PH - bh;
+        var isH = (hoverDim === di && hoverFW === fi);
+        var alpha = (hoverDim === null) ? 1 : (isH ? 1 : 0.25);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = colors[fi];
+        ctx.fillRect(bx, by, barW, bh);
+        ctx.globalAlpha = 1;
+        hitRects.push({ x: bx, y: by, w: barW, h: bh, di: di, fi: fi, score: score });
+      }
+      // X label
+      ctx.fillStyle = th.muted; ctx.font = '9px monospace'; ctx.textAlign = 'center';
+      var labelX = gx + groupW/2;
+      var words = dims[di].split(' ');
+      if (words.length > 1) {
+        ctx.fillText(words[0], labelX, H - MB + 14);
+        ctx.fillText(words.slice(1).join(' '), labelX, H - MB + 25);
+      } else {
+        ctx.fillText(dims[di], labelX, H - MB + 14);
+      }
+    }
+  }
+
+  draw(null, null);
+
+  canvas.addEventListener('mousemove', function(e) {
+    var rect = canvas.getBoundingClientRect();
+    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    var hit = null;
+    for (var i = 0; i < hitRects.length; i++) {
+      var r = hitRects[i];
+      if (mx >= r.x && mx <= r.x+r.w && my >= r.y && my <= r.y+r.h) { hit = r; break; }
+    }
+    if (hit) {
+      draw(hit.di, hit.fi);
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX + 12) + 'px';
+      tooltip.style.top  = (e.clientY - 10) + 'px';
+      tooltip.innerHTML = '<strong>' + frameworks[hit.fi] + ' — ' + dims[hit.di] + '</strong><br>' +
+        '<span style="color:var(--global-text-color-light)">' + descriptions[hit.di][hit.fi] + '</span>';
+      canvas.style.cursor = 'pointer';
+    } else {
+      draw(null, null);
+      tooltip.style.display = 'none';
+      canvas.style.cursor = 'default';
+    }
+  });
+  canvas.addEventListener('mouseleave', function(){
+    draw(null, null);
+    tooltip.style.display = 'none';
+  });
+})();
+</script> <table> <thead> <tr> <th> </th> <th>LangChain</th> <th>CrewAI</th> <th>Google ADK</th> </tr> </thead> <tbody> <tr> <td><strong>Tool definition</strong></td> <td> <code class="language-plaintext highlighter-rouge">@tool</code> decorator</td> <td> <code class="language-plaintext highlighter-rouge">@tool("Name")</code> decorator</td> <td> <code class="language-plaintext highlighter-rouge">FunctionTool</code> or built-ins</td> </tr> <tr> <td><strong>Built-in tools</strong></td> <td>Community integrations</td> <td>Relies on LangChain tools</td> <td> <code class="language-plaintext highlighter-rouge">google_search</code>, <code class="language-plaintext highlighter-rouge">BuiltInCodeExecutor</code>, <code class="language-plaintext highlighter-rouge">VSearchAgent</code> </td> </tr> <tr> <td><strong>Agent model</strong></td> <td>Chain / graph</td> <td>Role + goal + backstory</td> <td> <code class="language-plaintext highlighter-rouge">LlmAgent</code> + orchestrators</td> </tr> <tr> <td><strong>Best for</strong></td> <td>Composable pipelines</td> <td>Role-based multi-agent teams</td> <td>Google Cloud / enterprise</td> </tr> <tr> <td><strong>Async</strong></td> <td>Full (<code class="language-plaintext highlighter-rouge">ainvoke</code>, <code class="language-plaintext highlighter-rouge">astream</code>)</td> <td>Partial</td> <td> <code class="language-plaintext highlighter-rouge">run_async</code> streaming</td> </tr> </tbody> </table> <hr> <h2 id="at-a-glance">At a Glance</h2> <div class="tool-summary-card"> <div class="tool-summary-col"> <div class="tool-summary-label">WHAT</div> <p>LLMs can't call APIs, query databases, or run code on their own. Tool use lets them generate a structured JSON request — which the framework executes — bridging language reasoning with real-world action.</p> </div> <div class="tool-summary-divider"></div> <div class="tool-summary-col"> <div class="tool-summary-label">WHY</div> <p>Training data is frozen. Real-world tasks require live data, exact computation, and system interaction. Tool use is the mechanism that makes agents actually useful — not just fluent.</p> </div> <div class="tool-summary-divider"></div> <div class="tool-summary-col"> <div class="tool-summary-label">RULE OF THUMB</div> <p>Use tool calling whenever the agent needs to break out of its training data: real-time info, private data, exact math, code execution, or triggering real-world actions.</p> </div> </div> <style>.tool-summary-card{display:flex;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.tool-summary-card{flex-direction:column}}.tool-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.tool-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.tool-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.tool-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#2698ba}</style> <hr> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <strong>The LLM doesn’t run the tool.</strong> It generates a structured JSON object specifying which tool to call and with what arguments. The framework executes it. This separation is what makes tool use safe and auditable.</li> <li> <strong>The docstring is the interface.</strong> In LangChain and CrewAI, the function’s docstring is what the LLM reads to decide when to use a tool. A clear, specific docstring = accurate tool routing.</li> <li> <strong>ADK built-in tools are production-ready.</strong> <code class="language-plaintext highlighter-rouge">google_search</code>, <code class="language-plaintext highlighter-rouge">BuiltInCodeExecutor</code>, and <code class="language-plaintext highlighter-rouge">VSearchAgent</code> require zero configuration. For custom tools, all three frameworks use decorator-based definitions.</li> <li> <strong><code class="language-plaintext highlighter-rouge">AgentExecutor</code> (LangChain) is an execution loop</strong> — it keeps calling the agent until no more tool calls are needed. The <code class="language-plaintext highlighter-rouge">{agent_scratchpad}</code> placeholder is the agent’s scratch pad for intermediate thoughts.</li> <li> <strong>CrewAI’s role/goal/backstory</strong> creates an agent persona that influences reasoning style and output formatting — not just a system prompt, but a professional identity.</li> <li> <strong>Code execution is qualitatively different</strong> from text generation — it gives agents deterministic, exact answers for math, data manipulation, and computation. The LLM reasons about <em>what</em> code to write; the executor runs it.</li> </ul> <hr> <p><em>Next up — Chapter 6: Planning, where agents stop reacting to individual inputs and start building structured multi-step plans to achieve complex goals.</em></p> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/memory/">Chapter 8: Memory Management</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/multi-agent/">Chapter 7: Multi-Agent Collaboration</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/planning/">Chapter 6: Planning</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/reflection/">Chapter 4: Reflection</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/parallelization/">Chapter 3: Parallelization</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>

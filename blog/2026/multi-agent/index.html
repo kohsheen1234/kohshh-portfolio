@@ -1,0 +1,498 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 7: Multi-Agent Collaboration | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="One agent hits walls. A team of specialized agents doesn't. Multi-agent collaboration lets you decompose complex problems into coordinated workstreams — each agent doing what it does best."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/multi-agent/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/kohshh-portfolio/books/">bookshelf</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/kohshh-portfolio/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  29 MIN READ  ·  JANUARY 29, 2026</p> <h1 class="post-title">Chapter 7: Multi-Agent Collaboration</h1> <p class="post-lead">One agent hits walls. A team of specialized agents doesn't. Multi-agent collaboration lets you decompose complex problems into coordinated workstreams — each agent doing what it does best.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">January 29, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fmulti-agent%2F&amp;text=Chapter+7%3A+Multi-Agent+Collaboration" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fmulti-agent%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#why-one-agent-isnt-enough">Why One Agent Isn’t Enough</a></li> <li class="toc-entry toc-h2"><a href="#what-multi-agent-collaboration-is">What Multi-Agent Collaboration Is</a></li> <li class="toc-entry toc-h2"><a href="#the-six-interaction-models">The Six Interaction Models</a></li> <li class="toc-entry toc-h2"> <a href="#the-five-collaboration-patterns">The Five Collaboration Patterns</a> <ul> <li class="toc-entry toc-h4"><a href="#sequential-handoff">Sequential Handoff</a></li> <li class="toc-entry toc-h4"><a href="#parallel-workstreams">Parallel Workstreams</a></li> <li class="toc-entry toc-h4"><a href="#debate--consensus">Debate &amp; Consensus</a></li> <li class="toc-entry toc-h4"><a href="#hierarchical-delegation">Hierarchical Delegation</a></li> <li class="toc-entry toc-h4"><a href="#critic-reviewer">Critic-Reviewer</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#watch-a-two-agent-team-work">Watch a Two-Agent Team Work</a></li> <li class="toc-entry toc-h2"> <a href="#use-cases-across-domains">Use Cases Across Domains</a> <ul> <li class="toc-entry toc-h4"><a href="#complex-research">Complex Research</a></li> <li class="toc-entry toc-h4"><a href="#software-development">Software Development</a></li> <li class="toc-entry toc-h4"><a href="#financial-analysis">Financial Analysis</a></li> <li class="toc-entry toc-h4"><a href="#customer-support">Customer Support</a></li> <li class="toc-entry toc-h4"><a href="#supply-chain">Supply Chain</a></li> <li class="toc-entry toc-h4"><a href="#network-remediation">Network Remediation</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#crewai-researcher--writer-team">CrewAI: Researcher + Writer Team</a> <ul> <li class="toc-entry toc-h3"><a href="#defining-the-agents">Defining the Agents</a></li> <li class="toc-entry toc-h3"><a href="#defining-the-tasks-with-dependency">Defining the Tasks (with dependency)</a></li> <li class="toc-entry toc-h3"><a href="#assembling-the-crew">Assembling the Crew</a></li> <li class="toc-entry toc-h3"><a href="#crewai-data-flow">CrewAI Data Flow</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#google-adk-four-orchestration-patterns">Google ADK: Four Orchestration Patterns</a> <ul> <li class="toc-entry toc-h3"><a href="#1-hierarchical-parent-child-agents">1. Hierarchical: Parent-Child Agents</a></li> <li class="toc-entry toc-h3"><a href="#2-loopagent-iterative-workflows">2. LoopAgent: Iterative Workflows</a></li> <li class="toc-entry toc-h3"><a href="#3-sequentialagent-linear-pipelines">3. SequentialAgent: Linear Pipelines</a></li> <li class="toc-entry toc-h3"><a href="#4-parallelagent-concurrent-workers">4. ParallelAgent: Concurrent Workers</a></li> <li class="toc-entry toc-h3"><a href="#5-agent-as-a-tool">5. Agent as a Tool</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#framework-comparison">Framework Comparison</a></li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">29 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fmulti-agent%2F&amp;text=Chapter+7%3A+Multi-Agent+Collaboration" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fmulti-agent%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="why-one-agent-isnt-enough">Why One Agent Isn’t Enough</h2> <p>Every chapter up to now has been about making a single agent smarter — chain it, route it, run it in parallel, give it tools, make it reflect, make it plan. All of these improve a single agent’s performance.</p> <p>But there’s a ceiling.</p> <p>A single agent handling a complex research project needs to be: a domain expert, a search specialist, a statistical analyst, a fact-checker, and a polished writer — simultaneously. The more roles you pile onto one system prompt, the worse it performs at each of them.</p> <p>The same problem that prompted humans to build teams applies to agents: <strong>specialization beats generalism at scale</strong>.</p> <p>Multi-agent collaboration breaks a complex goal into sub-tasks, assigns each to an agent built specifically for that task, and coordinates their outputs into a unified result. The researcher does the research. The analyst runs the numbers. The writer assembles the draft. The reviewer catches errors. Each agent excels at its role. The system as a whole exceeds what any single agent could produce.</p> <hr> <h2 id="what-multi-agent-collaboration-is">What Multi-Agent Collaboration Is</h2> <p>Multi-agent collaboration is a system design pattern where:</p> <ol> <li>A <strong>complex goal</strong> is decomposed into discrete sub-tasks</li> <li>Each sub-task is assigned to a <strong>specialized agent</strong> with the right tools, knowledge, or reasoning approach</li> <li>Agents <strong>coordinate</strong> through defined communication protocols — passing outputs, delegating tasks, sharing state</li> <li>A <strong>final output</strong> emerges from the coordinated work of the team</li> </ol> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">MULTI-AGENT COLLABORATION PATTERN</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body"> <div class="ns-node ns-node-cyan"> <div class="ns-node-title">Complex Goal</div> <div class="ns-node-sub">Too large for any single agent</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-purple"> <div class="ns-node-title">Orchestrator Agent</div> <div class="ns-node-sub">Decomposes goal · delegates to specialists</div> </div> <div class="ns-arrow"></div> <div class="ns-phase"> <div class="ns-phase-title">Specialist Agents — each owns a distinct role</div> <div class="ns-phase-sub">Separate tools, knowledge, and system prompts per agent</div> <div class="ns-row"> <div class="ns-node ns-node-cyan"> <div class="ns-node-title">Research Agent</div> <div class="ns-node-sub">Search · retrieve</div> </div> <div class="ns-node ns-node-amber"> <div class="ns-node-title">Analysis Agent</div> <div class="ns-node-sub">Process · compute</div> </div> <div class="ns-node ns-node-purple"> <div class="ns-node-title">Writer Agent</div> <div class="ns-node-sub">Draft · format</div> </div> </div> </div> <div class="ns-arrow"></div> <div class="ns-node"> <div class="ns-node-title">Synthesis Agent</div> <div class="ns-node-sub">Merges all specialist outputs · resolves conflicts</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-green"> <div class="ns-node-title">Final Result</div> <div class="ns-node-sub">Exceeds what any single agent could produce</div> </div> </div> </div> <p>The critical ingredient is <strong>inter-agent communication</strong>: a standardized way for agents to exchange data, delegate work, and signal completion. Without it, you just have isolated agents running in parallel — not a team.</p> <hr> <h2 id="the-six-interaction-models">The Six Interaction Models</h2> <p>Agent teams can be structured in fundamentally different ways. The choice of structure changes autonomy, fault tolerance, complexity, and scalability.</p> <div class="mas-models-wrapper"> <div class="mas-models-tabs"> <button class="mas-tab active" data-model="0" onclick="masSelect(0)">Single</button> <button class="mas-tab" data-model="1" onclick="masSelect(1)">Network</button> <button class="mas-tab" data-model="2" onclick="masSelect(2)">Supervisor</button> <button class="mas-tab" data-model="3" onclick="masSelect(3)">Supervisor as Tool</button> <button class="mas-tab" data-model="4" onclick="masSelect(4)">Hierarchical</button> <button class="mas-tab" data-model="5" onclick="masSelect(5)">Custom</button> </div> <div class="mas-models-body"> <div class="mas-model-content" id="masContent"> <div class="mas-model-left"> <div class="mas-model-name" id="masName">Single Agent</div> <div class="mas-model-desc" id="masDesc">One agent handles everything autonomously. Simple to build and manage, but constrained by a single agent's scope and resources. No inter-agent communication overhead. Suitable only when the task is fully self-contained.</div> <div class="mas-model-props" id="masProps"> <div class="mas-prop"> <span class="mas-prop-label">Autonomy</span><div class="mas-prop-bar"><div class="mas-prop-fill" style="width:20%"></div></div> </div> <div class="mas-prop"> <span class="mas-prop-label">Fault tolerance</span><div class="mas-prop-bar"><div class="mas-prop-fill" style="width:10%"></div></div> </div> <div class="mas-prop"> <span class="mas-prop-label">Scalability</span><div class="mas-prop-bar"><div class="mas-prop-fill" style="width:15%"></div></div> </div> <div class="mas-prop"> <span class="mas-prop-label">Complexity</span><div class="mas-prop-bar"><div class="mas-prop-fill" style="width:10%"></div></div> </div> </div> <div class="mas-model-usecase" id="masUsecase">Best for: simple, self-contained tasks with no need for specialization</div> </div> <div class="mas-model-right"> <svg id="masSvg" viewbox="0 0 240 180" width="240" height="180"></svg> </div> </div> </div> </div> <style>.mas-models-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.mas-models-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.04)}.mas-tab{flex-shrink:0;padding:.5rem .85rem;font-family:monospace;font-size:.68rem;border:0;border-right:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color-light);cursor:pointer;transition:background .15s,color .15s;white-space:nowrap}.mas-tab:last-child{border-right:0}.mas-tab.active{background:rgba(38,152,186,0.1);color:#2698ba;font-weight:700}.mas-tab:hover:not(.active){background:rgba(128,128,128,0.08)}.mas-models-body{padding:1.1rem}.mas-model-content{display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap}.mas-model-left{flex:1;min-width:220px;display:flex;flex-direction:column;gap:.75rem}.mas-model-name{font-size:1rem;font-weight:700;color:var(--global-text-color)}.mas-model-desc{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6}.mas-model-props{display:flex;flex-direction:column;gap:.45rem}.mas-prop{display:flex;align-items:center;gap:.75rem}.mas-prop-label{font-size:.68rem;font-family:monospace;color:var(--global-text-color-light);width:100px;flex-shrink:0}.mas-prop-bar{flex:1;height:4px;background:rgba(128,128,128,0.15);border-radius:2px;overflow:hidden}.mas-prop-fill{height:100%;background:#2698ba;border-radius:2px;transition:width .4s ease}.mas-model-usecase{font-size:.7rem;font-family:monospace;color:#4fc97e;padding-top:.35rem;border-top:1px solid var(--global-divider-color)}.mas-model-right{flex-shrink:0}#masSvg{display:block}</style> <script>
+var MAS_MODELS = [
+  {
+    name: "Single Agent",
+    desc: "One agent handles everything autonomously. Simple to build and manage, but constrained by a single agent's scope and resources. No inter-agent communication overhead. Suitable only when the task is fully self-contained.",
+    props: [20, 10, 15, 10],
+    usecase: "Best for: simple, self-contained tasks with no need for specialization",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      addNode(svg, 120, 90, 'Agent', '#2698ba', 40, 20);
+    }
+  },
+  {
+    name: "Network",
+    desc: "Multiple agents interact peer-to-peer in a decentralized mesh. Agents share information, resources, and tasks directly. Resilient — no single point of failure. Challenging to coordinate at scale without explicit orchestration.",
+    props: [80, 80, 60, 70],
+    usecase: "Best for: distributed tasks where agents need to share information freely",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      var pts = [[120,40],[60,100],[180,100],[80,155],[160,155]];
+      // Edges
+      var edges = [[0,1],[0,2],[1,3],[2,4],[1,2],[3,4],[0,3],[0,4]];
+      edges.forEach(function(e){
+        addEdge(svg,pts[e[0]][0],pts[e[0]][1],pts[e[1]][0],pts[e[1]][1],'#4a5a6a');
+      });
+      pts.forEach(function(p,i){
+        addNode(svg,p[0],p[1],'A'+(i+1),'#c97af2',26,14);
+      });
+    }
+  },
+  {
+    name: "Supervisor",
+    desc: "A central supervisor agent coordinates and delegates to subordinate workers. Clear authority and task allocation. The supervisor is a single point of failure and can become a bottleneck with many subordinates.",
+    props: [50, 30, 70, 45],
+    usecase: "Best for: tasks with clear decomposition and one central coordinator",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      var workers = [[50,140],[100,140],[150,140],[200,140]];
+      workers.forEach(function(p){
+        addEdge(svg,120,50,p[0],p[1],'#4a5a6a');
+      });
+      addNode(svg,120,50,'Supervisor','#2698ba',42,18);
+      workers.forEach(function(p,i){
+        addNode(svg,p[0],p[1],'W'+(i+1),'#c97af2',28,14);
+      });
+    }
+  },
+  {
+    name: "Supervisor as Tool",
+    desc: "The supervisor provides resources, guidance, or analytical capabilities to other agents rather than commanding them. Workers can query the supervisor for support without rigid top-down control.",
+    props: [60, 40, 65, 50],
+    usecase: "Best for: teams that need shared expertise without strict hierarchy",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      var workers = [[40,140],[120,140],[200,140]];
+      workers.forEach(function(p){
+        addEdgeDashed(svg,120,55,p[0],p[1],'#e6a817');
+      });
+      addNode(svg,120,50,'Supervisor\n(Tool)','#e6a817',52,20);
+      workers.forEach(function(p,i){
+        addNode(svg,p[0],p[1],'Agent '+(i+1),'#c97af2',36,14);
+      });
+    }
+  },
+  {
+    name: "Hierarchical",
+    desc: "Multiple layers of supervisors, each managing the layer below. Higher supervisors oversee lower ones; operational agents sit at the bottom. Handles complexity at scale. Requires careful boundary design at each layer.",
+    props: [70, 50, 90, 80],
+    usecase: "Best for: large-scale systems with natural sub-problem decomposition",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      addNode(svg,120,28,'Root','#2698ba',36,14);
+      addEdge(svg,120,42,70,80,'#4a5a6a');
+      addEdge(svg,120,42,170,80,'#4a5a6a');
+      addNode(svg,70,85,'Mgr A','#e6a817',36,14);
+      addNode(svg,170,85,'Mgr B','#e6a817',36,14);
+      [[40,145],[100,145]].forEach(function(p){addEdge(svg,70,99,p[0],p[1],'#4a5a6a');addNode(svg,p[0],p[1],'W','#c97af2',22,12);});
+      [[140,145],[200,145]].forEach(function(p){addEdge(svg,170,99,p[0],p[1],'#4a5a6a');addNode(svg,p[0],p[1],'W','#c97af2',22,12);});
+    }
+  },
+  {
+    name: "Custom",
+    desc: "A bespoke structure combining elements of multiple models — or an entirely novel design. Optimized for specific metrics, highly dynamic environments, or domain-specific constraints. Requires the deepest understanding of multi-agent design principles.",
+    props: [90, 70, 85, 95],
+    usecase: "Best for: complex, unique domains where no standard model fits",
+    draw: function(svg) {
+      svg.innerHTML = '';
+      // Mix of hierarchical + peer links
+      addNode(svg,120,28,'Orch','#2698ba',34,14);
+      addEdge(svg,120,42,60,90,'#4a5a6a');
+      addEdge(svg,120,42,180,90,'#4a5a6a');
+      addNode(svg,60,95,'Expert A','#c97af2',38,14);
+      addNode(svg,180,95,'Expert B','#4fc97e',38,14);
+      addEdgeDashed(svg,60,111,180,111,'#e6a817');
+      addEdge(svg,120,42,120,150,'#4a5a6a');
+      addNode(svg,120,155,'Tool Agent','#e6a817',42,14);
+      addEdgeDashed(svg,60,111,120,143,'#4a5a6a');
+      addEdgeDashed(svg,180,111,120,143,'#4a5a6a');
+    }
+  }
+];
+
+function addNode(svg, cx, cy, label, color, rx, ry) {
+  rx = rx || 36; ry = ry || 16;
+  var rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  rect.setAttribute('x', cx - rx); rect.setAttribute('y', cy - ry);
+  rect.setAttribute('width', rx*2); rect.setAttribute('height', ry*2);
+  rect.setAttribute('rx', 6); rect.setAttribute('fill', '#141b2d');
+  rect.setAttribute('stroke', color); rect.setAttribute('stroke-width', '1.5');
+  svg.appendChild(rect);
+  var lines = label.split('\n');
+  lines.forEach(function(line, i) {
+    var text = document.createElementNS('http://www.w3.org/2000/svg','text');
+    text.setAttribute('x', cx); text.setAttribute('y', cy + (i - (lines.length-1)/2) * 13 + 4);
+    text.setAttribute('text-anchor','middle'); text.setAttribute('fill','#e0e0e0');
+    text.setAttribute('font-size','10'); text.setAttribute('font-family','monospace');
+    text.textContent = line;
+    svg.appendChild(text);
+  });
+}
+function addEdge(svg, x1, y1, x2, y2, color) {
+  var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+  line.setAttribute('stroke',color);line.setAttribute('stroke-width','1.2');
+  line.setAttribute('marker-end','url(#arr)');
+  svg.appendChild(line);
+  ensureArrow(svg);
+}
+function addEdgeDashed(svg, x1, y1, x2, y2, color) {
+  var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1',x1);line.setAttribute('y1',y1);line.setAttribute('x2',x2);line.setAttribute('y2',y2);
+  line.setAttribute('stroke',color);line.setAttribute('stroke-width','1.2');
+  line.setAttribute('stroke-dasharray','4 3');
+  svg.appendChild(line);
+}
+function ensureArrow(svg) {
+  if (svg.querySelector('#arr')) return;
+  var defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML = '<marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#4a5a6a"/></marker>';
+  svg.insertBefore(defs, svg.firstChild);
+}
+
+function masSelect(idx) {
+  document.querySelectorAll('.mas-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('[data-model="'+idx+'"]').classList.add('active');
+  var m = MAS_MODELS[idx];
+  document.getElementById('masName').textContent = m.name;
+  document.getElementById('masDesc').textContent = m.desc;
+  document.getElementById('masUsecase').textContent = m.usecase;
+  var fills = document.querySelectorAll('.mas-prop-fill');
+  var labels = ['Autonomy','Fault tolerance','Scalability','Complexity'];
+  var propContainer = document.getElementById('masProps');
+  propContainer.innerHTML = '';
+  labels.forEach(function(lbl, i) {
+    var div = document.createElement('div'); div.className = 'mas-prop';
+    div.innerHTML = '<span class="mas-prop-label">'+lbl+'</span><div class="mas-prop-bar"><div class="mas-prop-fill" style="width:'+m.props[i]+'%"></div></div>';
+    propContainer.appendChild(div);
+  });
+  var svg = document.getElementById('masSvg');
+  m.draw(svg);
+}
+document.addEventListener('DOMContentLoaded', function(){ masSelect(0); });
+</script> <hr> <h2 id="the-five-collaboration-patterns">The Five Collaboration Patterns</h2> <p>Within multi-agent systems, agents interact through five fundamental patterns:</p> <div class="mas-patterns-grid"> <div class="mas-pattern-card"> <div class="mas-pattern-icon">→</div> <h4>Sequential Handoff</h4> <p>Agent A completes its task and passes its output directly to Agent B. Output of A becomes input to B. Clean pipeline with clear dependencies.</p> <span class="mas-pattern-ex">Research → Write → Edit → Publish</span> </div> <div class="mas-pattern-card"> <div class="mas-pattern-icon">⇉</div> <h4>Parallel Workstreams</h4> <p>Multiple agents work on independent sub-tasks simultaneously. Results are merged by a synthesizer. Reduces total latency for independent work.</p> <span class="mas-pattern-ex">News + Weather + Stocks → Report</span> </div> <div class="mas-pattern-card"> <div class="mas-pattern-icon">⇄</div> <h4>Debate &amp; Consensus</h4> <p>Agents with different perspectives evaluate options and discuss. The group reaches a more informed decision than any single agent could.</p> <span class="mas-pattern-ex">Pro + Con agents → Moderator → Verdict</span> </div> <div class="mas-pattern-card"> <div class="mas-pattern-icon">↕</div> <h4>Hierarchical Delegation</h4> <p>A manager agent dynamically assigns sub-tasks to worker agents based on their tool access. Workers report back, manager synthesizes.</p> <span class="mas-pattern-ex">Coordinator → Specialist A / B / C → Result</span> </div> <div class="mas-pattern-card"> <div class="mas-pattern-icon">✓✗</div> <h4>Critic-Reviewer</h4> <p>A creator agent produces output. A critic agent evaluates it for quality, compliance, or correctness. Creator revises based on critique.</p> <span class="mas-pattern-ex">Generator → Critic → Revised Output</span> </div> </div> <style>.mas-patterns-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.85rem;margin:1.5rem 0}.mas-pattern-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.mas-pattern-icon{font-size:1.1rem;color:#2698ba;font-weight:700}.mas-pattern-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.mas-pattern-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}.mas-pattern-ex{font-size:.68rem;font-family:monospace;color:#4fc97e;margin-top:auto;padding-top:.35rem;border-top:1px solid var(--global-divider-color)}</style> <hr> <h2 id="watch-a-two-agent-team-work">Watch a Two-Agent Team Work</h2> <p>A Researcher and a Writer collaborate on a blog post. Click <strong>Run Team</strong> to watch the sequential handoff:</p> <div class="mas-team-wrapper"> <div class="mas-team-header"> <span class="mas-team-title">MULTI-AGENT TEAM DEMO — Research + Write Pipeline</span> <button class="mas-team-btn" id="masTeamRunBtn">▶ Run Team</button> </div> <div class="mas-team-body"> <div class="mas-team-goal"> <span class="mas-tg-label">SHARED GOAL</span> <span class="mas-tg-text">Write a blog post on the top 3 AI trends in 2025</span> </div> <div class="mas-agents-row"> <div class="mas-agent-panel" id="masAgentA"> <div class="mas-agent-header"> <span class="mas-agent-icon">🔍</span> <div> <div class="mas-agent-name">Research Agent</div> <div class="mas-agent-role">Senior Research Analyst</div> </div> <span class="mas-agent-badge" id="masAgentABadge">Idle</span> </div> <div class="mas-agent-track"><div class="mas-agent-fill cyan" id="masAgentAFill"></div></div> <div class="mas-agent-output" id="masAgentAOut" style="display:none"> <strong>Research findings:</strong><br> 1. <strong>Multimodal AI</strong> — models handling text, image, audio, video simultaneously (GPT-4o, Gemini 1.5).<br> 2. <strong>Agentic systems</strong> — AI moving from Q&amp;A to autonomous multi-step task execution.<br> 3. <strong>On-device inference</strong> — compact models running locally on phones and laptops (Phi-3, Gemma). </div> </div> <div class="mas-handoff-arrow" id="masHandoff">→</div> <div class="mas-agent-panel" id="masAgentB" style="opacity:0.35"> <div class="mas-agent-header"> <span class="mas-agent-icon">✍</span> <div> <div class="mas-agent-name">Writer Agent</div> <div class="mas-agent-role">Technical Content Writer</div> </div> <span class="mas-agent-badge" id="masAgentBBadge">Waiting</span> </div> <div class="mas-agent-track"><div class="mas-agent-fill purple" id="masAgentBFill"></div></div> <div class="mas-agent-output" id="masAgentBOut" style="display:none"> <strong>Blog post draft:</strong><br><br> <em>The AI landscape in 2025 is defined by three transformative forces. First, multimodal models now process text, images, and audio as a unified stream — eliminating the boundary between media types. Second, agentic AI has crossed from demo to deployment: systems now autonomously plan, use tools, and course-correct across multi-step workflows. Third, on-device inference is making capable AI private and offline-ready, removing the cloud as a prerequisite for intelligence.</em> </div> </div> </div> <div class="mas-team-result" id="masTeamResult" style="display:none"> <span class="mas-result-icon">✓</span> Two specialized agents. One coherent output. <strong>Sequential handoff complete.</strong> </div> </div> </div> <style>.mas-team-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.mas-team-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.mas-team-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.mas-team-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s}.mas-team-btn:hover{background:rgba(38,152,186,0.15);border-color:#2698ba;color:#2698ba}.mas-team-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.85rem}.mas-team-goal{border:1px solid var(--global-divider-color);border-radius:6px;padding:.6rem .9rem;display:flex;align-items:center;gap:.75rem;background:rgba(128,128,128,0.04)}.mas-tg-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:#2698ba;flex-shrink:0}.mas-tg-text{font-size:.82rem;color:var(--global-text-color);font-family:monospace}.mas-agents-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}.mas-agent-panel{flex:1;min-width:220px;border:1.5px solid var(--global-divider-color);border-radius:8px;padding:.85rem;background:rgba(128,128,128,0.03);display:flex;flex-direction:column;gap:.5rem;transition:border-color .3s,opacity .4s}.mas-agent-panel.active{border-color:#2698ba}.mas-agent-panel.done{border-color:#4fc97e;opacity:1!important}.mas-agent-header{display:flex;align-items:center;gap:.6rem}.mas-agent-icon{font-size:1.1rem}.mas-agent-name{font-size:.82rem;font-weight:700;color:var(--global-text-color)}.mas-agent-role{font-size:.65rem;color:var(--global-text-color-light);font-family:monospace}.mas-agent-badge{font-size:.6rem;font-family:monospace;padding:.1em .4em;border-radius:3px;border:1px solid var(--global-divider-color);color:var(--global-text-color-light);margin-left:auto;transition:all .3s}.mas-agent-badge.running{color:#2698ba;border-color:#2698ba;background:rgba(38,152,186,0.1)}.mas-agent-badge.done{color:#4fc97e;border-color:#4fc97e;background:rgba(79,201,126,0.1)}.mas-agent-track{height:5px;background:rgba(128,128,128,0.12);border-radius:3px;overflow:hidden}.mas-agent-fill{height:100%;width:0;border-radius:3px;transition:width .05s linear}.mas-agent-fill.cyan{background:#2698ba}.mas-agent-fill.purple{background:#c97af2}.mas-agent-output{font-size:.77rem;color:var(--global-text-color-light);line-height:1.6;border-top:1px solid var(--global-divider-color);padding-top:.5rem;animation:masOutIn .3s ease}@keyframes masOutIn{from{opacity:0}to{opacity:1}}.mas-handoff-arrow{font-size:1.4rem;color:var(--global-text-color-light);flex-shrink:0;transition:color .4s}.mas-handoff-arrow.active{color:#2698ba}.mas-team-result{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;background:rgba(79,201,126,0.07);border:1px solid rgba(79,201,126,0.2);border-radius:6px;font-size:.8rem;color:var(--global-text-color);animation:masOutIn .3s ease}.mas-result-icon{color:#4fc97e;font-weight:700}</style> <script>
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('masTeamRunBtn');
+  if (!btn) return;
+  var running = false;
+
+  btn.addEventListener('click', async function(){
+    if (running) return;
+    running = true;
+    btn.textContent = '⏳ Running…';
+    btn.disabled = true;
+
+    // Reset
+    ['masAgentA','masAgentB'].forEach(function(id){
+      var p = document.getElementById(id);
+      p.classList.remove('active','done');
+      p.style.opacity = id === 'masAgentB' ? '0.35' : '1';
+    });
+    document.getElementById('masAgentAFill').style.width = '0%';
+    document.getElementById('masAgentBFill').style.width = '0%';
+    document.getElementById('masAgentAOut').style.display = 'none';
+    document.getElementById('masAgentBOut').style.display = 'none';
+    document.getElementById('masTeamResult').style.display = 'none';
+    document.getElementById('masHandoff').classList.remove('active');
+    ['masAgentABadge','masAgentBBadge'].forEach(function(id,i){
+      var el = document.getElementById(id);
+      el.textContent = i===0 ? 'Idle' : 'Waiting';
+      el.className = 'mas-agent-badge';
+    });
+
+    await new Promise(function(r){setTimeout(r,300)});
+
+    // Agent A: Research
+    var pA = document.getElementById('masAgentA');
+    var badgeA = document.getElementById('masAgentABadge');
+    var fillA = document.getElementById('masAgentAFill');
+    pA.classList.add('active');
+    badgeA.textContent = 'Researching…'; badgeA.className = 'mas-agent-badge running';
+
+    var startA = null;
+    await new Promise(function(resolve){
+      function animA(ts){ if(!startA) startA=ts; var pct=Math.min((ts-startA)/1600*100,100); fillA.style.width=pct+'%'; if(pct<100) requestAnimationFrame(animA); else resolve(); }
+      requestAnimationFrame(animA);
+    });
+    pA.classList.remove('active'); pA.classList.add('done');
+    badgeA.textContent='Done ✓'; badgeA.className='mas-agent-badge done';
+    document.getElementById('masAgentAOut').style.display='block';
+
+    await new Promise(function(r){setTimeout(r,400)});
+
+    // Handoff arrow
+    document.getElementById('masHandoff').classList.add('active');
+    await new Promise(function(r){setTimeout(r,500)});
+
+    // Agent B: Write
+    var pB = document.getElementById('masAgentB');
+    var badgeB = document.getElementById('masAgentBBadge');
+    var fillB = document.getElementById('masAgentBFill');
+    pB.style.opacity = '1';
+    pB.classList.add('active');
+    badgeB.textContent='Writing…'; badgeB.className='mas-agent-badge running';
+
+    var startB = null;
+    await new Promise(function(resolve){
+      function animB(ts){ if(!startB) startB=ts; var pct=Math.min((ts-startB)/1800*100,100); fillB.style.width=pct+'%'; if(pct<100) requestAnimationFrame(animB); else resolve(); }
+      requestAnimationFrame(animB);
+    });
+    pB.classList.remove('active'); pB.classList.add('done');
+    badgeB.textContent='Done ✓'; badgeB.className='mas-agent-badge done';
+    document.getElementById('masAgentBOut').style.display='block';
+    document.getElementById('masTeamResult').style.display='flex';
+
+    running = false;
+    btn.textContent = '↺ Replay';
+    btn.disabled = false;
+  });
+});
+</script> <hr> <h2 id="use-cases-across-domains">Use Cases Across Domains</h2> <div class="mas-usecases-grid"> <div class="mas-uc-card"> <span class="mas-uc-num">01</span><h4>Complex Research</h4> <p>Searcher agent finds sources, summarizer agent digests them, trend-spotter identifies patterns, synthesizer writes the final report.</p> </div> <div class="mas-uc-card"> <span class="mas-uc-num">02</span><h4>Software Development</h4> <p>Requirements analyst, code generator, test writer, and documentation agent collaborate — each handing off to the next in sequence.</p> </div> <div class="mas-uc-card"> <span class="mas-uc-num">03</span><h4>Financial Analysis</h4> <p>Agents fetch stock data, analyze news sentiment, run technical analysis, and generate investment recommendations in parallel.</p> </div> <div class="mas-uc-card"> <span class="mas-uc-num">04</span><h4>Customer Support</h4> <p>Front-line agent handles general queries. Specialist agents (billing, technical, escalation) are activated only when needed.</p> </div> <div class="mas-uc-card"> <span class="mas-uc-num">05</span><h4>Supply Chain</h4> <p>Agents representing suppliers, manufacturers, and distributors collaborate to optimize inventory and logistics in real time.</p> </div> <div class="mas-uc-card"> <span class="mas-uc-num">06</span><h4>Network Remediation</h4> <p>Multiple triage agents work concurrently to pinpoint failures. Each integrates with existing ML tooling while contributing to a coordinated remediation plan.</p> </div> </div> <style>.mas-usecases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:.85rem;margin:1.5rem 0}.mas-uc-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.mas-uc-num{font-family:monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#2698ba}.mas-uc-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.mas-uc-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}</style> <hr> <h2 id="crewai-researcher--writer-team">CrewAI: Researcher + Writer Team</h2> <p>CrewAI is designed for exactly this — defining a team of agents with distinct roles, assigning tasks, and orchestrating collaboration.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">crewai</span> <span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">Crew</span><span class="p">,</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="n">langchain_google_genai</span> <span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="nc">ChatGoogleGenerativeAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <h3 id="defining-the-agents">Defining the Agents</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">researcher</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">role</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Senior Research Analyst</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">goal</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Find and summarize the latest trends in AI.</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">backstory</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">You are an experienced research analyst with a knack for identifying key trends and synthesizing information.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">verbose</span>          <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">allow_delegation</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">writer</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">role</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Technical Content Writer</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">goal</span>      <span class="o">=</span> <span class="sh">'</span><span class="s">Write a clear and engaging blog post based on research findings.</span><span class="sh">'</span><span class="p">,</span>
+    <span class="n">backstory</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">You are a skilled writer who can translate complex technical topics into accessible content.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">verbose</span>          <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">allow_delegation</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Two agents, two roles, zero overlap.</strong> The researcher knows nothing about writing; the writer knows nothing about searching. This clean separation means each agent’s system prompt is focused — no role confusion, no competing instructions.</p> <p><strong><code class="language-plaintext highlighter-rouge">allow_delegation=False</code></strong> — prevents each specialist from spawning sub-agents on their own. In a controlled pipeline, you want the delegation logic to live in the Crew definition, not in individual agents.</p> </blockquote> <h3 id="defining-the-tasks-with-dependency">Defining the Tasks (with dependency)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">research_task</span> <span class="o">=</span> <span class="nc">Task</span><span class="p">(</span>
+    <span class="n">description</span>      <span class="o">=</span> <span class="sh">"</span><span class="s">Research the top 3 emerging AI trends in 2024-2025. Focus on practical applications and impact.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">expected_output</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">A detailed summary of the top 3 AI trends with key points and sources.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">agent</span>            <span class="o">=</span> <span class="n">researcher</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">writing_task</span> <span class="o">=</span> <span class="nc">Task</span><span class="p">(</span>
+    <span class="n">description</span>     <span class="o">=</span> <span class="sh">"</span><span class="s">Write a 500-word blog post based on the research findings. Engaging, accessible to a general audience.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">expected_output</span> <span class="o">=</span> <span class="sh">"</span><span class="s">A complete 500-word blog post about the latest AI trends.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">agent</span>           <span class="o">=</span> <span class="n">writer</span><span class="p">,</span>
+    <span class="n">context</span>         <span class="o">=</span> <span class="p">[</span><span class="n">research_task</span><span class="p">],</span>   <span class="c1"># ← explicit dependency
+</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">context=[research_task]</code></strong> is the sequential handoff mechanism. It tells CrewAI: “the writing task cannot begin until research_task is complete, and the research output should be available to the writer as context.”</p> <p>Without this, the writer would run without access to the researcher’s findings — generating generic content rather than building on real research.</p> </blockquote> <h3 id="assembling-the-crew">Assembling the Crew</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">blog_creation_crew</span> <span class="o">=</span> <span class="nc">Crew</span><span class="p">(</span>
+    <span class="n">agents</span>  <span class="o">=</span> <span class="p">[</span><span class="n">researcher</span><span class="p">,</span> <span class="n">writer</span><span class="p">],</span>
+    <span class="n">tasks</span>   <span class="o">=</span> <span class="p">[</span><span class="n">research_task</span><span class="p">,</span> <span class="n">writing_task</span><span class="p">],</span>
+    <span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">.</span><span class="n">sequential</span><span class="p">,</span>
+    <span class="n">llm</span>     <span class="o">=</span> <span class="n">llm</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">blog_creation_crew</span><span class="p">.</span><span class="nf">kickoff</span><span class="p">()</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">Process.sequential</code></strong> ensures tasks run in the order they’re listed — researcher first, writer second. The <code class="language-plaintext highlighter-rouge">context</code> dependency enforces this even if the process allows parallelism.</p> <p><strong><code class="language-plaintext highlighter-rouge">llm</code> at the Crew level</strong> sets a default model for all agents. Individual agents can still override with their own <code class="language-plaintext highlighter-rouge">llm=</code> parameter if specialization is needed — e.g., a more powerful model for the researcher, a faster one for the writer.</p> </blockquote> <h3 id="crewai-data-flow">CrewAI Data Flow</h3> <pre><code class="language-mermaid">graph LR
+    G([AI Trends Topic]) --&gt; R[Researcher Agent]
+    R --&gt;|research_task output| STATE[(Crew Context)]
+    STATE --&gt;|context passed| W[Writer Agent]
+    W --&gt; OUT([500-word Blog Post])
+    style R   fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style W   fill:#141b2d,stroke:#c97af2,color:#e0e0e0
+    style STATE fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+    style OUT fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <hr> <h2 id="google-adk-four-orchestration-patterns">Google ADK: Four Orchestration Patterns</h2> <p>The ADK provides explicit primitives for each collaboration structure. Here are the four most important.</p> <h3 id="1-hierarchical-parent-child-agents">1. Hierarchical: Parent-Child Agents</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LlmAgent</span><span class="p">,</span> <span class="n">BaseAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.agents.invocation_context</span> <span class="kn">import</span> <span class="n">InvocationContext</span>
+<span class="kn">from</span> <span class="n">google.adk.events</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">AsyncGenerator</span>
+
+<span class="k">class</span> <span class="nc">TaskExecutor</span><span class="p">(</span><span class="n">BaseAgent</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">A specialized agent with custom, non-LLM behavior.</span><span class="sh">"""</span>
+    <span class="n">name</span><span class="p">:</span>        <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">TaskExecutor</span><span class="sh">"</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Executes a predefined task.</span><span class="sh">"</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_async_impl</span><span class="p">(</span>
+        <span class="n">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">InvocationContext</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Event</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+        <span class="k">yield</span> <span class="nc">Event</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sh">"</span><span class="s">Task finished successfully.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">BaseAgent</code> is the extension point</strong> for non-LLM agents. When you need deterministic logic, API calls, or custom execution — instead of LLM reasoning — subclass <code class="language-plaintext highlighter-rouge">BaseAgent</code> and implement <code class="language-plaintext highlighter-rouge">_run_async_impl</code>. It yields <code class="language-plaintext highlighter-rouge">Event</code> objects as output, integrating cleanly with the ADK event stream.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">greeter</span>     <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Greeter</span><span class="sh">"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span> <span class="n">instruction</span><span class="o">=</span><span class="sh">"</span><span class="s">You are a friendly greeter.</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">task_doer</span>   <span class="o">=</span> <span class="nc">TaskExecutor</span><span class="p">()</span>
+
+<span class="n">coordinator</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">Coordinator</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">When asked to greet, delegate to the Greeter. When asked to perform a task, delegate to the TaskExecutor.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sub_agents</span>  <span class="o">=</span> <span class="p">[</span><span class="n">greeter</span><span class="p">,</span> <span class="n">task_doer</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># ADK sets parent_agent automatically
+</span><span class="k">assert</span> <span class="n">greeter</span><span class="p">.</span><span class="n">parent_agent</span>   <span class="o">==</span> <span class="n">coordinator</span>
+<span class="k">assert</span> <span class="n">task_doer</span><span class="p">.</span><span class="n">parent_agent</span> <span class="o">==</span> <span class="n">coordinator</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">sub_agents</code></strong> establishes the parent-child relationship. The coordinator’s LLM reads both agents’ descriptions and decides which to delegate to. The <code class="language-plaintext highlighter-rouge">parent_agent</code> attribute is set automatically by the ADK framework — you don’t need to wire it manually.</p> </blockquote> <pre><code class="language-mermaid">graph TD
+    C[Coordinator LlmAgent] --&gt; G[Greeter LlmAgent]
+    C --&gt; T[TaskExecutor BaseAgent]
+    style C fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style G fill:#141b2d,stroke:#c97af2,color:#e0e0e0
+    style T fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+</code></pre> <h3 id="2-loopagent-iterative-workflows">2. LoopAgent: Iterative Workflows</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LoopAgent</span><span class="p">,</span> <span class="n">LlmAgent</span><span class="p">,</span> <span class="n">BaseAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.events</span> <span class="kn">import</span> <span class="n">Event</span><span class="p">,</span> <span class="n">EventActions</span>
+
+<span class="k">class</span> <span class="nc">ConditionChecker</span><span class="p">(</span><span class="n">BaseAgent</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Stops the loop when session state signals completion.</span><span class="sh">"""</span>
+    <span class="n">name</span><span class="p">:</span>        <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">ConditionChecker</span><span class="sh">"</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Checks if a process is complete and signals the loop to stop.</span><span class="sh">"</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_async_impl</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">InvocationContext</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Event</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+        <span class="n">status</span>  <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">status</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">pending</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">is_done</span> <span class="o">=</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="sh">"</span><span class="s">completed</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_done</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nc">Event</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">actions</span><span class="o">=</span><span class="nc">EventActions</span><span class="p">(</span><span class="n">escalate</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>  <span class="c1"># stop loop
+</span>        <span class="k">else</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nc">Event</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="sh">"</span><span class="s">Condition not met, continuing loop.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">EventActions(escalate=True)</code></strong> is the loop-termination signal. When <code class="language-plaintext highlighter-rouge">ConditionChecker</code> yields this, the <code class="language-plaintext highlighter-rouge">LoopAgent</code> stops regardless of remaining iterations. Without it, the loop runs to <code class="language-plaintext highlighter-rouge">max_iterations</code>.</p> <p><strong><code class="language-plaintext highlighter-rouge">context.session.state</code></strong> is the shared key-value store accessible to all agents within a session. <code class="language-plaintext highlighter-rouge">ProcessingStep</code> writes <code class="language-plaintext highlighter-rouge">"status": "completed"</code> there; <code class="language-plaintext highlighter-rouge">ConditionChecker</code> reads it. This is how agents communicate state in ADK without direct message passing.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">process_step</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">ProcessingStep</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Perform your task. If you are the final step, set session state </span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="s"> to </span><span class="sh">'</span><span class="s">completed</span><span class="sh">'</span><span class="s">.</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">poller</span> <span class="o">=</span> <span class="nc">LoopAgent</span><span class="p">(</span>
+    <span class="n">name</span>           <span class="o">=</span> <span class="sh">"</span><span class="s">StatusPoller</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">max_iterations</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">sub_agents</span>     <span class="o">=</span> <span class="p">[</span><span class="n">process_step</span><span class="p">,</span> <span class="nc">ConditionChecker</span><span class="p">()],</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">LoopAgent</code></strong> runs its <code class="language-plaintext highlighter-rouge">sub_agents</code> sequentially on each iteration. Each iteration: <code class="language-plaintext highlighter-rouge">ProcessingStep</code> executes → <code class="language-plaintext highlighter-rouge">ConditionChecker</code> evaluates → if not done, repeat. Maximum 10 iterations as a safety cap. Use this for polling, retry workflows, and iterative refinement loops.</p> </blockquote> <h3 id="3-sequentialagent-linear-pipelines">3. SequentialAgent: Linear Pipelines</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">SequentialAgent</span><span class="p">,</span> <span class="n">Agent</span>
+
+<span class="n">step1</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Step1_Fetch</span><span class="sh">"</span><span class="p">,</span>   <span class="n">output_key</span><span class="o">=</span><span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">step2</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">Step2_Process</span><span class="sh">"</span><span class="p">,</span> <span class="n">instruction</span><span class="o">=</span><span class="sh">"</span><span class="s">Analyze the information in state[</span><span class="sh">'</span><span class="s">data</span><span class="sh">'</span><span class="s">] and provide a summary.</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="n">pipeline</span> <span class="o">=</span> <span class="nc">SequentialAgent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">"</span><span class="s">MyPipeline</span><span class="sh">"</span><span class="p">,</span> <span class="n">sub_agents</span><span class="o">=</span><span class="p">[</span><span class="n">step1</span><span class="p">,</span> <span class="n">step2</span><span class="p">])</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">output_key="data"</code></strong> — when <code class="language-plaintext highlighter-rouge">Step1_Fetch</code> completes, its output is automatically stored in <code class="language-plaintext highlighter-rouge">session.state["data"]</code>. <code class="language-plaintext highlighter-rouge">Step2_Process</code> reads it from state via its instruction. This is the ADK equivalent of CrewAI’s <code class="language-plaintext highlighter-rouge">context=[task]</code> — explicit state-passing between sequential steps.</p> </blockquote> <h3 id="4-parallelagent-concurrent-workers">4. ParallelAgent: Concurrent Workers</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">ParallelAgent</span>
+
+<span class="n">weather_fetcher</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">weather_fetcher</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Fetch the weather for the given location and return only the report.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">output_key</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">weather_data</span><span class="sh">"</span><span class="p">,</span>   <span class="c1"># → session.state["weather_data"]
+</span><span class="p">)</span>
+
+<span class="n">news_fetcher</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">news_fetcher</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Fetch the top news story for the given topic and return only that story.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">output_key</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">news_data</span><span class="sh">"</span><span class="p">,</span>      <span class="c1"># → session.state["news_data"]
+</span><span class="p">)</span>
+
+<span class="n">data_gatherer</span> <span class="o">=</span> <span class="nc">ParallelAgent</span><span class="p">(</span>
+    <span class="n">name</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">data_gatherer</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sub_agents</span> <span class="o">=</span> <span class="p">[</span><span class="n">weather_fetcher</span><span class="p">,</span> <span class="n">news_fetcher</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">ParallelAgent</code></strong> fires both sub-agents concurrently. Each writes to a different <code class="language-plaintext highlighter-rouge">output_key</code> in session state — <code class="language-plaintext highlighter-rouge">weather_data</code> and <code class="language-plaintext highlighter-rouge">news_data</code> — with no conflict since the keys are distinct. After both complete, a downstream agent (or your application code) can read both from state.</p> </blockquote> <pre><code class="language-mermaid">graph TD
+    PA[ParallelAgent] --&gt; WF[weather_fetcher]
+    PA --&gt; NF[news_fetcher]
+    WF --&gt;|output_key: weather_data| ST[(Session State)]
+    NF --&gt;|output_key: news_data| ST
+    ST --&gt; SY([Synthesizer reads both])
+    style PA fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style WF fill:#141b2d,stroke:#c97af2,color:#e0e0e0
+    style NF fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+    style ST fill:#141b2d,stroke:#4a5a6a,color:#e0e0e0
+</code></pre> <h3 id="5-agent-as-a-tool">5. Agent as a Tool</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LlmAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.tools</span> <span class="kn">import</span> <span class="n">agent_tool</span>
+
+<span class="k">def</span> <span class="nf">generate_image</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Generates an image from a textual prompt. Returns image bytes.</span><span class="sh">"""</span>
+    <span class="n">mock_bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="sh">"</span><span class="s">mock_image_data_for_a_cat_wearing_a_hat</span><span class="sh">"</span>
+    <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">status</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">success</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">image_bytes</span><span class="sh">"</span><span class="p">:</span> <span class="n">mock_bytes</span><span class="p">,</span> <span class="sh">"</span><span class="s">mime_type</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">image/png</span><span class="sh">"</span><span class="p">}</span>
+
+<span class="n">image_generator_agent</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">ImageGen</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Generates an image based on a detailed text prompt.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Take the user</span><span class="sh">'</span><span class="s">s request and use the generate_image tool to create the image.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">tools</span>       <span class="o">=</span> <span class="p">[</span><span class="n">generate_image</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">image_tool</span> <span class="o">=</span> <span class="n">agent_tool</span><span class="p">.</span><span class="nc">AgentTool</span><span class="p">(</span>
+    <span class="n">agent</span>       <span class="o">=</span> <span class="n">image_generator_agent</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Use this to generate an image. Input should be a descriptive prompt.</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">artist_agent</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">Artist</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Invent a creative image prompt. Then use the ImageGen tool to generate it.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">tools</span>       <span class="o">=</span> <span class="p">[</span><span class="n">image_tool</span><span class="p">],</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">AgentTool</code></strong> wraps a sub-agent and makes it callable as a tool from a parent agent’s perspective. The <code class="language-plaintext highlighter-rouge">artist_agent</code> sees <code class="language-plaintext highlighter-rouge">image_tool</code> the same way it sees <code class="language-plaintext highlighter-rouge">generate_image</code> — as a tool it can call with arguments. The tool’s <code class="language-plaintext highlighter-rouge">description</code> is what the parent’s LLM reads to decide when to invoke it.</p> <p><strong>Why “agent as a tool” instead of <code class="language-plaintext highlighter-rouge">sub_agents</code>?</strong> With <code class="language-plaintext highlighter-rouge">sub_agents</code>, the coordinator’s LLM decides routing. With <code class="language-plaintext highlighter-rouge">AgentTool</code>, the parent agent explicitly invokes the sub-agent like a function call — passing specific arguments and receiving a return value. More precise, less autonomous.</p> </blockquote> <hr> <h2 id="framework-comparison">Framework Comparison</h2> <table> <thead> <tr> <th>Feature</th> <th>CrewAI</th> <th>Google ADK</th> </tr> </thead> <tbody> <tr> <td><strong>Team definition</strong></td> <td> <code class="language-plaintext highlighter-rouge">Agent</code> + <code class="language-plaintext highlighter-rouge">Task</code> + <code class="language-plaintext highlighter-rouge">Crew</code> </td> <td> <code class="language-plaintext highlighter-rouge">LlmAgent</code> / <code class="language-plaintext highlighter-rouge">BaseAgent</code> + orchestrators</td> </tr> <tr> <td><strong>Sequential flow</strong></td> <td> <code class="language-plaintext highlighter-rouge">Process.sequential</code> + <code class="language-plaintext highlighter-rouge">context=[]</code> </td> <td> <code class="language-plaintext highlighter-rouge">SequentialAgent</code> + <code class="language-plaintext highlighter-rouge">output_key</code> </td> </tr> <tr> <td><strong>Parallel flow</strong></td> <td>Multiple tasks with no <code class="language-plaintext highlighter-rouge">context</code> dependency</td> <td><code class="language-plaintext highlighter-rouge">ParallelAgent</code></td> </tr> <tr> <td><strong>Loop flow</strong></td> <td>Custom code / <code class="language-plaintext highlighter-rouge">while</code> loop</td> <td> <code class="language-plaintext highlighter-rouge">LoopAgent</code> + <code class="language-plaintext highlighter-rouge">EventActions(escalate=True)</code> </td> </tr> <tr> <td><strong>Hierarchical</strong></td> <td><code class="language-plaintext highlighter-rouge">allow_delegation=True</code></td> <td> <code class="language-plaintext highlighter-rouge">sub_agents=[]</code> on <code class="language-plaintext highlighter-rouge">LlmAgent</code> </td> </tr> <tr> <td><strong>Agent as tool</strong></td> <td>Not native (use LangChain tools)</td> <td> <code class="language-plaintext highlighter-rouge">AgentTool</code> wrapper</td> </tr> <tr> <td><strong>State passing</strong></td> <td> <code class="language-plaintext highlighter-rouge">context=[task]</code> in task definition</td> <td> <code class="language-plaintext highlighter-rouge">output_key</code> → <code class="language-plaintext highlighter-rouge">session.state</code> </td> </tr> <tr> <td><strong>Custom agent logic</strong></td> <td>Not supported natively</td> <td><code class="language-plaintext highlighter-rouge">BaseAgent._run_async_impl()</code></td> </tr> </tbody> </table> <hr> <h2 id="at-a-glance">At a Glance</h2> <div class="mas-summary-card"> <div class="mas-summary-col"> <div class="mas-summary-label">WHAT</div> <p>A system of specialized agents, each owning a distinct role and set of tools, coordinating to achieve a complex shared goal that no single agent could handle effectively alone.</p> </div> <div class="mas-summary-divider"></div> <div class="mas-summary-col"> <div class="mas-summary-label">WHY</div> <p>Specialization beats generalism at scale. Decomposing a complex task into focused sub-tasks — each assigned to an agent built for it — produces higher quality, more reliable, and more scalable outcomes.</p> </div> <div class="mas-summary-divider"></div> <div class="mas-summary-col"> <div class="mas-summary-label">RULE OF THUMB</div> <p>Use when a task requires diverse expertise, multiple distinct phases, or benefits from parallel workstreams. If a single agent's system prompt is trying to do too many jobs — split it into a team.</p> </div> </div> <style>.mas-summary-card{display:flex;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.mas-summary-card{flex-direction:column}}.mas-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.mas-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.mas-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.mas-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#2698ba}</style> <hr> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <strong>Specialization wins.</strong> A focused agent with a clear role outperforms a generalist agent trying to do everything. Split roles aggressively.</li> <li> <strong>The six interaction models</strong> — Single, Network, Supervisor, Supervisor-as-Tool, Hierarchical, Custom — each trade off autonomy vs. control vs. complexity. Most production systems use Hierarchical or Supervisor.</li> <li> <strong>CrewAI wires tasks, not agents.</strong> The <code class="language-plaintext highlighter-rouge">context=[task]</code> parameter is the key to sequential handoffs — it passes one agent’s output as context to the next without any manual wiring.</li> <li> <strong>ADK provides explicit primitives:</strong> <code class="language-plaintext highlighter-rouge">SequentialAgent</code> for linear pipelines, <code class="language-plaintext highlighter-rouge">ParallelAgent</code> for concurrent work, <code class="language-plaintext highlighter-rouge">LoopAgent</code> for iterative workflows, <code class="language-plaintext highlighter-rouge">sub_agents</code> for hierarchy, <code class="language-plaintext highlighter-rouge">AgentTool</code> for invoking an agent like a function.</li> <li> <strong><code class="language-plaintext highlighter-rouge">output_key</code> is ADK’s state bus.</strong> Every agent in an ADK session shares <code class="language-plaintext highlighter-rouge">session.state</code>. Writing to a key with <code class="language-plaintext highlighter-rouge">output_key</code> and reading from it in another agent’s instruction is the standard inter-agent communication mechanism.</li> <li> <strong><code class="language-plaintext highlighter-rouge">EventActions(escalate=True)</code></strong> is how a <code class="language-plaintext highlighter-rouge">LoopAgent</code> stops. Always provide a clear stopping condition — and <code class="language-plaintext highlighter-rouge">max_iterations</code> as a safety cap.</li> <li> <strong>Failure isolation is a feature.</strong> When one agent in a multi-agent system fails, the others can continue. Compare this to a monolithic agent where one failed step can derail the entire task.</li> </ul> <hr> <p><em>Next up — Chapter 8: Memory, where agents stop starting from scratch on every turn and begin building persistent context across conversations and sessions.</em></p> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/memory/">Chapter 8: Memory Management</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/planning/">Chapter 6: Planning</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/tool-use/">Chapter 5: Tool Use (Function Calling)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/reflection/">Chapter 4: Reflection</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/parallelization/">Chapter 3: Parallelization</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>

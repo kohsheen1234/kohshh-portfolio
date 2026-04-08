@@ -1,0 +1,594 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 3: Parallelization | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="Sequential is clean. Parallel is fast. The art is knowing which tasks can run at the same time — and wiring the plumbing to make it happen."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/parallelization/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item dropdown "> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">submenus </a> <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> <a class="dropdown-item " href="/kohshh-portfolio/books/">bookshelf</a> <div class="dropdown-divider"></div> <a class="dropdown-item " href="/kohshh-portfolio/blog/">blog</a> </div> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  30 MIN READ  ·  JANUARY 13, 2026</p> <h1 class="post-title">Chapter 3: Parallelization</h1> <p class="post-lead">Sequential is clean. Parallel is fast. The art is knowing which tasks can run at the same time — and wiring the plumbing to make it happen.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">January 13, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fparallelization%2F&amp;text=Chapter+3%3A+Parallelization" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fparallelization%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-problem-with-waiting">The Problem with Waiting</a></li> <li class="toc-entry toc-h2"><a href="#the-core-concept">The Core Concept</a></li> <li class="toc-entry toc-h2"><a href="#the-time-difference-visualized">The Time Difference, Visualized</a></li> <li class="toc-entry toc-h2"> <a href="#when-to-use-it-seven-scenarios">When to Use It: Seven Scenarios</a> <ul> <li class="toc-entry toc-h4"><a href="#information-gathering">Information Gathering</a></li> <li class="toc-entry toc-h4"><a href="#data-analysis">Data Analysis</a></li> <li class="toc-entry toc-h4"><a href="#multi-api-orchestration">Multi-API Orchestration</a></li> <li class="toc-entry toc-h4"><a href="#content-generation">Content Generation</a></li> <li class="toc-entry toc-h4"><a href="#input-validation">Input Validation</a></li> <li class="toc-entry toc-h4"><a href="#multi-modal-processing">Multi-Modal Processing</a></li> <li class="toc-entry toc-h4"><a href="#ab-option-generation">A/B Option Generation</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#how-it-actually-works-asyncio">How It Actually Works: asyncio</a></li> <li class="toc-entry toc-h2"><a href="#watch-it-run-a-live-demo">Watch It Run: A Live Demo</a></li> <li class="toc-entry toc-h2"> <a href="#the-langchain-way-runnableparallel">The LangChain Way: RunnableParallel</a> <ul> <li class="toc-entry toc-h3"><a href="#defining-three-independent-chains">Defining Three Independent Chains</a></li> <li class="toc-entry toc-h3"><a href="#building-the-parallel-block">Building the Parallel Block</a></li> <li class="toc-entry toc-h3"><a href="#the-synthesis-step">The Synthesis Step</a></li> <li class="toc-entry toc-h3"><a href="#running-it-asynchronously">Running It Asynchronously</a></li> <li class="toc-entry toc-h3"><a href="#full-data-flow">Full Data Flow</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#the-google-adk-way-parallelagent">The Google ADK Way: ParallelAgent</a> <ul> <li class="toc-entry toc-h3"><a href="#three-researcher-agents-the-parallel-workers">Three Researcher Agents (the parallel workers)</a></li> <li class="toc-entry toc-h3"><a href="#the-parallelagent-runs-all-three-at-once">The ParallelAgent (runs all three at once)</a></li> <li class="toc-entry toc-h3"><a href="#the-synthesis-agent">The Synthesis Agent</a></li> <li class="toc-entry toc-h3"><a href="#the-sequentialagent-orchestrates-everything">The SequentialAgent (orchestrates everything)</a></li> <li class="toc-entry toc-h3"><a href="#adk-orchestration-flow">ADK Orchestration Flow</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#side-by-side-langchain-vs-adk">Side by Side: LangChain vs ADK</a></li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">30 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fparallelization%2F&amp;text=Chapter+3%3A+Parallelization" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fparallelization%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="the-problem-with-waiting">The Problem with Waiting</h2> <p>In <a href="/kohshh-portfolio/blog/2026/prompt-chaining/">Chapter 1</a> we chained steps sequentially. In <a href="/kohshh-portfolio/blog/2026/routing/">Chapter 2</a> we added decision-making. Both assume the same thing: <strong>one step runs, finishes, then the next begins</strong>.</p> <p>That’s the right model when each step genuinely needs the previous step’s output. But often, it isn’t necessary — it’s just the default.</p> <p>Imagine your agent needs to research a company. It pulls:</p> <table> <thead> <tr> <th>Task</th> <th>Simulated latency</th> </tr> </thead> <tbody> <tr> <td>Search recent news</td> <td>1.2 s</td> </tr> <tr> <td>Fetch stock price data</td> <td>0.9 s</td> </tr> <tr> <td>Check social media mentions</td> <td>0.7 s</td> </tr> <tr> <td>Query internal company database</td> <td>1.5 s</td> </tr> <tr> <td><strong>Synthesize all findings</strong></td> <td>0.8 s</td> </tr> </tbody> </table> <p><strong>Sequential total: 5.1 seconds.</strong> Every task waits for the one before it — even though none of them depend on each other.</p> <p>Now think about it differently. News search doesn’t need stock data to start. Social media check doesn’t need news results. All four lookups are completely independent. So fire them all at once. Wait for the slowest (1.5 s), then synthesize.</p> <p><strong>Parallel total: 2.3 seconds.</strong> Same answer. <strong>2.2× faster.</strong></p> <p>That’s <strong>parallelization</strong>: identify the independent tasks, fire them concurrently, wait for everything to land, then continue.</p> <h2 id="the-core-concept">The Core Concept</h2> <p>Parallelization rests on one rule:</p> <blockquote> <p><strong>If Task B doesn’t need Task A’s output to start, Task B can start the moment Task A starts.</strong></p> </blockquote> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">PARALLELIZATION PATTERN</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body"> <div class="ns-node ns-node-cyan"> <div class="ns-node-title">Input Query</div> <div class="ns-node-sub">Single request · fans out to independent workers</div> </div> <div class="ns-arrow"></div> <div class="ns-phase"> <div class="ns-phase-title">Parallel Execution — all start simultaneously</div> <div class="ns-phase-sub">Independent tasks run concurrently · no waiting</div> <div class="ns-row"> <div class="ns-node ns-node-purple"> <div class="ns-node-title">Task A</div> <div class="ns-node-sub">Search News · 1.2s</div> </div> <div class="ns-node ns-node-purple"> <div class="ns-node-title">Task B</div> <div class="ns-node-sub">Fetch Stock · 0.9s</div> </div> <div class="ns-node ns-node-purple"> <div class="ns-node-title">Task C</div> <div class="ns-node-sub">Query DB · 1.5s</div> </div> </div> </div> <div class="ns-arrow"></div> <div class="ns-node"> <div class="ns-node-title">Wait for slowest · 1.5s</div> <div class="ns-node-sub">All parallel results collected before proceeding</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-green"> <div class="ns-node-title">Synthesize</div> <div class="ns-node-sub">Merge all outputs into one final answer · 0.8s</div> </div> </div> </div> <p>The input fans out to independent tasks. They run simultaneously. Their outputs converge at a single synthesis step.</p> <p>Notice: the <strong>synthesis step is still sequential</strong> — it must wait for all parallel tasks before it can begin. You’re not removing sequential dependencies; you’re removing <em>unnecessary</em> ones.</p> <h2 id="the-time-difference-visualized">The Time Difference, Visualized</h2> <div class="par-timeline-wrapper"> <div class="par-timeline-header"> <span class="par-timeline-title">SEQUENTIAL vs PARALLEL — EXECUTION TIMELINE</span> <div class="par-timeline-controls"> <button class="par-timeline-btn" id="timelinePlayBtn">▶ Animate</button> </div> </div> <canvas id="parallelTimeline" style="display:block;width:100%;"></canvas> <div class="par-timeline-footer" id="timelineBadge" style="display:none"> <span class="par-badge-highlight">2.2×</span> faster — same result <span class="par-badge-sub">Sequential: 5.1s  ·  Parallel: 2.3s</span> </div> </div> <style>.par-timeline-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.par-timeline-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.par-timeline-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.par-timeline-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s,color .15s}.par-timeline-btn:hover{background:rgba(38,152,186,0.15);border-color:#2698ba;color:#2698ba}.par-timeline-footer{padding:.65rem 1.1rem;border-top:1px solid var(--global-divider-color);background:rgba(79,201,126,0.07);font-size:.78rem;color:var(--global-text-color);display:flex;align-items:center;gap:.75rem}.par-badge-highlight{font-size:1.2rem;font-weight:800;color:#4fc97e;letter-spacing:-0.01em}.par-badge-sub{margin-left:auto;font-size:.68rem;color:var(--global-text-color-light);letter-spacing:.05em}</style> <script>
+(function(){
+  var canvas = document.getElementById('parallelTimeline');
+  var playBtn = document.getElementById('timelinePlayBtn');
+  var badge   = document.getElementById('timelineBadge');
+  if (!canvas || !playBtn) return;
+
+  var tasks = [
+    { label: 'Search News',  dur: 1.2, color: '#2698ba' },
+    { label: 'Fetch Stock',  dur: 0.9, color: '#4fc97e' },
+    { label: 'Check Social', dur: 0.7, color: '#e6a817' },
+    { label: 'Query DB',     dur: 1.5, color: '#c97af2' },
+    { label: 'Synthesize',   dur: 0.8, color: '#ff6b6b' },
+  ];
+
+  // Sequential start times
+  var seqStarts = [0, 1.2, 2.1, 2.8, 4.3]; // cumulative
+  var SEQ_TOTAL = 5.1;
+
+  // Parallel start times
+  var parStarts  = [0, 0, 0, 0, 1.5]; // first 4 at t=0, synth at t=1.5
+  var PAR_TOTAL  = 2.3;
+
+  var SCALE = SEQ_TOTAL; // timeline goes 0..5.1 for both sections
+
+  var LABEL_W = 112;
+  var PAD_L   = 12;
+  var PAD_R   = 16;
+  var ROW_H   = 22;
+  var ROW_GAP = 5;
+  var SEC_HEAD = 28;
+  var SEC_PAD  = 14;
+  var SEC_H    = SEC_HEAD + tasks.length * (ROW_H + ROW_GAP);
+  var CANVAS_H = SEC_H * 2 + 24;
+
+  function setupCanvas() {
+    var dpr = window.devicePixelRatio || 1;
+    var W = canvas.parentElement ? canvas.parentElement.getBoundingClientRect().width : 600;
+    if (W < 10) W = 600;
+    canvas.width  = W * dpr;
+    canvas.height = CANVAS_H * dpr;
+    canvas.style.height = CANVAS_H + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    return { ctx: ctx, W: W };
+  }
+
+  function getTheme() {
+    var s = getComputedStyle(document.documentElement);
+    return {
+      text:  s.getPropertyValue('--global-text-color').trim()       || '#e0e0e0',
+      muted: s.getPropertyValue('--global-text-color-light').trim() || '#888',
+      div:   s.getPropertyValue('--global-divider-color').trim()    || '#333',
+      bg:    s.getPropertyValue('--global-bg-color').trim()         || '#111',
+    };
+  }
+
+  function drawTimeline(progress) {
+    var setup = setupCanvas();
+    var ctx = setup.ctx, W = setup.W;
+    var th = getTheme();
+    var tlW = W - LABEL_W - PAD_L - PAD_R;
+
+    ctx.clearRect(0, 0, W, CANVAS_H);
+
+    // ── Section A: Sequential ──
+    var secAY = 0;
+    ctx.font = '700 10px monospace';
+    ctx.fillStyle = th.muted;
+    ctx.textAlign = 'left';
+    ctx.fillText('SEQUENTIAL', PAD_L, secAY + 14);
+    var seqDoneTime = progress * SCALE;
+    var seqLabel = seqDoneTime < SEQ_TOTAL
+      ? (seqDoneTime.toFixed(1) + 's')
+      : 'TOTAL: 5.1s';
+    ctx.font = '10px monospace';
+    ctx.fillStyle = seqDoneTime >= SEQ_TOTAL ? '#ff6b6b' : th.muted;
+    ctx.textAlign = 'right';
+    ctx.fillText(seqLabel, W - PAD_R, secAY + 14);
+
+    tasks.forEach(function(t, i) {
+      var rowY = secAY + SEC_HEAD + i * (ROW_H + ROW_GAP);
+      var tStart = seqStarts[i], tEnd = tStart + t.dur;
+      var xStart = LABEL_W + (tStart / SCALE) * tlW;
+      var xEnd   = LABEL_W + (Math.min(tEnd, seqDoneTime) / SCALE) * tlW;
+      var filled  = seqDoneTime >= tStart;
+
+      // Row bg
+      ctx.fillStyle = 'rgba(128,128,128,0.06)';
+      ctx.fillRect(LABEL_W, rowY, tlW, ROW_H);
+
+      // Filled bar
+      if (filled) {
+        var drawEnd = Math.min(xEnd, LABEL_W + tlW);
+        if (drawEnd > xStart) {
+          ctx.globalAlpha = 0.85;
+          ctx.fillStyle = t.color;
+          ctx.fillRect(xStart, rowY + 2, drawEnd - xStart, ROW_H - 4);
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      // Label
+      ctx.font = '11px monospace';
+      ctx.fillStyle = filled && seqDoneTime >= tEnd ? t.color : th.muted;
+      ctx.textAlign = 'right';
+      ctx.fillText(t.label, LABEL_W - 8, rowY + ROW_H / 2 + 4);
+    });
+
+    // Time axis (seq)
+    var axisY = secAY + SEC_HEAD + tasks.length * (ROW_H + ROW_GAP);
+    ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(LABEL_W, axisY); ctx.lineTo(LABEL_W + tlW, axisY); ctx.stroke();
+    [0,1,2,3,4,5].forEach(function(v) {
+      var ax = LABEL_W + (v / SCALE) * tlW;
+      ctx.fillStyle = th.muted; ctx.font = '9px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(v + 's', ax, axisY + 10);
+      ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(ax, axisY); ctx.lineTo(ax, axisY + 3); ctx.stroke();
+    });
+
+    // ── Divider ──
+    var divY = SEC_H + 8;
+    ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(PAD_L, divY); ctx.lineTo(W - PAD_R, divY); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // ── Section B: Parallel ──
+    var secBY = SEC_H + 16;
+    ctx.font = '700 10px monospace';
+    ctx.fillStyle = th.muted;
+    ctx.textAlign = 'left';
+    ctx.fillText('PARALLEL', PAD_L, secBY + 14);
+    var parDoneTime = seqDoneTime; // same clock
+    var parLabel = parDoneTime < PAR_TOTAL
+      ? (parDoneTime.toFixed(1) + 's')
+      : 'TOTAL: 2.3s';
+    ctx.font = '10px monospace';
+    ctx.fillStyle = parDoneTime >= PAR_TOTAL ? '#4fc97e' : th.muted;
+    ctx.textAlign = 'right';
+    ctx.fillText(parLabel, W - PAD_R, secBY + 14);
+
+    tasks.forEach(function(t, i) {
+      var rowY = secBY + SEC_HEAD + i * (ROW_H + ROW_GAP);
+      var tStart = parStarts[i], tEnd = tStart + t.dur;
+      var xStart = LABEL_W + (tStart / SCALE) * tlW;
+      var xEnd   = LABEL_W + (Math.min(tEnd, parDoneTime) / SCALE) * tlW;
+      var filled  = parDoneTime >= tStart;
+
+      ctx.fillStyle = 'rgba(128,128,128,0.06)';
+      ctx.fillRect(LABEL_W, rowY, tlW, ROW_H);
+
+      if (filled) {
+        var drawEnd = Math.min(xEnd, LABEL_W + tlW);
+        if (drawEnd > xStart) {
+          ctx.globalAlpha = 0.85;
+          ctx.fillStyle = t.color;
+          ctx.fillRect(xStart, rowY + 2, drawEnd - xStart, ROW_H - 4);
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      ctx.font = '11px monospace';
+      ctx.fillStyle = filled && parDoneTime >= tEnd ? t.color : th.muted;
+      ctx.textAlign = 'right';
+      ctx.fillText(t.label, LABEL_W - 8, rowY + ROW_H / 2 + 4);
+    });
+
+    // Playhead (only during animation, up to PAR_TOTAL)
+    if (progress > 0 && progress < 1) {
+      var phX = LABEL_W + (parDoneTime / SCALE) * tlW;
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([3,3]);
+      ctx.beginPath();
+      ctx.moveTo(phX, secBY + SEC_HEAD);
+      ctx.lineTo(phX, secBY + SEC_HEAD + tasks.length * (ROW_H + ROW_GAP));
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Parallel axis
+    var axisY2 = secBY + SEC_HEAD + tasks.length * (ROW_H + ROW_GAP);
+    ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+    ctx.beginPath(); ctx.moveTo(LABEL_W, axisY2); ctx.lineTo(LABEL_W + tlW, axisY2); ctx.stroke();
+    [0,1,2,3,4,5].forEach(function(v) {
+      var ax = LABEL_W + (v / SCALE) * tlW;
+      ctx.fillStyle = th.muted; ctx.font = '9px monospace'; ctx.textAlign = 'center';
+      ctx.fillText(v + 's', ax, axisY2 + 10);
+      ctx.strokeStyle = th.div; ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(ax, axisY2); ctx.lineTo(ax, axisY2 + 3); ctx.stroke();
+    });
+
+    // "Done" markers
+    if (progress >= 1) {
+      var seqDoneX = LABEL_W + (SEQ_TOTAL / SCALE) * tlW;
+      var parDoneX = LABEL_W + (PAR_TOTAL / SCALE) * tlW;
+      [
+        { x: seqDoneX, y: SEC_HEAD + secAY, color: '#ff6b6b' },
+        { x: parDoneX, y: SEC_HEAD + secBY, color: '#4fc97e' },
+      ].forEach(function(m) {
+        ctx.strokeStyle = m.color; ctx.lineWidth = 1.5;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y);
+        ctx.lineTo(m.x, m.y + tasks.length * (ROW_H + ROW_GAP));
+        ctx.stroke();
+      });
+    }
+  }
+
+  // Draw initial state
+  drawTimeline(0);
+
+  var animId = null;
+  var running = false;
+
+  playBtn.addEventListener('click', function() {
+    if (running) return;
+    badge.style.display = 'none';
+    running = true;
+    playBtn.textContent = '⏳ Running…';
+    playBtn.disabled = true;
+
+    var ANIM_DURATION = 2800; // ms
+    var startTime = null;
+
+    function frame(ts) {
+      if (!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      var progress = Math.min(elapsed / ANIM_DURATION, 1);
+      drawTimeline(progress);
+      if (progress < 1) {
+        animId = requestAnimationFrame(frame);
+      } else {
+        running = false;
+        playBtn.textContent = '↺ Replay';
+        playBtn.disabled = false;
+        badge.style.display = 'flex';
+      }
+    }
+    animId = requestAnimationFrame(frame);
+  });
+
+  window.addEventListener('resize', function() { drawTimeline(0); badge.style.display = 'none'; });
+})();
+</script> <h2 id="when-to-use-it-seven-scenarios">When to Use It: Seven Scenarios</h2> <div class="par-usecases-grid"> <div class="par-usecase-card"> <span class="par-usecase-num">01</span> <h4>Information Gathering</h4> <p>Query multiple APIs simultaneously — news, stock data, social feeds, databases — instead of fetching them one by one.</p> <span class="par-usecase-gain">↑ 3–5× faster research agents</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">02</span> <h4>Data Analysis</h4> <p>Run sentiment analysis, keyword extraction, categorization, and urgency scoring on the same batch of text — all at once.</p> <span class="par-usecase-gain">↑ Multi-faceted output in one pass</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">03</span> <h4>Multi-API Orchestration</h4> <p>A travel agent checking flights, hotels, events, and restaurants simultaneously. Four calls, not four round-trips.</p> <span class="par-usecase-gain">↑ Complete plan, not a drip feed</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">04</span> <h4>Content Generation</h4> <p>Generate subject line, body copy, image prompt, and CTA text for an email — in parallel, then assemble.</p> <span class="par-usecase-gain">↑ Faster creative pipelines</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">05</span> <h4>Input Validation</h4> <p>Check email format, phone validity, address lookup, and profanity filter simultaneously — return all issues at once.</p> <span class="par-usecase-gain">↑ Sub-second validation feedback</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">06</span> <h4>Multi-Modal Processing</h4> <p>Analyze the text and the image in a social post at the same time. Merge insights from both modalities at the end.</p> <span class="par-usecase-gain">↑ No wasted latency on modalities</span> </div> <div class="par-usecase-card"> <span class="par-usecase-num">07</span> <h4>A/B Option Generation</h4> <p>Generate three different headlines simultaneously using slightly varied prompts. Pick the best one automatically.</p> <span class="par-usecase-gain">↑ More options, same wall-clock time</span> </div> </div> <style>.par-usecases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.85rem;margin:1.5rem 0}.par-usecase-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.par-usecase-num{font-family:monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#2698ba}.par-usecase-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.par-usecase-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}.par-usecase-gain{font-size:.7rem;font-family:monospace;color:#4fc97e;margin-top:auto;padding-top:.35rem;border-top:1px solid var(--global-divider-color)}</style> <h2 id="how-it-actually-works-asyncio">How It Actually Works: asyncio</h2> <p>Before writing any code, one important nuance needs to be addressed — because it trips up almost everyone.</p> <p><strong><code class="language-plaintext highlighter-rouge">asyncio</code> does not run code in parallel on multiple CPU cores.</strong> It runs on a <strong>single thread</strong>, using Python’s event loop.</p> <p>Here’s how it works:</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Event Loop (single thread):
+┌────────────────────────────────────────────────────────┐
+│                                                        │
+│  1. Start Task A (send HTTP request)                   │
+│  2. While waiting for A's response:                    │
+│     → Start Task B (send HTTP request)                 │
+│     → Start Task C (send HTTP request)                 │
+│  3. A's response arrives → resume Task A               │
+│  4. B's response arrives → resume Task B               │
+│  5. C's response arrives → resume Task C               │
+│  6. All three done → proceed                           │
+│                                                        │
+└────────────────────────────────────────────────────────┘
+</code></pre></div></div> <p>The key word is <strong>waiting</strong>. When Task A is waiting for a network response, that’s idle time — the CPU is doing nothing for Task A. The event loop fills that idle time by starting Task B and C.</p> <p>This means:</p> <table> <thead> <tr> <th>Scenario</th> <th>asyncio helps?</th> </tr> </thead> <tbody> <tr> <td>Multiple API calls / network requests</td> <td> <strong>Yes</strong> — I/O bound, lots of waiting</td> </tr> <tr> <td>Multiple LLM calls (external API)</td> <td> <strong>Yes</strong> — network I/O dominates</td> </tr> <tr> <td>Heavy CPU computation (matrix ops)</td> <td> <strong>No</strong> — CPU bound, no idle time to exploit</td> </tr> <tr> <td>Reading many files</td> <td> <strong>Yes</strong> — disk I/O has wait time</td> </tr> </tbody> </table> <p>For agentic AI — where tasks are overwhelmingly LLM API calls and web requests — <strong>asyncio is exactly the right tool</strong>. The Python GIL (Global Interpreter Lock) is largely irrelevant here because the threads aren’t fighting for CPU; they’re waiting for network.</p> <h2 id="watch-it-run-a-live-demo">Watch It Run: A Live Demo</h2> <p>Click <strong>Run</strong> to see three researcher agents fire simultaneously, then converge into a synthesis step.</p> <div class="par-demo-wrapper"> <div class="par-demo-header"> <span class="par-demo-title">LIVE PARALLEL EXECUTION DEMO</span> <button class="par-demo-btn" id="parDemoRunBtn">▶ Run</button> </div> <div class="par-demo-body"> <div class="par-demo-query" id="parDemoQuery"> <span class="par-query-label">INPUT TOPIC</span> <span class="par-query-text">"Sustainable Technology Advancements"</span> </div> <div class="par-demo-arrow">▼ Fan-out: all three start simultaneously</div> <div class="par-demo-agents"> <div class="par-agent-lane" id="parLane0"> <div class="par-agent-header"> <span class="par-agent-icon">⚡</span> <span class="par-agent-name">Renewable Energy</span> <span class="par-agent-badge" id="parBadge0">Idle</span> </div> <div class="par-agent-track"> <div class="par-agent-fill" id="parFill0" style="width:0%"></div> </div> <div class="par-agent-output" id="parOut0" style="display:none"> "Solar and wind capacity grew 40% YoY. Offshore wind now cost-competitive with gas in 12 markets." </div> </div> <div class="par-agent-lane" id="parLane1"> <div class="par-agent-header"> <span class="par-agent-icon">🚗</span> <span class="par-agent-name">EV Technology</span> <span class="par-agent-badge" id="parBadge1">Idle</span> </div> <div class="par-agent-track"> <div class="par-agent-fill" id="parFill1" style="width:0%;background:#4fc97e"></div> </div> <div class="par-agent-output" id="parOut1" style="display:none"> "Solid-state batteries on track for 2027 mass production. EV range now averages 380 km per charge." </div> </div> <div class="par-agent-lane" id="parLane2"> <div class="par-agent-header"> <span class="par-agent-icon">🌿</span> <span class="par-agent-name">Carbon Capture</span> <span class="par-agent-badge" id="parBadge2">Idle</span> </div> <div class="par-agent-track"> <div class="par-agent-fill" id="parFill2" style="width:0%;background:#e6a817"></div> </div> <div class="par-agent-output" id="parOut2" style="display:none"> "Direct air capture costs fell 30% in 2025. Three new gigaton-scale facilities began operations." </div> </div> </div> <div class="par-demo-synth" id="parDemoSynth"> <div class="par-synth-header"> <span class="par-synth-icon">⚙</span> <span class="par-synth-name">Synthesis Agent</span> <span class="par-agent-badge" id="parSynthBadge">Waiting for all researchers…</span> </div> <div class="par-synth-output" id="parSynthOut" style="display:none"> <strong>## Summary of Sustainable Technology Advancements</strong><br><br> <strong>Renewable Energy:</strong> Solar and wind installations accelerated globally, with offshore wind becoming commercially viable across 12 new markets, driven by 40% annual capacity growth.<br><br> <strong>Electric Vehicles:</strong> Solid-state battery technology is approaching mass production readiness, with current EV fleets achieving an average range of 380 km — closing the gap with combustion vehicles.<br><br> <strong>Carbon Capture:</strong> Significant cost reductions in direct air capture technology have enabled industrial-scale deployments, with three gigaton-class facilities now operational as of 2025. </div> </div> <div class="par-demo-timing" id="parDemoTiming" style="display:none"> <span>Sequential estimate: <strong>4.8s</strong></span> <span class="par-timing-divider">·</span> <span>Parallel actual: <strong>2.1s</strong></span> <span class="par-timing-divider">·</span> <span class="par-timing-win">2.3× faster</span> </div> </div> </div> <style>.par-demo-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.par-demo-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;background:rgba(128,128,128,0.05);border-bottom:1px solid var(--global-divider-color)}.par-demo-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.par-demo-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s}.par-demo-btn:hover{background:rgba(38,152,186,0.15);border-color:#2698ba;color:#2698ba}.par-demo-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.9rem}.par-demo-query{border:1px solid var(--global-divider-color);border-radius:6px;padding:.6rem .9rem;display:flex;align-items:center;gap:.75rem;background:rgba(128,128,128,0.04)}.par-query-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;color:#2698ba;flex-shrink:0}.par-query-text{font-family:monospace;font-size:.8rem;color:var(--global-text-color)}.par-demo-arrow{font-size:.72rem;color:var(--global-text-color-light);text-align:center;letter-spacing:.04em}.par-demo-agents{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}@media(max-width:580px){.par-demo-agents{grid-template-columns:1fr}}.par-agent-lane{border:1px solid var(--global-divider-color);border-radius:7px;padding:.75rem;background:rgba(128,128,128,0.03);display:flex;flex-direction:column;gap:.5rem;transition:border-color .3s}.par-agent-lane.active{border-color:#2698ba}.par-agent-lane.done{border-color:#4fc97e}.par-agent-header{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}.par-agent-icon{font-size:.9rem}.par-agent-name{font-size:.75rem;font-weight:700;color:var(--global-text-color);flex:1}.par-agent-badge{font-size:.6rem;font-family:monospace;padding:.1rem .4rem;border-radius:3px;border:1px solid var(--global-divider-color);color:var(--global-text-color-light);background:transparent;transition:all .3s}.par-agent-badge.running{color:#2698ba;border-color:#2698ba;background:rgba(38,152,186,0.1)}.par-agent-badge.done{color:#4fc97e;border-color:#4fc97e;background:rgba(79,201,126,0.1)}.par-agent-track{height:6px;background:rgba(128,128,128,0.12);border-radius:3px;overflow:hidden}.par-agent-fill{height:100%;width:0;background:#2698ba;border-radius:3px;transition:width .05s linear}.par-agent-output{font-size:.73rem;color:var(--global-text-color-light);line-height:1.5;border-top:1px solid var(--global-divider-color);padding-top:.45rem;margin-top:.1rem}.par-demo-synth{border:1px solid var(--global-divider-color);border-radius:7px;padding:.75rem;background:rgba(128,128,128,0.03);opacity:.4;transition:opacity .4s,border-color .4s}.par-demo-synth.active{opacity:1;border-color:#c97af2}.par-demo-synth.done{opacity:1;border-color:#4fc97e}.par-synth-header{display:flex;align-items:center;gap:.4rem;margin-bottom:.5rem;flex-wrap:wrap}.par-synth-icon{font-size:.9rem}.par-synth-name{font-size:.75rem;font-weight:700;color:var(--global-text-color);flex:1}.par-synth-output{font-size:.76rem;color:var(--global-text-color);line-height:1.65;border-top:1px solid var(--global-divider-color);padding-top:.6rem;margin-top:.4rem}.par-demo-timing{display:flex;align-items:center;gap:.75rem;font-size:.78rem;color:var(--global-text-color-light);border-top:1px solid var(--global-divider-color);padding-top:.65rem;margin-top:.2rem;flex-wrap:wrap}.par-timing-divider{color:var(--global-divider-color)}.par-timing-win{color:#4fc97e;font-weight:700}</style> <script>
+(function(){
+  var runBtn = document.getElementById('parDemoRunBtn');
+  if (!runBtn) return;
+
+  var lanes = [
+    { fill: 'parFill0', badge: 'parBadge0', out: 'parOut0', lane: 'parLane0', dur: 1500 },
+    { fill: 'parFill1', badge: 'parBadge1', out: 'parOut1', lane: 'parLane1', dur: 1200 },
+    { fill: 'parFill2', badge: 'parBadge2', out: 'parOut2', lane: 'parLane2', dur: 900  },
+  ];
+  var synth = {
+    el:    document.getElementById('parDemoSynth'),
+    badge: document.getElementById('parSynthBadge'),
+    out:   document.getElementById('parSynthOut'),
+  };
+  var timing = document.getElementById('parDemoTiming');
+
+  function reset() {
+    lanes.forEach(function(l) {
+      document.getElementById(l.fill).style.width  = '0%';
+      document.getElementById(l.badge).textContent = 'Idle';
+      document.getElementById(l.badge).className   = 'par-agent-badge';
+      document.getElementById(l.out).style.display = 'none';
+      document.getElementById(l.lane).className    = 'par-agent-lane';
+    });
+    synth.el.className     = 'par-demo-synth';
+    synth.badge.textContent = 'Waiting for all researchers…';
+    synth.badge.className   = 'par-agent-badge';
+    synth.out.style.display = 'none';
+    timing.style.display    = 'none';
+  }
+
+  runBtn.addEventListener('click', function() {
+    reset();
+    runBtn.disabled = true;
+    runBtn.textContent = '⏳ Running…';
+
+    var allDone = 0;
+    var maxDur = 0;
+    lanes.forEach(function(l) { if (l.dur > maxDur) maxDur = l.dur; });
+
+    lanes.forEach(function(l) {
+      var fillEl  = document.getElementById(l.fill);
+      var badgeEl = document.getElementById(l.badge);
+      var outEl   = document.getElementById(l.out);
+      var laneEl  = document.getElementById(l.lane);
+
+      laneEl.className = 'par-agent-lane active';
+      badgeEl.textContent = 'Running…';
+      badgeEl.className   = 'par-agent-badge running';
+
+      var startTs = null;
+      function animFill(ts) {
+        if (!startTs) startTs = ts;
+        var pct = Math.min((ts - startTs) / l.dur * 100, 100);
+        fillEl.style.width = pct + '%';
+        if (pct < 100) {
+          requestAnimationFrame(animFill);
+        } else {
+          laneEl.className    = 'par-agent-lane done';
+          badgeEl.textContent = 'Done ✓';
+          badgeEl.className   = 'par-agent-badge done';
+          outEl.style.display = 'block';
+          allDone++;
+          if (allDone === lanes.length) startSynth();
+        }
+      }
+      requestAnimationFrame(animFill);
+    });
+
+    function startSynth() {
+      synth.el.className = 'par-demo-synth active';
+      synth.badge.textContent = 'Synthesizing…';
+      synth.badge.className   = 'par-agent-badge running';
+      setTimeout(function() {
+        synth.el.className = 'par-demo-synth done';
+        synth.badge.textContent = 'Done ✓';
+        synth.badge.className   = 'par-agent-badge done';
+        synth.out.style.display  = 'block';
+        timing.style.display     = 'flex';
+        runBtn.disabled   = false;
+        runBtn.textContent = '↺ Replay';
+      }, 900);
+    }
+  });
+})();
+</script> <h2 id="the-langchain-way-runnableparallel">The LangChain Way: <code class="language-plaintext highlighter-rouge">RunnableParallel</code> </h2> <p>LangChain implements parallelization through <strong><code class="language-plaintext highlighter-rouge">RunnableParallel</code></strong> — a construct that takes a dictionary of named chains and runs all of them at once, returning a dictionary of results.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">asyncio</span>
+<span class="kn">from</span> <span class="n">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="n">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="n">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="n">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">RunnableParallel</span><span class="p">,</span> <span class="n">RunnablePassthrough</span>
+</code></pre></div></div> <blockquote> <p><strong>Why these imports?</strong></p> <ul> <li> <code class="language-plaintext highlighter-rouge">asyncio</code> — Python’s built-in library for writing concurrent code using <code class="language-plaintext highlighter-rouge">async</code>/<code class="language-plaintext highlighter-rouge">await</code> </li> <li> <code class="language-plaintext highlighter-rouge">ChatOpenAI</code> — the LangChain wrapper for OpenAI’s chat models (swappable for any other provider)</li> <li> <code class="language-plaintext highlighter-rouge">ChatPromptTemplate</code> — structures messages into <code class="language-plaintext highlighter-rouge">system</code> + <code class="language-plaintext highlighter-rouge">user</code> roles (what the model expects)</li> <li> <code class="language-plaintext highlighter-rouge">StrOutputParser</code> — converts the raw message object from the LLM into a plain Python string</li> <li> <code class="language-plaintext highlighter-rouge">RunnableParallel</code> — the key component that executes multiple chains <em>simultaneously</em> </li> <li> <code class="language-plaintext highlighter-rouge">RunnablePassthrough</code> — passes the input through unchanged, so downstream steps can still access the original value</li> </ul> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">llm</span> <span class="o">=</span> <span class="nc">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">gpt-4o-mini</span><span class="sh">"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><code class="language-plaintext highlighter-rouge">temperature=0.7</code> — a mid-range value. Lower (0.0) makes outputs deterministic and consistent; higher (1.0) adds creativity. For research summaries we want some flexibility, so 0.7 is appropriate.</p> </blockquote> <h3 id="defining-three-independent-chains">Defining Three Independent Chains</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">summarize_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_messages</span><span class="p">([</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Summarize the following topic concisely:</span><span class="sh">"</span><span class="p">),</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span>   <span class="sh">"</span><span class="s">{topic}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="o">|</span> <span class="n">llm</span>
+    <span class="o">|</span> <span class="nc">StrOutputParser</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">questions_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_messages</span><span class="p">([</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Generate three interesting questions about the following topic:</span><span class="sh">"</span><span class="p">),</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span>   <span class="sh">"</span><span class="s">{topic}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="o">|</span> <span class="n">llm</span>
+    <span class="o">|</span> <span class="nc">StrOutputParser</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">terms_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_messages</span><span class="p">([</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Identify 5–10 key terms from the following topic, separated by commas:</span><span class="sh">"</span><span class="p">),</span>
+        <span class="p">(</span><span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span>   <span class="sh">"</span><span class="s">{topic}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="o">|</span> <span class="n">llm</span>
+    <span class="o">|</span> <span class="nc">StrOutputParser</span><span class="p">()</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p>Each chain is a complete pipeline: <code class="language-plaintext highlighter-rouge">prompt → LLM → string output</code>. They all take <code class="language-plaintext highlighter-rouge">{topic}</code> as input and return a string. None of them depend on each other’s output — which makes them perfect candidates for parallel execution.</p> </blockquote> <h3 id="building-the-parallel-block">Building the Parallel Block</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">map_chain</span> <span class="o">=</span> <span class="nc">RunnableParallel</span><span class="p">({</span>
+    <span class="sh">"</span><span class="s">summary</span><span class="sh">"</span><span class="p">:</span>    <span class="n">summarize_chain</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">questions</span><span class="sh">"</span><span class="p">:</span>  <span class="n">questions_chain</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">key_terms</span><span class="sh">"</span><span class="p">:</span>  <span class="n">terms_chain</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">topic</span><span class="sh">"</span><span class="p">:</span>      <span class="nc">RunnablePassthrough</span><span class="p">(),</span>   <span class="c1"># ← keep the original input available downstream
+</span><span class="p">})</span>
+</code></pre></div></div> <blockquote> <p><strong>How <code class="language-plaintext highlighter-rouge">RunnableParallel</code> works:</strong> When you call <code class="language-plaintext highlighter-rouge">map_chain.invoke("space exploration")</code>:</p> <ol> <li>LangChain sends <code class="language-plaintext highlighter-rouge">"space exploration"</code> to <code class="language-plaintext highlighter-rouge">summarize_chain</code>, <code class="language-plaintext highlighter-rouge">questions_chain</code>, <code class="language-plaintext highlighter-rouge">terms_chain</code>, and <code class="language-plaintext highlighter-rouge">RunnablePassthrough()</code> <strong>at the same time</strong> </li> <li>Each chain runs concurrently (as async tasks in the event loop)</li> <li>Once all four return, <code class="language-plaintext highlighter-rouge">RunnableParallel</code> packages their outputs into a single dictionary: <code class="language-plaintext highlighter-rouge">{"summary": "...", "questions": "...", "key_terms": "...", "topic": "space exploration"}</code> </li> </ol> <p><strong>Why <code class="language-plaintext highlighter-rouge">RunnablePassthrough()</code>?</strong> The synthesis step needs the original topic text — not just the processed outputs. Without it, the original string would be consumed and discarded by the parallel step. <code class="language-plaintext highlighter-rouge">RunnablePassthrough()</code> passes the input through unchanged so the next step can reference it.</p> </blockquote> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Data flow through map_chain:
+
+Input: "space exploration"
+        │
+        ├──→ summarize_chain  ──→ "A summary of space exploration..."
+        │
+        ├──→ questions_chain  ──→ "1. What year... 2. Who... 3. Why..."
+        │
+        ├──→ terms_chain      ──→ "NASA, Apollo, orbit, rocket..."
+        │
+        └──→ RunnablePassthrough() ──→ "space exploration"
+        
+Output: { "summary": ..., "questions": ..., "key_terms": ..., "topic": ... }
+</code></pre></div></div> <h3 id="the-synthesis-step">The Synthesis Step</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">synthesis_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="p">.</span><span class="nf">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"""</span><span class="s">Based on the following information:
+Summary: {summary}
+Related Questions: {questions}
+Key Terms: {key_terms}
+
+Synthesize a comprehensive answer.</span><span class="sh">"""</span><span class="p">),</span>
+    <span class="p">(</span><span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">Original topic: {topic}</span><span class="sh">"</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">full_parallel_chain</span> <span class="o">=</span> <span class="n">map_chain</span> <span class="o">|</span> <span class="n">synthesis_prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="nc">StrOutputParser</span><span class="p">()</span>
+</code></pre></div></div> <blockquote> <p>The <code class="language-plaintext highlighter-rouge">|</code> pipe connects <code class="language-plaintext highlighter-rouge">map_chain</code>’s dictionary output directly into <code class="language-plaintext highlighter-rouge">synthesis_prompt</code>. LangChain automatically fills <code class="language-plaintext highlighter-rouge">{summary}</code>, <code class="language-plaintext highlighter-rouge">{questions}</code>, <code class="language-plaintext highlighter-rouge">{key_terms}</code>, and <code class="language-plaintext highlighter-rouge">{topic}</code> from the dictionary keys. This is why the dictionary keys in <code class="language-plaintext highlighter-rouge">RunnableParallel</code> must match the variable names in the synthesis prompt exactly.</p> </blockquote> <h3 id="running-it-asynchronously">Running It Asynchronously</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">async</span> <span class="k">def</span> <span class="nf">run_parallel_example</span><span class="p">(</span><span class="n">topic</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">full_parallel_chain</span><span class="p">.</span><span class="nf">ainvoke</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">asyncio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nf">run_parallel_example</span><span class="p">(</span><span class="sh">"</span><span class="s">The history of space exploration</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">ainvoke</code> vs <code class="language-plaintext highlighter-rouge">invoke</code>:</strong> <code class="language-plaintext highlighter-rouge">ainvoke</code> is the async version. It allows the event loop to switch between the parallel tasks while they’re waiting for API responses. Using the synchronous <code class="language-plaintext highlighter-rouge">invoke</code> would block the entire thread during each LLM call, serializing the “parallel” chains and defeating the purpose.</p> <p><strong><code class="language-plaintext highlighter-rouge">asyncio.run()</code>:</strong> This is the standard entry point for running async code from a synchronous context (like a script’s <code class="language-plaintext highlighter-rouge">__main__</code> block). It creates an event loop, runs the coroutine, and then closes the loop.</p> </blockquote> <h3 id="full-data-flow">Full Data Flow</h3> <pre><code class="language-mermaid">graph LR
+    A["topic string"] --&gt;|fan-out| B[RunnableParallel]
+    B --&gt; C[summarize_chain]
+    B --&gt; D[questions_chain]
+    B --&gt; E[terms_chain]
+    B --&gt; F[RunnablePassthrough]
+    C --&gt; G["dict: {summary, questions, key_terms, topic}"]
+    D --&gt; G
+    E --&gt; G
+    F --&gt; G
+    G --&gt; H[synthesis_prompt]
+    H --&gt; I[LLM]
+    I --&gt; J[StrOutputParser]
+    J --&gt; K["final string output"]
+    style B fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
+    style G fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
+    style K fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <h2 id="the-google-adk-way-parallelagent">The Google ADK Way: <code class="language-plaintext highlighter-rouge">ParallelAgent</code> </h2> <p>The Google ADK takes a different approach. Instead of wiring chains together, you define <strong>agents</strong> and declare their relationships using <code class="language-plaintext highlighter-rouge">ParallelAgent</code> and <code class="language-plaintext highlighter-rouge">SequentialAgent</code>. The framework handles the scheduling.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LlmAgent</span><span class="p">,</span> <span class="n">ParallelAgent</span><span class="p">,</span> <span class="n">SequentialAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.tools</span> <span class="kn">import</span> <span class="n">google_search</span>
+
+<span class="n">GEMINI_MODEL</span> <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash</span><span class="sh">"</span>
+</code></pre></div></div> <blockquote> <p><strong>Why these imports?</strong></p> <ul> <li> <code class="language-plaintext highlighter-rouge">LlmAgent</code> — a single agent powered by an LLM. You give it an instruction and optional tools.</li> <li> <code class="language-plaintext highlighter-rouge">ParallelAgent</code> — an orchestrator that runs its <code class="language-plaintext highlighter-rouge">sub_agents</code> concurrently, waiting until all complete before proceeding.</li> <li> <code class="language-plaintext highlighter-rouge">SequentialAgent</code> — an orchestrator that runs its <code class="language-plaintext highlighter-rouge">sub_agents</code> one after another. Used to chain the <code class="language-plaintext highlighter-rouge">ParallelAgent</code> with the synthesis agent.</li> <li> <code class="language-plaintext highlighter-rouge">google_search</code> — a built-in ADK tool that gives agents access to live web search.</li> </ul> </blockquote> <h3 id="three-researcher-agents-the-parallel-workers">Three Researcher Agents (the parallel workers)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">researcher_agent_1</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">RenewableEnergyResearcher</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="n">GEMINI_MODEL</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">You are a research assistant specializing in energy.
+Research the latest advancements in </span><span class="sh">'</span><span class="s">renewable energy sources</span><span class="sh">'</span><span class="s">.
+Use the Google Search tool provided.
+Summarize your key findings concisely (1–2 sentences).
+Output *only* the summary.</span><span class="sh">"""</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Researches renewable energy sources.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">tools</span>       <span class="o">=</span> <span class="p">[</span><span class="n">google_search</span><span class="p">],</span>
+    <span class="n">output_key</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">renewable_energy_result</span><span class="sh">"</span><span class="p">,</span>   <span class="c1"># ← stores result in session state
+</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why docstring-style instructions?</strong> The ADK uses the <code class="language-plaintext highlighter-rouge">instruction</code> field as the agent’s <em>system prompt</em>. Being explicit about:</p> <ul> <li>What tool to use (<code class="language-plaintext highlighter-rouge">Use the Google Search tool</code>)</li> <li>How much to write (<code class="language-plaintext highlighter-rouge">1–2 sentences</code>)</li> <li>What to output (<code class="language-plaintext highlighter-rouge">Output *only* the summary</code>) …prevents the agent from adding preamble, caveats, or asking clarifying questions.</li> </ul> <p><strong>Why <code class="language-plaintext highlighter-rouge">output_key</code>?</strong> This is how parallel agents share results. When <code class="language-plaintext highlighter-rouge">researcher_agent_1</code> finishes, it stores its output string into the session state under the key <code class="language-plaintext highlighter-rouge">"renewable_energy_result"</code>. The synthesis agent can then read from <code class="language-plaintext highlighter-rouge">{renewable_energy_result}</code> in its instruction template. Without <code class="language-plaintext highlighter-rouge">output_key</code>, the parallel agents’ outputs would be lost.</p> </blockquote> <p>Researchers 2 and 3 are identical in structure, covering EV technology (<code class="language-plaintext highlighter-rouge">output_key="ev_technology_result"</code>) and carbon capture (<code class="language-plaintext highlighter-rouge">output_key="carbon_capture_result"</code>).</p> <h3 id="the-parallelagent-runs-all-three-at-once">The ParallelAgent (runs all three at once)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">parallel_research_agent</span> <span class="o">=</span> <span class="nc">ParallelAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">ParallelWebResearchAgent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sub_agents</span>  <span class="o">=</span> <span class="p">[</span><span class="n">researcher_agent_1</span><span class="p">,</span> <span class="n">researcher_agent_2</span><span class="p">,</span> <span class="n">researcher_agent_3</span><span class="p">],</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Runs multiple research agents in parallel to gather information.</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p>This is the entire parallelization mechanism in ADK — just declare <code class="language-plaintext highlighter-rouge">sub_agents</code> inside a <code class="language-plaintext highlighter-rouge">ParallelAgent</code>. The framework:</p> <ol> <li>Starts all three <code class="language-plaintext highlighter-rouge">LlmAgent</code>s concurrently</li> <li>Each agent performs its search and writes its result to session state via <code class="language-plaintext highlighter-rouge">output_key</code> </li> <li> <code class="language-plaintext highlighter-rouge">ParallelAgent</code> completes once <strong>all</strong> sub-agents have finished</li> </ol> <p>No async code, no event loop management, no callback hell — the framework handles all of it.</p> </blockquote> <h3 id="the-synthesis-agent">The Synthesis Agent</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">merger_agent</span> <span class="o">=</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+    <span class="n">name</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">SynthesisAgent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">GEMINI_MODEL</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">You are responsible for combining research findings into a structured report.
+
+**Input Summaries:**
+* Renewable Energy: {renewable_energy_result}
+* Electric Vehicles: {ev_technology_result}
+* Carbon Capture:   {carbon_capture_result}
+
+**CRITICAL RULE:** Base your entire response *exclusively* on the Input Summaries above.
+Do NOT add external knowledge not present in these summaries.
+
+**Output Format:**
+## Summary of Recent Sustainable Technology Advancements
+
+### Renewable Energy Findings
+[Synthesize only the renewable energy input summary]
+
+### Electric Vehicle Findings
+[Synthesize only the EV input summary]
+
+### Carbon Capture Findings
+[Synthesize only the carbon capture input summary]
+
+### Overall Conclusion
+[1–2 sentences connecting only the findings above]
+
+Output *only* the structured report.</span><span class="sh">"""</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Combines research findings into a structured, cited report.</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">{renewable_energy_result}</code> in the instruction?</strong> The ADK automatically fills these <code class="language-plaintext highlighter-rouge">{key}</code> placeholders from the session state. Since the three researcher agents stored their outputs under exactly these keys, the synthesis agent receives all three summaries injected directly into its prompt.</p> <p><strong>Why the “CRITICAL RULE”?</strong> Without it, LLMs will use their pre-trained world knowledge to supplement the research, making the output non-deterministic and potentially inconsistent with what was actually found in the search. The explicit constraint forces the agent to stay grounded.</p> </blockquote> <h3 id="the-sequentialagent-orchestrates-everything">The SequentialAgent (orchestrates everything)</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sequential_pipeline_agent</span> <span class="o">=</span> <span class="nc">SequentialAgent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">ResearchAndSynthesisPipeline</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sub_agents</span>  <span class="o">=</span> <span class="p">[</span><span class="n">parallel_research_agent</span><span class="p">,</span> <span class="n">merger_agent</span><span class="p">],</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Coordinates parallel research and synthesizes the results.</span><span class="sh">"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">root_agent</span> <span class="o">=</span> <span class="n">sequential_pipeline_agent</span>
+</code></pre></div></div> <blockquote> <p>The <code class="language-plaintext highlighter-rouge">SequentialAgent</code> runs <code class="language-plaintext highlighter-rouge">parallel_research_agent</code> first (which internally runs the three researchers in parallel), waits for it to complete, then runs <code class="language-plaintext highlighter-rouge">merger_agent</code>. This gives you <strong>parallelism where possible, sequencing where necessary</strong> — exactly the right structure for fan-out / fan-in workflows.</p> </blockquote> <h3 id="adk-orchestration-flow">ADK Orchestration Flow</h3> <pre><code class="language-mermaid">graph TD
+    U([User Input]) --&gt; SEQ[SequentialAgent]
+    SEQ --&gt; PAR[ParallelAgent]
+    PAR --&gt; R1[Renewable Energy Researcher]
+    PAR --&gt; R2[EV Researcher]
+    PAR --&gt; R3[Carbon Capture Researcher]
+    R1 --&gt;|output_key: renewable_energy_result| STATE[(Session State)]
+    R2 --&gt;|output_key: ev_technology_result| STATE
+    R3 --&gt;|output_key: carbon_capture_result| STATE
+    PAR --&gt;|all complete| MERGE[Synthesis Agent]
+    STATE --&gt;|fills template| MERGE
+    MERGE --&gt; OUT([Structured Report])
+    style PAR fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
+    style STATE fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
+    style MERGE fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <h2 id="side-by-side-langchain-vs-adk">Side by Side: LangChain vs ADK</h2> <table> <thead> <tr> <th> </th> <th>LangChain (LCEL)</th> <th>Google ADK</th> </tr> </thead> <tbody> <tr> <td><strong>Parallelism primitive</strong></td> <td> <code class="language-plaintext highlighter-rouge">RunnableParallel</code> dict</td> <td><code class="language-plaintext highlighter-rouge">ParallelAgent</code></td> </tr> <tr> <td><strong>Sequencing primitive</strong></td> <td> <code class="language-plaintext highlighter-rouge">\|</code> pipe operator</td> <td><code class="language-plaintext highlighter-rouge">SequentialAgent</code></td> </tr> <tr> <td><strong>How results are shared</strong></td> <td>Dict keys flow through the pipeline</td> <td> <code class="language-plaintext highlighter-rouge">output_key</code> writes to session state</td> </tr> <tr> <td><strong>Async model</strong></td> <td> <code class="language-plaintext highlighter-rouge">asyncio</code> via <code class="language-plaintext highlighter-rouge">ainvoke</code> / <code class="language-plaintext highlighter-rouge">astream</code> </td> <td>Managed by ADK framework</td> </tr> <tr> <td><strong>Code verbosity</strong></td> <td>Lower — functional chain composition</td> <td>Higher — agent class definitions</td> </tr> <tr> <td><strong>Observability</strong></td> <td>LangSmith tracing</td> <td>ADK built-in tracing</td> </tr> <tr> <td><strong>Best for</strong></td> <td>Tight, composable chains where you control the data flow</td> <td>Multi-agent systems where agents are independent workers</td> </tr> </tbody> </table> <p>The fundamental difference: <strong>LangChain is data-flow</strong> (inputs pipe through transforms), <strong>ADK is agent-flow</strong> (agents communicate via shared state). Both achieve parallelism, but the mental model is different.</p> <h2 id="at-a-glance">At a Glance</h2> <div class="par-summary-card"> <div class="par-summary-col"> <div class="par-summary-label">WHAT</div> <p>Independent tasks that don't need each other's output are executed simultaneously instead of one at a time.</p> </div> <div class="par-summary-divider"></div> <div class="par-summary-col"> <div class="par-summary-label">WHY</div> <p>Sequential execution adds all latencies together. Parallel execution takes only the longest. For I/O-bound work (API calls, LLM requests), this is a 2–5× speedup with zero additional cost.</p> </div> <div class="par-summary-divider"></div> <div class="par-summary-col"> <div class="par-summary-label">RULE OF THUMB</div> <p>Use when a workflow contains multiple independent lookups, computations, or content-generation tasks that each produce a piece of a larger whole.</p> </div> </div> <style>.par-summary-card{display:flex;gap:0;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.par-summary-card{flex-direction:column}}.par-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.par-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.par-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.par-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#2698ba}</style> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <strong>The core rule:</strong> Tasks that don’t depend on each other’s output can run in parallel. Tasks that do must remain sequential.</li> <li> <strong>The gain:</strong> For I/O-bound work (LLM calls, API requests, database queries), parallelism reduces total time from <code class="language-plaintext highlighter-rouge">sum of all durations</code> to <code class="language-plaintext highlighter-rouge">max of parallel durations + sequential tail</code>.</li> <li> <strong><code class="language-plaintext highlighter-rouge">asyncio</code> is concurrency, not CPU parallelism.</strong> It works by filling idle network-wait time with other tasks. This is exactly what agentic workflows need.</li> <li> <strong>LangChain uses <code class="language-plaintext highlighter-rouge">RunnableParallel</code></strong> — wrap a dictionary of chains and the LCEL runtime fires them all concurrently, collecting results into a dict for the next step.</li> <li> <strong>ADK uses <code class="language-plaintext highlighter-rouge">ParallelAgent</code></strong> — declare sub-agents in a <code class="language-plaintext highlighter-rouge">ParallelAgent</code>, use <code class="language-plaintext highlighter-rouge">output_key</code> to write results to session state, and a downstream synthesis agent reads from state via <code class="language-plaintext highlighter-rouge">{key}</code> placeholders in its instruction.</li> <li> <strong>The synthesis step is always sequential.</strong> Parallelization is a fan-out / fan-in pattern: spread out, work in parallel, reconverge.</li> <li> <strong>Added complexity is real.</strong> Parallel workflows are harder to debug, log, and reason about than sequential ones. Use it when the latency gain is significant — not as a default architecture.</li> </ul> <p><em>Next up — Chapter 4: Orchestration, where we combine chaining, routing, and parallelization into full multi-agent systems.</em></p> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/memory/">Chapter 8: Memory Management</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/multi-agent/">Chapter 7: Multi-Agent Collaboration</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/planning/">Chapter 6: Planning</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/tool-use/">Chapter 5: Tool Use (Function Calling)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/reflection/">Chapter 4: Reflection</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>
