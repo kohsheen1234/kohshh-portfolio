@@ -183,8 +183,19 @@
   border: 0;
   background-color: inherit;
   color: var(--global-text-color);
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     color: var(--global-hover-color);
+  }
+}
+
+@media (min-width: 576px) {
+  #search-toggle {
+    transform: translateY(4px);
   }
 }

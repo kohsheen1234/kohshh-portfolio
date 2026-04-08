@@ -5,6 +5,8 @@ layout: default
 {% assign tags = page.tags | join: '' %}
 {% assign categories = page.categories | join: '' %}
 {% assign url_beginning = page.url | slice: 0, 6 %}
+{% assign words = content | number_of_words %}
+{% assign read_time = words | divided_by: 200 | plus: 1 %}
 
 {% if page._styles %}
   <!-- Page/Post style -->
@@ -15,61 +17,63 @@ layout: default
 
 <div class="post">
   <header class="post-header">
+    <p class="post-kicker">ARTICLE &nbsp;&middot;&nbsp; {{ read_time }} MIN READ &nbsp;&middot;&nbsp; {{ page.date | date: '%B %d, %Y' | upcase }}</p>
     <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">
-      Created on {{ page.date | date: '%B %d, %Y' }}
-      {% if page.author %}by {{ page.author }}{% endif %}
-      {% assign last_date = page.last_modified_at | default: page.last_updated %}
-      {% if last_date %}, last updated on {{ last_date | date: '%B %d, %Y' }}{% endif %}
-      {% if page.meta %}• {{ page.meta }}{% endif %}
-    </p>
-    <p class="post-tags">
-      {% if url_beginning == '/blog/' %}
-        <a href="{{ year | prepend: '/blog/' | relative_url }}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-      {% else %}
-        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-      {% endif %}
-      {% if tags != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for tag in page.tags %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-          {% else %}
-            <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-
-      {% if categories != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for category in page.categories %}
-          {% if url_beginning == '/blog/' %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}"> <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}</a>
-          {% else %}
-            <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-    </p>
+    {% if page.description %}
+      <p class="post-lead">{{ page.description }}</p>
+    {% endif %}
+    <div class="post-author-row">
+      <div class="post-author-info">
+        {% if page.author %}
+          <span class="post-author-name">{{ page.author }}</span>
+          <span class="post-author-sep">&middot;</span>
+        {% endif %}
+        <span class="post-author-date">{{ page.date | date: '%B %d, %Y' }}</span>
+      </div>
+      <div class="post-share-btns">
+        <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="post-share-btn">
+          <i class="fa-brands fa-x-twitter"></i> Share
+        </a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url | url_encode }}" target="_blank" rel="noopener" class="post-share-btn">
+          <i class="fa-brands fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </div>
+    <hr class="post-divider">
   </header>
 
-  <article class="post-content">
-    {% if page.toc and page.toc.beginning %}
-      <div id="table-of-contents">
-        {% toc %}
-      </div>
-      <hr>
+  <div class="post-body{% if page.toc %} has-toc{% endif %}">
+    {% if page.toc %}
+      <aside class="post-toc-sidebar">
+        <div class="toc-sidebar-section">
+          <p class="toc-sidebar-label">IN THIS ARTICLE</p>
+          <div id="table-of-contents">
+            {% toc %}
+          </div>
+        </div>
+        <div class="toc-sidebar-section">
+          <p class="toc-sidebar-label">READ TIME</p>
+          <p class="toc-read-time">{{ read_time }} min read</p>
+        </div>
+        <div class="toc-sidebar-section">
+          <p class="toc-sidebar-label">SHARE</p>
+          <div class="toc-share-links">
+            <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="toc-share-link">
+              <i class="fa-brands fa-x-twitter"></i> Share on X
+            </a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url | url_encode }}" target="_blank" rel="noopener" class="toc-share-link">
+              <i class="fa-brands fa-linkedin"></i> Share on LinkedIn
+            </a>
+          </div>
+        </div>
+      </aside>
     {% endif %}
-    <div id="markdown-content">
-      {{ content }}
-    </div>
-  </article>
+    <article class="post-content">
+      <div id="markdown-content">
+        {{ content }}
+      </div>
+    </article>
+  </div>
 
   {% if page.citation %}
     {% include citation.liquid %}
@@ -95,3 +99,92 @@ layout: default
     {% include giscus.liquid %}
   {% endif %}
 </div>
+
+{% if page.toc %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script>
+{% endif %}
+
+<script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script>

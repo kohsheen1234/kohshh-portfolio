@@ -1,0 +1,40 @@
+---
+layout: default
+---
+
+<div class="playlist-page">
+  <header class="playlist-header">
+    <a href="{{ '/playlists/' | relative_url }}" class="playlist-back">← All Playlists</a>
+    <h1 class="playlist-title">{{ page.title }}</h1>
+    {% if page.description %}
+      <p class="playlist-lead">{{ page.description }}</p>
+    {% endif %}
+    <p class="playlist-count">{{ page.posts | size }} posts</p>
+    <hr class="post-divider">
+  </header>
+
+  <ol class="playlist-post-list">
+    {% for playlist_post in page.posts %}
+      {% assign matched = site.posts | where: "url", playlist_post.url | first %}
+      {% assign idx = forloop.index %}
+      <li class="playlist-post-item">
+        <span class="playlist-post-num">
+          {% if idx < 10 %}0{{ idx }}{% else %}{{ idx }}{% endif %}
+        </span>
+        <div class="playlist-post-body">
+          {% if matched %}
+            {% assign read_time = matched.content | number_of_words | divided_by: 200 | plus: 1 %}
+            <a href="{{ matched.url | relative_url }}" class="playlist-post-title">{{ matched.title }}</a>
+            {% if matched.description %}
+              <p class="playlist-post-desc">{{ matched.description }}</p>
+            {% endif %}
+            <span class="playlist-post-meta">{{ read_time }} min read &nbsp;&middot;&nbsp; {{ matched.date | date: '%B %d, %Y' }}</span>
+          {% else %}
+            <span class="playlist-post-title muted">{{ playlist_post.title | default: playlist_post.url }}</span>
+            <span class="playlist-post-meta">coming soon</span>
+          {% endif %}
+        </div>
+      </li>
+    {% endfor %}
+  </ol>
+</div>
