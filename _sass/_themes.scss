@@ -152,6 +152,16 @@ html[data-theme-setting="light"] {
   #light-toggle-light {
     display: inline-block;
   }
+
+  // Light mode dot grid — darker dots on light background (like rumik.ai)
+  body {
+    background-image: radial-gradient(
+      circle,
+      rgba(0, 0, 0, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
 }
 
 .fa-half-sun-moon {
