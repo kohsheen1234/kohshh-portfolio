@@ -964,14 +964,24 @@ Here's something most tutorials skip: **what you put *around* the prompt matters
 
 There's a discipline called **Context Engineering** — the art of giving the model a rich, complete picture before it generates a response.
 
-```mermaid
-graph LR
-    SP[System Prompt\nwho the model is] --> M([Model])
-    RD[Retrieved Docs\nfacts from your KB] --> M
-    TO[Tool Outputs\nAPI / calendar results] --> M
-    ID[User History\nwhat they said before] --> M
-    M --> O([Good answer])
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">CONTEXT ENGINEERING</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:1rem;padding:1.25rem 1.5rem;flex-wrap:wrap;">
+    <div style="display:flex;flex-direction:column;gap:0.5rem;flex:1;min-width:180px;">
+      <div class="ns-node ns-node-cyan"><div class="ns-node-title">System Prompt</div><div class="ns-node-sub">who the model is</div></div>
+      <div class="ns-node ns-node-purple"><div class="ns-node-title">Retrieved Docs</div><div class="ns-node-sub">facts from your KB</div></div>
+      <div class="ns-node ns-node-amber"><div class="ns-node-title">Tool Outputs</div><div class="ns-node-sub">API / calendar results</div></div>
+      <div class="ns-node"><div class="ns-node-title">User History</div><div class="ns-node-sub">what they said before</div></div>
+    </div>
+    <div style="font-size:1.5rem;color:#4a5a6a;flex-shrink:0;">→</div>
+    <div class="ns-node" style="flex-shrink:0;min-width:90px;"><div class="ns-node-title">Model</div></div>
+    <div style="font-size:1.5rem;color:#4a5a6a;flex-shrink:0;">→</div>
+    <div class="ns-node ns-node-green" style="flex-shrink:0;"><div class="ns-node-title">Good answer</div></div>
+  </div>
+</div>
 
 Prompt engineering asks: *"how do I phrase this question?"*
 

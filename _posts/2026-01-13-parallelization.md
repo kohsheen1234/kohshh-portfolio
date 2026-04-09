@@ -1143,23 +1143,33 @@ root_agent = sequential_pipeline_agent
 
 ### ADK Orchestration Flow
 
-```mermaid
-graph TD
-    U([User Input]) --> SEQ[SequentialAgent]
-    SEQ --> PAR[ParallelAgent]
-    PAR --> R1[Renewable Energy Researcher]
-    PAR --> R2[EV Researcher]
-    PAR --> R3[Carbon Capture Researcher]
-    R1 -->|output_key: renewable_energy_result| STATE[(Session State)]
-    R2 -->|output_key: ev_technology_result| STATE
-    R3 -->|output_key: carbon_capture_result| STATE
-    PAR -->|all complete| MERGE[Synthesis Agent]
-    STATE -->|fills template| MERGE
-    MERGE --> OUT([Structured Report])
-    style PAR fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style STATE fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
-    style MERGE fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">ADK ORCHESTRATION FLOW</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.25rem 1.5rem;">
+    <div class="ns-node ns-node-cyan" style="max-width:200px;"><div class="ns-node-title">User Input</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node" style="max-width:200px;"><div class="ns-node-title">SequentialAgent</div><div class="ns-node-sub">orchestrates the whole flow</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-phase" style="max-width:480px;">
+      <div class="ns-phase-title">ParallelAgent — all three fire simultaneously</div>
+      <div class="ns-phase-sub">output_key writes each result to Session State</div>
+      <div class="ns-row">
+        <div class="ns-node ns-node-cyan"><div class="ns-node-title">Renewable Energy</div><div class="ns-node-sub">→ renewable_energy_result</div></div>
+        <div class="ns-node ns-node-cyan"><div class="ns-node-title">EV Researcher</div><div class="ns-node-sub">→ ev_technology_result</div></div>
+        <div class="ns-node ns-node-cyan"><div class="ns-node-title">Carbon Capture</div><div class="ns-node-sub">→ carbon_capture_result</div></div>
+      </div>
+    </div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-amber" style="max-width:260px;"><div class="ns-node-title">Session State</div><div class="ns-node-sub">fills template placeholders in Synthesis Agent's instruction</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-green" style="max-width:200px;"><div class="ns-node-title">Synthesis Agent</div><div class="ns-node-sub">merges all results into final report</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-green" style="max-width:200px;"><div class="ns-node-title">Structured Report</div></div>
+  </div>
+</div>
 
 
 ## Side by Side: LangChain vs ADK
