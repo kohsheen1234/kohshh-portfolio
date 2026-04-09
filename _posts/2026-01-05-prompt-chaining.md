@@ -1040,17 +1040,37 @@ There's a discipline called **Context Engineering** — the art of giving the mo
     <span class="ns-diagram-label">CONTEXT ENGINEERING</span>
     <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
   </div>
-  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:1rem;padding:1.25rem 1.5rem;flex-wrap:wrap;">
-    <div style="display:flex;flex-direction:column;gap:0.5rem;flex:1;min-width:180px;">
+  <div class="ns-diagram-body" style="padding:1.25rem 1.5rem;flex-direction:row;align-items:stretch;gap:0.85rem;">
+    <!-- Left: 4 input sources stacked -->
+    <div style="display:flex;flex-direction:column;gap:0.5rem;flex-shrink:0;min-width:190px;justify-content:center;">
       <div class="ns-node ns-node-cyan"><div class="ns-node-title">System Prompt</div><div class="ns-node-sub">who the model is</div></div>
       <div class="ns-node ns-node-purple"><div class="ns-node-title">Retrieved Docs</div><div class="ns-node-sub">facts from your KB</div></div>
       <div class="ns-node ns-node-amber"><div class="ns-node-title">Tool Outputs</div><div class="ns-node-sub">API / calendar results</div></div>
       <div class="ns-node"><div class="ns-node-title">User History</div><div class="ns-node-sub">what they said before</div></div>
     </div>
-    <div style="font-size:1.5rem;color:#4a5a6a;flex-shrink:0;">→</div>
-    <div class="ns-node" style="flex-shrink:0;min-width:90px;"><div class="ns-node-title">Model</div></div>
-    <div style="font-size:1.5rem;color:#4a5a6a;flex-shrink:0;">→</div>
-    <div class="ns-node ns-node-green" style="flex-shrink:0;"><div class="ns-node-title">Good answer</div></div>
+    <!-- Arrow -->
+    <div style="display:flex;align-items:center;flex-shrink:0;padding:0 0.25rem;">
+      <div style="width:2px;background:#2698ba;height:70%;align-self:center;"></div>
+      <div style="font-size:1.4rem;color:#2698ba;line-height:1;">→</div>
+    </div>
+    <!-- Center: Model -->
+    <div style="display:flex;align-items:center;flex-shrink:0;">
+      <div class="ns-node ns-node-cyan" style="min-width:100px;text-align:center;">
+        <div class="ns-node-title" style="font-size:1rem;">Model</div>
+        <div class="ns-node-sub">LLM</div>
+      </div>
+    </div>
+    <!-- Arrow -->
+    <div style="display:flex;align-items:center;flex-shrink:0;padding:0 0.25rem;">
+      <div style="font-size:1.4rem;color:#4fc97e;line-height:1;">→</div>
+    </div>
+    <!-- Right: Good answer -->
+    <div style="display:flex;align-items:center;flex-shrink:0;">
+      <div class="ns-node ns-node-green" style="min-width:110px;text-align:center;">
+        <div class="ns-node-title" style="font-size:1rem;">Good answer</div>
+        <div class="ns-node-sub">grounded, relevant</div>
+      </div>
+    </div>
   </div>
 </div>
 

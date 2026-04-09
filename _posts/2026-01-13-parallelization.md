@@ -1019,7 +1019,7 @@ if __name__ == "__main__":
     <span class="ns-diagram-label">LANGCHAIN PARALLEL DATA FLOW — one input, four simultaneous chains, one output</span>
     <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
   </div>
-  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;">
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:nowrap;">
     <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:140px;">
       <div class="ns-node-title">Topic String</div>
       <div class="ns-node-sub">"space exploration"</div>

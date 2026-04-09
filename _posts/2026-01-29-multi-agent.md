@@ -670,7 +670,7 @@ result = blog_creation_crew.kickoff()
     <span class="ns-diagram-label">CREWAI DATA FLOW — research output becomes writer input via context=[task]</span>
     <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
   </div>
-  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;">
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:nowrap;">
     <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:180px;"><div class="ns-node-title">Topic</div><div class="ns-node-sub">"Top 3 AI trends 2025"</div></div>
     <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
     <div class="ns-node ns-node-purple" style="flex-shrink:0;max-width:200px;"><div class="ns-node-title">Researcher Agent</div><div class="ns-node-sub">Senior Research Analyst · finds sources · summarizes trends</div></div>
