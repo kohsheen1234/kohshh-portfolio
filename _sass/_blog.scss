@@ -563,10 +563,33 @@
 .cb-lang        { flex: 1; text-align: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; }
 .cb-dots-spacer { width: 3rem; flex-shrink: 0; }
 
-// ── Line number markup ───────────────────────────────────────────────────────
-.cb-line  { display: flex; min-height: 1.7em; }
-.cb-lnum  { color: rgba(255,255,255,0.2); font-size: 0.75rem; user-select: none; min-width: 2.5ch; text-align: right; flex-shrink: 0; padding-right: 1.4rem; line-height: 1.7; }
-.cb-lcode { flex: 1; min-width: 0; }
+// ── Line number column (separate element, never touches code HTML) ────────────
+.cb-code-area {
+  display: flex;
+  overflow-x: auto;  // whole block scrolls horizontally as one unit
+}
+
+.cb-line-nums {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  position: sticky;
+  left: 0;            // stays pinned when scrolling right
+  z-index: 1;
+  padding: 1rem 0.9rem 1rem 1.1rem;
+  background: #0e0e0e;  // same as code bg — hides content scrolling behind it
+  border-right: 1px solid rgba(255,255,255,0.06);
+  user-select: none;
+
+  span {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.22);
+    display: block;
+  }
+}
 
 // ── Code block container ─────────────────────────────────────────────────────
 .post-content {
@@ -586,7 +609,9 @@
       border-radius: 0 !important;
       padding: 1rem 1.25rem 1.1rem !important;
       margin: 0 !important;
-      overflow-x: auto;
+      overflow-x: visible;  // parent .cb-code-area handles scroll
+      flex: 1;
+      min-width: 0;
 
       code {
         background: transparent !important;

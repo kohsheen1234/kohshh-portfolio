@@ -190,13 +190,13 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
-// ── VS Code-style code block: traffic-light header + line numbers ─────────────
+// ── VS Code-style code blocks: traffic-light header + safe line numbers ───────
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll(
     '.post-content figure.highlight, .post-content div.highlight'
   ).forEach(function (block) {
 
-    // 1. Detect language
+    // 1. Detect language from code element class
     var lang = '';
     var codeEl = block.querySelector('code');
     if (codeEl) {
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (m) lang = m[1];
     }
 
-    // 2. Traffic-light header
+    // 2. Build traffic-light header
     var hdr = document.createElement('div');
     hdr.className = 'cb-header';
     hdr.innerHTML =
@@ -217,19 +217,31 @@ document.addEventListener('DOMContentLoaded', function () {
       '<div class="cb-dots-spacer"></div>';
     block.insertBefore(hdr, block.firstChild);
 
-    // 3. Line numbers — split innerHTML on \n, wrap each in .cb-line
-    var pre   = block.querySelector('pre');
+    // 3. Safe line numbers — count from textContent, NEVER touch innerHTML
+    var pre = block.querySelector('pre');
     if (!pre) return;
-    var inner = pre.querySelector('code') || pre;
-    var html  = inner.innerHTML;
-    if (html.endsWith('\n')) html = html.slice(0, -1);
+    var inner  = pre.querySelector('code') || pre;
+    var text   = inner.textContent || '';
+    var lines  = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+    var count  = Math.max(lines.length, 1);
 
-    inner.innerHTML = html.split('\n').map(function (line, i) {
-      return '<span class="cb-line">' +
-               '<span class="cb-lnum">' + (i + 1) + '</span>' +
-               '<span class="cb-lcode">' + line + '</span>' +
-             '</span>';
-    }).join('\n');
+    // Build a separate number column — placed BEFORE pre, not inside it
+    var nums = document.createElement('div');
+    nums.className = 'cb-line-nums';
+    nums.setAttribute('aria-hidden', 'true');
+    for (var i = 1; i <= count; i++) {
+      var sp = document.createElement('span');
+      sp.textContent = i;
+      nums.appendChild(sp);
+    }
+
+    // Wrap [nums | pre] in a flex row so they scroll as one unit
+    var area = document.createElement('div');
+    area.className = 'cb-code-area';
+    pre.parentNode.insertBefore(area, pre);
+    area.appendChild(nums);
+    area.appendChild(pre);
   });
 });
 </script>
