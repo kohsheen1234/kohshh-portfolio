@@ -14,6 +14,14 @@ mermaid:
 
 ## The Problem with First Drafts
 
+<div class="concept-box">
+  <span class="concept-label">Before You Start — Key Terms Explained</span>
+  <p><strong>System prompt:</strong> A set of instructions sent to the LLM <em>before</em> the user's message. It defines the AI's persona, rules, and behavior. e.g., "You are a senior code reviewer. Be critical and look for bugs." The same model behaves very differently with different system prompts.</p>
+  <p style="margin-top:0.5rem"><strong>Feedback loop:</strong> A cycle where the output of one step becomes input to the same (or earlier) step. Reflection is a feedback loop: generate → evaluate → the evaluation feeds back into the generation.</p>
+  <p style="margin-top:0.5rem"><strong>Deterministic vs probabilistic:</strong> Deterministic means the same input always gives the same output (like a calculator). Probabilistic means the same input might give different outputs (like an LLM). Temperature 0 makes LLMs more deterministic but never fully so.</p>
+  <p style="margin-top:0.5rem"><strong>Iteration:</strong> One complete cycle of "try → evaluate → try again." Three iterations means the agent attempted to improve the output three times.</p>
+</div>
+
 In [Chapter 1](/kohshh-portfolio/blog/2026/prompt-chaining/) through [Chapter 3](/kohshh-portfolio/blog/2026/parallelization/), every pattern shares one assumption: once a step produces output, that output moves forward. The chain trusts it. The router acts on it. The synthesizer combines it.
 
 But what if the output is wrong?
@@ -357,17 +365,30 @@ There are two ways to implement reflection. The choice changes both the quality 
 
 A single agent generates output, then switches roles to critique it.
 
-```mermaid
-graph LR
-    A([Task]) --> B[Agent — Generator role]
-    B -->|output| C[Same Agent — Critic role]
-    C -->|critique| B
-    C -->|approved| D([Output])
-    style A fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style B fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
-    style C fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
-    style D fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">SELF-REFLECTION — one agent, two system prompts, one loop</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;">
+    <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:120px;"><div class="ns-node-title">Task</div></div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-purple" style="flex-shrink:0;max-width:200px;">
+      <div class="ns-node-title">Same Agent — Generator</div>
+      <div class="ns-node-sub">system prompt: "write code"</div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-amber" style="flex-shrink:0;max-width:200px;">
+      <div class="ns-node-title">Same Agent — Critic</div>
+      <div class="ns-node-sub">system prompt: "review code"</div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div style="display:flex;flex-direction:column;gap:0.4rem;flex-shrink:0;">
+      <div class="ns-node ns-node-red"><div class="ns-node-title">Needs work → loops back</div></div>
+      <div class="ns-node ns-node-green"><div class="ns-node-title">Approved → Output</div></div>
+    </div>
+  </div>
+</div>
 
 **Simpler to implement.** One model, two system prompts. But the same model that generated the output is also evaluating it — it tends to be less critical of its own work.
 
@@ -375,21 +396,36 @@ graph LR
 
 Two distinct agents with separate roles and personas.
 
-```mermaid
-graph TD
-    A([Task]) --> B[Producer Agent]
-    B -->|draft| C[(Draft Output)]
-    C --> D[Critic Agent]
-    D -->|structured critique| E{Approved?}
-    E -->|No — iterate| B
-    E -->|Yes| F([Final Output])
-    style A fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style B fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style C fill:#1a1a2e,stroke:#333,color:#888
-    style D fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
-    style E fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
-    style F fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">PRODUCER-CRITIC — two separate agents, objective review</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.1rem 1.25rem;">
+    <div class="ns-node ns-node-cyan" style="max-width:200px;"><div class="ns-node-title">Task</div><div class="ns-node-sub">what needs to be created</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-purple" style="max-width:260px;"><div class="ns-node-title">Producer Agent</div><div class="ns-node-sub">generates: code, text, or plan — first draft</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node" style="max-width:220px;"><div class="ns-node-title">Draft Output</div><div class="ns-node-sub">passed to the critic for review</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-amber" style="max-width:260px;"><div class="ns-node-title">Critic Agent</div><div class="ns-node-sub">different system prompt · fresh perspective · finds issues</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-decision" style="max-width:180px;"><div class="ns-node-title">Approved?</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-branch-row" style="max-width:440px;">
+      <div class="ns-branch">
+        <span class="ns-label-red">No — iterate</span>
+        <div class="ns-arrow ns-arrow-red"></div>
+        <div class="ns-node ns-node-red"><div class="ns-node-title">Back to Producer</div><div class="ns-node-sub">critique used to improve next draft</div></div>
+      </div>
+      <div class="ns-branch">
+        <span class="ns-label-green">Yes</span>
+        <div class="ns-arrow ns-arrow-green"></div>
+        <div class="ns-node ns-node-green"><div class="ns-node-title">Final Output</div><div class="ns-node-sub">quality bar met</div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 **More powerful.** The Critic has a completely different system prompt — "You are a senior software engineer", "You are a meticulous fact-checker" — and approaches the output with a fresh lens. It doesn't have the generator's blind spots.
 
@@ -1055,23 +1091,36 @@ The model at iteration 2 sees the full thread and knows exactly what changed and
 
 ### Full Reflection Data Flow
 
-```mermaid
-graph TD
-    A([task_prompt]) --> B[message_history]
-    B --> C[llm.invoke — Generator role]
-    C --> D[current_code]
-    D --> B
-    D --> E[reflector_messages]
-    E --> F[llm.invoke — Critic role]
-    F --> G{CODE_IS_PERFECT?}
-    G -->|No| H[Add critique to message_history]
-    H --> B
-    G -->|Yes| I([Final output])
-    style C fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style F fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
-    style G fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
-    style I fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">LANGCHAIN REFLECTION DATA FLOW — how code and critique pass between roles</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.1rem 1.25rem;">
+    <div class="ns-node ns-node-cyan" style="max-width:280px;"><div class="ns-node-title">task_prompt + message_history</div><div class="ns-node-sub">growing conversation thread — task, code, critique, refinement</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-purple" style="max-width:260px;"><div class="ns-node-title">LLM — Generator Role</div><div class="ns-node-sub">writes or improves the code</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node" style="max-width:220px;"><div class="ns-node-title">current_code</div><div class="ns-node-sub">added back to message_history for context</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-amber" style="max-width:260px;"><div class="ns-node-title">LLM — Critic Role</div><div class="ns-node-sub">different system prompt · reviews code · produces critique</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-decision" style="max-width:220px;"><div class="ns-node-title">CODE_IS_PERFECT?</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-branch-row" style="max-width:440px;">
+      <div class="ns-branch">
+        <span class="ns-label-red">No — has issues</span>
+        <div class="ns-arrow ns-arrow-red"></div>
+        <div class="ns-node ns-node-red"><div class="ns-node-title">Add critique to history</div><div class="ns-node-sub">generator reads it on next iteration</div></div>
+      </div>
+      <div class="ns-branch">
+        <span class="ns-label-green">Yes — approved</span>
+        <div class="ns-arrow ns-arrow-green"></div>
+        <div class="ns-node ns-node-green"><div class="ns-node-title">Final Output</div><div class="ns-node-sub">loop exits</div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 ## The Google ADK Way: Generator-Critic
@@ -1155,19 +1204,25 @@ Session State Evolution:
 
 ### ADK Orchestration
 
-```mermaid
-graph TD
-    U([User Input]) --> SEQ[SequentialAgent]
-    SEQ --> GEN[DraftWriter LlmAgent]
-    GEN -->|output_key: draft_text| STATE[(Session State)]
-    STATE -->|fills draft_text placeholder| REV[FactChecker LlmAgent]
-    REV -->|output_key: review_output| STATE
-    STATE -->|status + reasoning| OUT([Critique Result])
-    style GEN fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style STATE fill:#1a1a2e,stroke:#e6a817,color:#e0e0e0
-    style REV fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
-    style OUT fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">ADK REFLECTION — SequentialAgent passing state between writer and checker</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.1rem 1.25rem;">
+    <div class="ns-node ns-node-cyan" style="max-width:200px;"><div class="ns-node-title">User Input</div><div class="ns-node-sub">e.g. "Write a paragraph about Mars"</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node" style="max-width:240px;"><div class="ns-node-title">SequentialAgent</div><div class="ns-node-sub">runs DraftWriter first, then FactChecker</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-purple" style="max-width:260px;"><div class="ns-node-title">DraftWriter LlmAgent</div><div class="ns-node-sub">writes paragraph · output_key: "draft_text" → saved to Session State</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-amber" style="max-width:260px;"><div class="ns-node-title">Session State</div><div class="ns-node-sub">shared memory between agents · FactChecker reads draft_text from here</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-cyan" style="max-width:260px;"><div class="ns-node-title">FactChecker LlmAgent</div><div class="ns-node-sub">reads draft_text · outputs: status "ACCURATE" or "INACCURATE" + reasoning</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-green" style="max-width:240px;"><div class="ns-node-title">Critique Result</div><div class="ns-node-sub">status + reasoning saved to review_output key</div></div>
+  </div>
+</div>
 
 
 ## Side by Side: LangChain vs ADK

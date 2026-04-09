@@ -14,6 +14,15 @@ mermaid:
 
 ## The Problem with Waiting
 
+<div class="concept-box">
+  <span class="concept-label">Before You Start — Key Terms Explained</span>
+  <p><strong>Latency:</strong> The time it takes for a response to arrive. If an API takes 2 seconds to respond, its latency is 2 seconds. In agents, total latency = sum of all sequential steps. Parallelization reduces this.</p>
+  <p style="margin-top:0.5rem"><strong>I/O-bound vs CPU-bound:</strong> "I/O bound" means the code spends most of its time <em>waiting</em> for input/output (network responses, disk reads). "CPU bound" means it's actively computing. Async (asyncio) helps I/O-bound tasks — it's useless for CPU-bound work.</p>
+  <p style="margin-top:0.5rem"><strong>async/await:</strong> Python keywords for writing code that can pause while waiting (e.g., for an API response) and let other code run in the meantime. <code>async def</code> marks a function as async. <code>await</code> pauses that function until a result is ready. This is NOT the same as running on multiple CPU cores.</p>
+  <p style="margin-top:0.5rem"><strong>Event loop:</strong> The engine that powers asyncio. It keeps a list of tasks, runs one until it hits an <code>await</code> (waiting point), then switches to another task. It's like a chef managing multiple dishes — not cooking two things simultaneously, but switching attention efficiently.</p>
+  <p style="margin-top:0.5rem"><strong>GIL (Global Interpreter Lock):</strong> A Python rule that only allows one thread to execute Python code at a time. This is why Python threads don't give true CPU parallelism. But for I/O-bound work (like LLM API calls), the GIL barely matters because the thread is just <em>waiting</em>, not executing.</p>
+</div>
+
 In [Chapter 1](/kohshh-portfolio/blog/2026/prompt-chaining/) we chained steps sequentially. In [Chapter 2](/kohshh-portfolio/blog/2026/routing/) we added decision-making. Both assume the same thing: **one step runs, finishes, then the next begins**.
 
 That's the right model when each step genuinely needs the previous step's output. But often, it isn't necessary — it's just the default.
@@ -1005,25 +1014,41 @@ if __name__ == "__main__":
 
 ### Full Data Flow
 
-```mermaid
-graph LR
-    A["topic string"] -->|fan-out| B[RunnableParallel]
-    B --> C[summarize_chain]
-    B --> D[questions_chain]
-    B --> E[terms_chain]
-    B --> F[RunnablePassthrough]
-    C --> G["dict: {summary, questions, key_terms, topic}"]
-    D --> G
-    E --> G
-    F --> G
-    G --> H[synthesis_prompt]
-    H --> I[LLM]
-    I --> J[StrOutputParser]
-    J --> K["final string output"]
-    style B fill:#1a1a2e,stroke:#2698ba,color:#e0e0e0
-    style G fill:#1a1a2e,stroke:#c97af2,color:#e0e0e0
-    style K fill:#1a1a2e,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">LANGCHAIN PARALLEL DATA FLOW — one input, four simultaneous chains, one output</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;">
+    <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:140px;">
+      <div class="ns-node-title">Topic String</div>
+      <div class="ns-node-sub">"space exploration"</div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-purple" style="flex-shrink:0;max-width:160px;">
+      <div class="ns-node-title">RunnableParallel</div>
+      <div class="ns-node-sub">fans out to all chains at once</div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div style="display:flex;flex-direction:column;gap:0.4rem;flex:1;min-width:140px;">
+      <div class="ns-node"><div class="ns-node-title">summarize_chain</div></div>
+      <div class="ns-node"><div class="ns-node-title">questions_chain</div></div>
+      <div class="ns-node"><div class="ns-node-title">terms_chain</div></div>
+      <div class="ns-node ns-node-dim"><div class="ns-node-title">RunnablePassthrough</div><div class="ns-node-sub">passes original topic through</div></div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-amber" style="flex-shrink:0;max-width:160px;">
+      <div class="ns-node-title">Merged Dict</div>
+      <div class="ns-node-sub">summary, questions, key_terms, topic</div>
+    </div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div style="display:flex;flex-direction:column;gap:0.4rem;flex-shrink:0;min-width:120px;">
+      <div class="ns-node"><div class="ns-node-title">synthesis_prompt</div></div>
+      <div class="ns-node"><div class="ns-node-title">LLM</div></div>
+      <div class="ns-node ns-node-green"><div class="ns-node-title">Final Output</div></div>
+    </div>
+  </div>
+</div>
 
 
 ## The Google ADK Way: `ParallelAgent`

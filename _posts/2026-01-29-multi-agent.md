@@ -14,6 +14,14 @@ mermaid:
 
 ## Why One Agent Isn't Enough
 
+<div class="concept-box">
+  <span class="concept-label">Before You Start — Key Terms Explained</span>
+  <p><strong>Specialization:</strong> Focusing on a narrow domain to become very good at it. A specialist cardiologist is better at heart problems than a general practitioner, even though the GP knows more topics overall. The same principle applies to AI agents.</p>
+  <p style="margin-top:0.5rem"><strong>Orchestrator:</strong> The agent that manages and coordinates other agents. It receives the high-level goal, decomposes it, assigns sub-tasks, and aggregates results. Think of it as the project manager in a team.</p>
+  <p style="margin-top:0.5rem"><strong>Sequential vs parallel:</strong> Sequential = one after another (like a queue at a counter). Parallel = simultaneously (like multiple checkout lanes open at once). Sequential is simpler to reason about; parallel is faster for independent tasks.</p>
+  <p style="margin-top:0.5rem"><strong>Why does more roles = worse LLM performance?</strong> When you stuff too many instructions into one system prompt ("be a researcher AND a writer AND a fact-checker"), the model splits its "attention" across all goals. It tends to do each poorly. Separate, focused system prompts produce better results for each role.</p>
+</div>
+
 Every chapter up to now has been about making a single agent smarter — chain it, route it, run it in parallel, give it tools, make it reflect, make it plan. All of these improve a single agent's performance.
 
 But there's a ceiling.
@@ -657,17 +665,23 @@ result = blog_creation_crew.kickoff()
 
 ### CrewAI Data Flow
 
-```mermaid
-graph LR
-    G([AI Trends Topic]) --> R[Researcher Agent]
-    R -->|research_task output| STATE[(Crew Context)]
-    STATE -->|context passed| W[Writer Agent]
-    W --> OUT([500-word Blog Post])
-    style R   fill:#141b2d,stroke:#2698ba,color:#e0e0e0
-    style W   fill:#141b2d,stroke:#c97af2,color:#e0e0e0
-    style STATE fill:#141b2d,stroke:#e6a817,color:#e0e0e0
-    style OUT fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">CREWAI DATA FLOW — research output becomes writer input via context=[task]</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="flex-direction:row;align-items:center;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;">
+    <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:180px;"><div class="ns-node-title">Topic</div><div class="ns-node-sub">"Top 3 AI trends 2025"</div></div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-purple" style="flex-shrink:0;max-width:200px;"><div class="ns-node-title">Researcher Agent</div><div class="ns-node-sub">Senior Research Analyst · finds sources · summarizes trends</div></div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-amber" style="flex-shrink:0;max-width:200px;"><div class="ns-node-title">Crew Context</div><div class="ns-node-sub">research output stored · context=[research_task] passes it automatically</div></div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-cyan" style="flex-shrink:0;max-width:200px;"><div class="ns-node-title">Writer Agent</div><div class="ns-node-sub">Technical Content Writer · sees research output · writes blog post</div></div>
+    <div style="color:#4a5a6a;font-size:1.2rem;">→</div>
+    <div class="ns-node ns-node-green" style="flex-shrink:0;max-width:180px;"><div class="ns-node-title">500-word Blog Post</div></div>
+  </div>
+</div>
 
 ---
 
@@ -714,14 +728,20 @@ assert task_doer.parent_agent == coordinator
 
 > **`sub_agents`** establishes the parent-child relationship. The coordinator's LLM reads both agents' descriptions and decides which to delegate to. The `parent_agent` attribute is set automatically by the ADK framework — you don't need to wire it manually.
 
-```mermaid
-graph TD
-    C[Coordinator LlmAgent] --> G[Greeter LlmAgent]
-    C --> T[TaskExecutor BaseAgent]
-    style C fill:#141b2d,stroke:#2698ba,color:#e0e0e0
-    style G fill:#141b2d,stroke:#c97af2,color:#e0e0e0
-    style T fill:#141b2d,stroke:#e6a817,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">ADK HIERARCHICAL AGENTS — parent delegates to children via sub_agents</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.1rem 1.25rem;">
+    <div class="ns-node ns-node-cyan" style="max-width:300px;"><div class="ns-node-title">Coordinator LlmAgent</div><div class="ns-node-sub">reads user query · decides which child to delegate to based on each agent's description</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-row" style="max-width:440px;">
+      <div class="ns-node ns-node-purple"><div class="ns-node-title">Greeter LlmAgent</div><div class="ns-node-sub">activated when greeting is needed · LLM-powered · uses Gemini</div></div>
+      <div class="ns-node ns-node-amber"><div class="ns-node-title">TaskExecutor BaseAgent</div><div class="ns-node-sub">custom logic · non-LLM · runs deterministic code</div></div>
+    </div>
+  </div>
+</div>
 
 ### 2. LoopAgent: Iterative Workflows
 
@@ -803,18 +823,30 @@ data_gatherer = ParallelAgent(
 
 > **`ParallelAgent`** fires both sub-agents concurrently. Each writes to a different `output_key` in session state — `weather_data` and `news_data` — with no conflict since the keys are distinct. After both complete, a downstream agent (or your application code) can read both from state.
 
-```mermaid
-graph TD
-    PA[ParallelAgent] --> WF[weather_fetcher]
-    PA --> NF[news_fetcher]
-    WF -->|output_key: weather_data| ST[(Session State)]
-    NF -->|output_key: news_data| ST
-    ST --> SY([Synthesizer reads both])
-    style PA fill:#141b2d,stroke:#2698ba,color:#e0e0e0
-    style WF fill:#141b2d,stroke:#c97af2,color:#e0e0e0
-    style NF fill:#141b2d,stroke:#e6a817,color:#e0e0e0
-    style ST fill:#141b2d,stroke:#4a5a6a,color:#e0e0e0
-```
+<div class="ns-diagram">
+  <div class="ns-diagram-header">
+    <span class="ns-diagram-label">ADK PARALLEL AGENT — two workers fire simultaneously, results in shared state</span>
+    <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"/></svg> Expand</button>
+  </div>
+  <div class="ns-diagram-body" style="padding:1.1rem 1.25rem;">
+    <div class="ns-node ns-node-purple" style="max-width:260px;"><div class="ns-node-title">ParallelAgent</div><div class="ns-node-sub">fires both sub-agents at the exact same time — doesn't wait for one before starting the other</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-row" style="max-width:440px;">
+      <div class="ns-node ns-node-cyan">
+        <div class="ns-node-title">weather_fetcher</div>
+        <div class="ns-node-sub">output_key: "weather_data" → written to Session State</div>
+      </div>
+      <div class="ns-node ns-node-amber">
+        <div class="ns-node-title">news_fetcher</div>
+        <div class="ns-node-sub">output_key: "news_data" → written to Session State</div>
+      </div>
+    </div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node" style="max-width:300px;"><div class="ns-node-title">Session State</div><div class="ns-node-sub">shared key-value store · both results land here · no conflict since keys are different</div></div>
+    <div class="ns-arrow"></div>
+    <div class="ns-node ns-node-green" style="max-width:260px;"><div class="ns-node-title">Synthesizer reads both</div><div class="ns-node-sub">downstream agent combines weather_data + news_data into final response</div></div>
+  </div>
+</div>
 
 ### 5. Agent as a Tool
 

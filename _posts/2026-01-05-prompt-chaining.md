@@ -14,6 +14,77 @@ mermaid:
 
 ## The Problem with One Big Prompt
 
+<div class="concept-box">
+  <span class="concept-label">Before You Start — Key Terms Explained</span>
+  <p><strong>LLM (Large Language Model):</strong> A type of AI trained on enormous amounts of text (books, websites, code) that can generate human-like text in response to prompts. GPT-4, Gemini, Claude — these are all LLMs.</p>
+  <p style="margin-top:0.5rem"><strong>Prompt:</strong> The text you send to an LLM. Think of it as your question or instruction. The quality of the prompt directly affects the quality of the response.</p>
+  <p style="margin-top:0.5rem"><strong>Context window:</strong> The LLM's "working memory" — the maximum amount of text it can see at once. If you send a very long conversation, the model may "forget" things from early on because they fell outside the window.</p>
+  <p style="margin-top:0.5rem"><strong>Hallucination:</strong> When an LLM confidently states something false. It doesn't know that it's wrong — it's just predicting plausible-sounding text based on patterns it learned. This is a core reliability problem that prompt chaining helps solve.</p>
+  <p style="margin-top:0.5rem"><strong>Temperature:</strong> A setting (0 to 1) that controls how "creative" vs "predictable" the output is. Temperature 0 = always picks the most likely next word (deterministic). Temperature 1 = more random and creative. For factual tasks, use 0. For brainstorming, use higher values.</p>
+  <p style="margin-top:0.5rem"><strong>API (Application Programming Interface):</strong> A way for programs to talk to each other. When you use LangChain to call GPT-4, it's sending your prompt to OpenAI's API over the internet and getting a response back.</p>
+</div>
+
+<style>
+/* Beginner-friendly concept callout boxes */
+.concept-box {
+  border-left: 3px solid #4fc97e;
+  background: rgba(79,201,126,0.06);
+  border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.25rem 0;
+}
+.concept-box .concept-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #4fc97e;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: monospace;
+}
+.concept-box p { margin: 0; font-size: 0.88rem; line-height: 1.65; color: var(--global-text-color); }
+.concept-box code { font-size: 0.82em; }
+
+.analogy-box {
+  border-left: 3px solid #e6a817;
+  background: rgba(230,168,23,0.05);
+  border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.25rem 0;
+}
+.analogy-box .analogy-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e6a817;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: monospace;
+}
+.analogy-box p { margin: 0; font-size: 0.88rem; line-height: 1.65; color: var(--global-text-color); font-style: italic; }
+
+.warning-box {
+  border-left: 3px solid #ff6b6b;
+  background: rgba(255,107,107,0.05);
+  border-radius: 0 8px 8px 0;
+  padding: 0.85rem 1.1rem;
+  margin: 1.25rem 0;
+}
+.warning-box .warning-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff6b6b;
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: monospace;
+}
+.warning-box p { margin: 0; font-size: 0.88rem; line-height: 1.65; color: var(--global-text-color); }
+</style>
+
 Imagine asking a single intern to — in one go — read a 50-page report, extract key data, spot trends, write a summary, *and* draft an email to the CEO. All at once. No notes allowed.
 
 They'd probably do a few things okay and quietly drop the rest.
