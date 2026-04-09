@@ -1538,3 +1538,17 @@ html:not([data-theme-setting="dark"]) {
   .analogy-box  { background: rgba(230,168,23,0.05); }
   .warning-box  { background: rgba(255,107,107,0.05); }
 }
+
+// ── Prevent inline code/pre inside custom cards from overflowing ─────────────
+// Applies to any dark code snippet box inside card components across all blogs
+.mem-backend-code,
+.plan-matrix-cell code,
+.mas-model-content code,
+[class*="-card"] code,
+[class*="-backend"] code,
+[class*="-panel"] code {
+  overflow-x: auto;
+  white-space: pre;
+  display: block;
+  max-width: 100%;
+}
