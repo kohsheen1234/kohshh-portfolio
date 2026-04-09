@@ -368,13 +368,13 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script> <script>
-// ── VS Code-style code block: traffic-light header + line numbers ─────────────
+// ── VS Code-style code blocks: traffic-light header + safe line numbers ───────
 document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll(
     '.post-content figure.highlight, .post-content div.highlight'
   ).forEach(function (block) {
 
-    // 1. Detect language
+    // 1. Detect language from code element class
     var lang = '';
     var codeEl = block.querySelector('code');
     if (codeEl) {
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (m) lang = m[1];
     }
 
-    // 2. Traffic-light header
+    // 2. Build traffic-light header
     var hdr = document.createElement('div');
     hdr.className = 'cb-header';
     hdr.innerHTML =
@@ -395,19 +395,31 @@ document.addEventListener('DOMContentLoaded', function () {
       '<div class="cb-dots-spacer"></div>';
     block.insertBefore(hdr, block.firstChild);
 
-    // 3. Line numbers — split innerHTML on \n, wrap each in .cb-line
-    var pre   = block.querySelector('pre');
+    // 3. Safe line numbers — count from textContent, NEVER touch innerHTML
+    var pre = block.querySelector('pre');
     if (!pre) return;
-    var inner = pre.querySelector('code') || pre;
-    var html  = inner.innerHTML;
-    if (html.endsWith('\n')) html = html.slice(0, -1);
+    var inner  = pre.querySelector('code') || pre;
+    var text   = inner.textContent || '';
+    var lines  = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+    var count  = Math.max(lines.length, 1);
 
-    inner.innerHTML = html.split('\n').map(function (line, i) {
-      return '<span class="cb-line">' +
-               '<span class="cb-lnum">' + (i + 1) + '</span>' +
-               '<span class="cb-lcode">' + line + '</span>' +
-             '</span>';
-    }).join('\n');
+    // Build a separate number column — placed BEFORE pre, not inside it
+    var nums = document.createElement('div');
+    nums.className = 'cb-line-nums';
+    nums.setAttribute('aria-hidden', 'true');
+    for (var i = 1; i <= count; i++) {
+      var sp = document.createElement('span');
+      sp.textContent = i;
+      nums.appendChild(sp);
+    }
+
+    // Wrap [nums | pre] in a flex row so they scroll as one unit
+    var area = document.createElement('div');
+    area.className = 'cb-code-area';
+    pre.parentNode.insertBefore(area, pre);
+    area.appendChild(nums);
+    area.appendChild(pre);
   });
 });
 </script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
