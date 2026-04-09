@@ -51,21 +51,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
           },
-        },{id: "dropdown-bookshelf",
-              title: "bookshelf",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/kohshh-portfolio/books/";
-              },
-            },{id: "dropdown-blog",
-              title: "blog",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/kohshh-portfolio/blog/";
-              },
-            },{id: "post-chapter-8-memory-management",
+        },{id: "post-chapter-8-memory-management",
         
           title: "Chapter 8: Memory Management",
         
