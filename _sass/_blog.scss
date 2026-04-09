@@ -542,39 +542,57 @@
   border: none !important;
 }
 
-// ── Aesthetic code blocks ────────────────────────────────────────────────────
+// ── VS Code-style code blocks ────────────────────────────────────────────────
+// Traffic-light header, line numbers, dark background, VS Code Dark+ syntax colors
+
+// ── Traffic-light header ─────────────────────────────────────────────────────
+.cb-header {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px 10px 0 0;
+  flex-shrink: 0;
+}
+.cb-dots        { display: flex; gap: 0.38rem; flex-shrink: 0; width: 3rem; }
+.cb-dot         { width: 12px; height: 12px; border-radius: 50%; }
+.cb-red         { background: #ff5f56; }
+.cb-yellow      { background: #ffbd2e; }
+.cb-green       { background: #27c93f; }
+.cb-lang        { flex: 1; text-align: center; font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.7rem; color: rgba(255,255,255,0.35); letter-spacing: 0.08em; }
+.cb-dots-spacer { width: 3rem; flex-shrink: 0; }
+
+// ── Line number markup ───────────────────────────────────────────────────────
+.cb-line  { display: flex; min-height: 1.7em; }
+.cb-lnum  { color: rgba(255,255,255,0.2); font-size: 0.75rem; user-select: none; min-width: 2.5ch; text-align: right; flex-shrink: 0; padding-right: 1.4rem; line-height: 1.7; }
+.cb-lcode { flex: 1; min-width: 0; }
+
+// ── Code block container ─────────────────────────────────────────────────────
 .post-content {
 
-  // Fenced + highlighted blocks (Jekyll wraps in figure.highlight or div.highlight)
   figure.highlight,
   div.highlight {
-    background: #080808;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: #0e0e0e;
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
-    overflow-x: auto; overflow-y: hidden;
-    margin: 1.4rem 0;
-    position: relative;
+    overflow: hidden;
+    margin: 1.5rem 0;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #2698ba 0%, #c97af2 100%);
-    }
+    &::before { display: none !important; }  // remove gradient — header replaces it
 
     pre {
       background: transparent !important;
       border-radius: 0 !important;
-      padding: 1.3rem 1.4rem 1.2rem !important;
+      padding: 1rem 1.25rem 1.1rem !important;
       margin: 0 !important;
       overflow-x: auto;
 
       code {
         background: transparent !important;
-        color: #cdd6f4 !important;
-        font-size: 0.8rem !important;
-        line-height: 1.72 !important;
+        color: #d4d4d4 !important;
+        font-size: 0.79rem !important;
+        line-height: 1.7 !important;
         font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, 'Cascadia Code', monospace !important;
         border: none !important;
         padding: 0 !important;
@@ -583,34 +601,49 @@
     }
   }
 
-  // Plain pre without a .highlight wrapper
   pre:not(figure.highlight pre):not(div.highlight pre) {
-    background: #080808 !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    background: #0e0e0e !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
     border-radius: 10px !important;
-    padding: 1.3rem 1.4rem !important;
-    margin: 1.4rem 0 !important;
+    padding: 1rem 1.25rem !important;
+    margin: 1.5rem 0 !important;
     overflow-x: auto;
-    position: relative;
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #2698ba 0%, #c97af2 100%);
-    }
+    &::before { display: none !important; }
 
     code {
       background: transparent !important;
-      color: #cdd6f4 !important;
-      font-size: 0.8rem !important;
-      line-height: 1.72 !important;
+      color: #d4d4d4 !important;
+      font-size: 0.79rem !important;
+      line-height: 1.7 !important;
       font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace !important;
       border: none !important;
       padding: 0 !important;
     }
   }
+
+  // ── VS Code Dark+ syntax colors (Rouge classes) ───────────────────────────
+  // Keywords: import, class, def, return, if, else, for, while, async, await
+  .k, .kn, .kd, .kc, .kr, .kt, .ow { color: #4ec9b0 !important; }   // teal
+  // Class / function names
+  .nc, .nf, .fm { color: #dcdcaa !important; }                         // yellow-gold
+  // Built-ins, self, None, True, False
+  .nb, .bp, .kp { color: #9cdcfe !important; }                         // light blue
+  // Strings
+  .s, .s1, .s2, .sa, .sb, .sc, .sd, .se, .sh, .si, .sx, .sr, .ss { color: #ce9178 !important; } // orange
+  // Comments
+  .c, .c1, .cm, .cp, .cs { color: #6a9955 !important; font-style: italic; }  // green
+  // Numbers
+  .m, .mi, .mf, .mh, .mo { color: #b5cea8 !important; }               // light green
+  // Operators, punctuation
+  .o, .ow { color: #d4d4d4 !important; }
+  // Decorators
+  .nd { color: #dcdcaa !important; }
+  // Type names / type hints
+  .n { color: #d4d4d4 !important; }
+  // Namespace / module names
+  .nn { color: #4ec9b0 !important; }
+  // Return type arrows, special operators
+  .p { color: #d4d4d4 !important; }
 
   // Inline code (backtick `code`)
   code:not(pre code) {
