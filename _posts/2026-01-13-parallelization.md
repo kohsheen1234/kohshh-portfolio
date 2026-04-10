@@ -45,6 +45,16 @@ Now think about it differently. News search doesn't need stock data to start. So
 
 That's **parallelization**: identify the independent tasks, fire them concurrently, wait for everything to land, then continue.
 
+**The fundamental principle: independence.** Two tasks are "independent" if neither one needs the other's result to start. In the company research example, "fetch stock data" doesn't need "search recent news" to finish first — they can run simultaneously. But "synthesize all findings" *does* need all four lookups to finish — it can only run after they all complete.
+
+**The speed formula.** For a set of N independent tasks each taking time T₁, T₂, ..., Tₙ:
+- Sequential time = T₁ + T₂ + ... + Tₙ (you wait for each)
+- Parallel time = max(T₁, T₂, ..., Tₙ) + T_synthesis (you wait for the slowest)
+
+This is why parallelization is most valuable when tasks have *similar* latencies. If you have three tasks that each take 2 seconds, sequential takes 6 seconds, parallel takes 2 seconds — a 3× speedup. If one task takes 10 seconds and two take 0.1 seconds, parallel barely helps because you're dominated by the slow task regardless.
+
+**Where the time goes in AI systems.** In LLM-based agents, almost all the time is spent waiting for API responses. The Python code runs in microseconds. The network round-trip to the LLM API takes 1-5 seconds. This is called "I/O-bound" work — your program is mostly waiting for input/output, not actively computing. This is the ideal scenario for parallelization, because while your program is waiting for API response A, it can fire off requests for B and C simultaneously.
+
 
 ## The Core Concept
 
@@ -552,6 +562,50 @@ This means:
 | Reading many files | **Yes** — disk I/O has wait time |
 
 For agentic AI — where tasks are overwhelmingly LLM API calls and web requests — **asyncio is exactly the right tool**. The Python GIL (Global Interpreter Lock) is largely irrelevant here because the threads aren't fighting for CPU; they're waiting for network.
+
+### asyncio Explained: The Single-Thread Concurrency Model
+
+`asyncio` is Python's library for writing concurrent code using the `async`/`await` syntax. Understanding it properly requires understanding a key concept: **the event loop**.
+
+**What is the event loop?** The event loop is a scheduler — a program that maintains a queue of tasks and decides which one to run next. It's running on a single thread, meaning there's no true parallelism at the CPU level. Instead, it exploits the fact that most I/O operations (network requests, file reads) involve *waiting* — and while you're waiting, the CPU could be doing something else.
+
+Here's the step-by-step execution model:
+
+1. Your `main()` function calls `await asyncio.gather(task_A(), task_B(), task_C())`.
+2. The event loop starts `task_A`. `task_A` sends an HTTP request to the LLM API and then hits `await response` — a waiting point.
+3. Since `task_A` is now waiting (not using the CPU), the event loop switches to `task_B`. Same thing happens — it sends its request and hits a waiting point.
+4. Same for `task_C`. All three requests are now "in flight" over the network simultaneously.
+5. Eventually, the LLM API responds to one of them. The event loop wakes up that task, it processes the response, and continues.
+6. When all three tasks complete, `asyncio.gather` collects their results and returns.
+
+**The `async def` keyword.** When you write `async def run_query(text)`, you're declaring that this function is a *coroutine* — a function that can be paused and resumed by the event loop. Without `async def`, you can't use `await` inside the function.
+
+**The `await` keyword.** `await` suspends the current coroutine and yields control back to the event loop. The event loop is free to run another coroutine while this one is waiting. Think of `await` as: "I'm going to wait for this — while I wait, feel free to do other things."
+
+**`asyncio.gather()` vs running tasks sequentially.** Without `gather`:
+```python
+result_A = await run_query(text_A)  # wait for A to finish
+result_B = await run_query(text_B)  # only then start B
+result_C = await run_query(text_C)  # only then start C
+```
+Total time: T_A + T_B + T_C.
+
+With `gather`:
+```python
+result_A, result_B, result_C = await asyncio.gather(
+    run_query(text_A),
+    run_query(text_B),
+    run_query(text_C)
+)
+```
+Total time: max(T_A, T_B, T_C).
+
+For LLM API calls that each take ~2 seconds, sequential takes ~6 seconds. Parallel takes ~2 seconds. Same results, 3× faster.
+
+**The `asyncio.run()` entry point.** Python scripts are synchronous by default — they don't have an event loop running. `asyncio.run(main())` creates a new event loop, runs the `main()` coroutine to completion in that loop, and then closes the loop. This is always the pattern for running async code from a synchronous script's `if __name__ == "__main__"` block.
+
+**Common mistake: using regular `invoke` inside an async context.** If you call `chain.invoke()` (the synchronous version) inside an async function, it *blocks* the event loop for the entire duration of the API call. No other coroutine can run during that time. You've effectively serialized your "parallel" calls. Always use `chain.ainvoke()` (async version) inside `async def` functions.
+
 
 
 ## Watch It Run: A Live Demo

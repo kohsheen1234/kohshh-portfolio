@@ -30,7 +30,15 @@ LLMs make mistakes. They miss edge cases, hallucinate facts, generate code with 
 
 The fix is to add a feedback loop: **make the agent evaluate its own output before declaring it done**.
 
-That's reflection.
+That's **reflection** — one of the most powerful patterns in agentic AI.
+
+**The mechanism behind why it works.** When you give the LLM a different system prompt for the critique step — "You are a senior software engineer performing a meticulous code review" — you're not just changing words. You're changing the entire *context* in which the model generates its next tokens. The model has learned, from millions of examples of code reviews, what senior engineers look for: off-by-one errors, missing edge cases, documentation gaps, security vulnerabilities, inefficient algorithms. That behavioral pattern is encoded in the model's weights. The system prompt activates it.
+
+This is why the same model — using the exact same underlying neural network — can produce dramatically better results as a two-call system than as a single call: the critic's system prompt activates a different behavioral mode, one specifically trained to find problems, rather than the creator's mode that's trained to generate solutions. The bias switches from "make something plausible" to "find what's wrong with this."
+
+**Why self-review is cognitively difficult.** When you generate something, you've already committed to a mental model of how it works. Reviewing it immediately afterward, you tend to read what you *intended* to write rather than what you *actually* wrote. Your brain auto-corrects the errors before you consciously notice them. This is why writers are told to wait a day before editing — fresh eyes catch what tired eyes miss. The same phenomenon applies to LLMs: a separate "critic" call with a fresh context has no prior commitment to the generated output and approaches it with genuine scrutiny.
+
+**The feedback loop that matters.** What separates reflection from a simple two-step chain is the *iterative loop*. After the critic identifies problems and the producer corrects them, the *critic runs again* on the corrected output. This continues until the critic is satisfied or a maximum iteration limit is reached. Each iteration should produce a measurably better output — you can see this clearly in the quality chart below.
 
 
 ## What Reflection Is
@@ -359,7 +367,7 @@ The key difference from a simple chain: **the arrow goes backward**. Output beco
 
 ## Self-Reflection vs Producer-Critic
 
-There are two ways to implement reflection. The choice changes both the quality of the output and the architecture of the system.
+There are two ways to implement reflection. The choice changes both the quality of the output and the architecture of the system. Understanding when to choose each approach is as important as understanding how to implement them.
 
 ### Approach 1: Self-Reflection
 
@@ -1327,6 +1335,25 @@ Reflection is not free. Every iteration adds:
 .refl-summary-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; color: #c97af2; }
 </style>
 
+
+
+
+## Common Mistakes When Implementing Reflection
+
+**Mistake 1: No maximum iteration limit.**
+Without a `max_iterations` cap, a reflection loop can run indefinitely if the critic always finds something to improve. Always set a firm limit. Three iterations is usually enough for most tasks; five is the practical maximum before diminishing returns dominate.
+
+**Mistake 2: Vague critique criteria.**
+A critic system prompt that says "review the code for quality" will produce inconsistent, general feedback. Be specific: "Check for off-by-one errors, missing input validation, undocumented edge cases, and incorrect handling of empty inputs." Specific criteria produce actionable, concrete critiques that the producer can actually act on.
+
+**Mistake 3: Producer doesn't read the critique.**
+The producer's refinement prompt must explicitly include the critique and instruct the model to address every point. Simply passing "here's the critique, now rewrite" sometimes leads the model to make superficial changes while ignoring specific issues. Add: "Address each point in the critique above specifically, and explain what you changed."
+
+**Mistake 4: Not tracking which iteration produced which output.**
+When debugging, you need to know whether the quality improved with each iteration. Log the output and the critique at every step. This also helps you identify when to stop — sometimes the output peaks at iteration 2 and gets worse at iteration 3 (over-optimization is real).
+
+**Mistake 5: Using reflection for everything.**
+Reflection adds significant latency (multiple LLM calls) and cost. Don't use it for simple, low-stakes outputs. Use it when: (1) the output quality directly affects user experience, (2) the task involves verifiable correctness (code, factual content), or (3) the cost of a wrong answer is high.
 
 ## Key Takeaways
 

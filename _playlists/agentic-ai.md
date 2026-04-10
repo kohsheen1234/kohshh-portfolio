@@ -19,4 +19,20 @@ posts:
     title: "Chapter 7: Multi-Agent Collaboration"
   - url: /blog/2026/memory/
     title: "Chapter 8: Memory Management"
+  - url: /blog/2026/learning-adaptation/
+    title: "Chapter 9: Learning and Adaptation"
+  - url: /blog/2026/mcp/
+    title: "Chapter 10: Model Context Protocol (MCP)"
+  - url: /blog/2026/goal-setting-monitoring/
+    title: "Chapter 11: Goal Setting and Monitoring"
+  - url: /blog/2026/exception-handling/
+    title: "Chapter 12: Exception Handling and Recovery"
+  - url: /blog/2026/human-in-the-loop/
+    title: "Chapter 13: Human-in-the-Loop"
+  - url: /blog/2026/rag/
+    title: "Chapter 14: Knowledge Retrieval (RAG)"
+  - url: /blog/2026/a2a/
+    title: "Chapter 15: Inter-Agent Communication (A2A)"
+  - url: /blog/2026/resource-aware-optimization/
+    title: "Chapter 16: Resource-Aware Optimization"
 ---

@@ -24,7 +24,19 @@ mermaid:
 
 Every chapter up to now has been about making a single agent smarter — chain it, route it, run it in parallel, give it tools, make it reflect, make it plan. All of these improve a single agent's performance.
 
-But there's a ceiling.
+But there's a ceiling — and it's a hard one.
+
+The ceiling shows up in several distinct ways:
+
+**Knowledge breadth vs. depth.** A single agent trying to be a domain expert in multiple fields simultaneously is like a company that puts one person in charge of engineering, legal, marketing, and finance all at once. Each role gets diluted attention, and the person's expertise in any one domain never reaches the depth needed to excel.
+
+**System prompt dilution.** When you write a system prompt that tries to make one agent do many things — "You are a researcher AND a writer AND a code reviewer AND a fact-checker" — you're asking the model to activate multiple behavioral patterns simultaneously. These patterns often have conflicting heuristics. A researcher's instinct is to gather more information; a writer's instinct is to synthesize and move on. Held in tension within one agent, they produce mediocre results in both directions.
+
+**Context window saturation.** A complex multi-domain task accumulates a lot of context: research findings, intermediate drafts, tool outputs, conversation history. A single agent accumulates all of this in one context window, which fills up fast. Multiple specialized agents each have their own context window focused only on their domain.
+
+**Error propagation.** When a single agent makes a mistake early in a long task, that mistake often propagates through every subsequent step. In a multi-agent system, errors are isolated — a mistake by the Research Agent affects only the research phase, and the Writer Agent can still produce a good draft given the flawed research (though the final output will reflect the research quality).
+
+**The multi-agent solution** addresses all four of these ceilings simultaneously: specialization deepens expertise, dedicated context windows stay focused, errors are isolated, and coordination mechanisms ensure coherent final outputs.
 
 A single agent handling a complex research project needs to be: a domain expert, a search specialist, a statistical analyst, a fact-checker, and a polished writer — simultaneously. The more roles you pile onto one system prompt, the worse it performs at each of them.
 
@@ -930,6 +942,30 @@ artist_agent = LlmAgent(
 </style>
 
 ---
+
+## How Multi-Agent Communication Actually Works
+
+In both CrewAI and ADK, agents don't "talk to each other" directly — they communicate through shared data structures managed by the framework.
+
+**CrewAI: Task context as the communication channel.** When you write `context=[research_task]` in a writing task definition, CrewAI stores the research task's output after it completes. When the writing task runs, CrewAI injects that stored output into the writer agent's context. The writer doesn't know or care that a researcher ran before it — it just receives text in its context that says "here is the research that was done." This is called **indirect communication** — agents share information through a coordinator (CrewAI) rather than directly messaging each other.
+
+**ADK: Session state as the communication channel.** In ADK, agents communicate through `session.state` — a shared dictionary that all agents in a session can read from and write to. When `researcher_agent_1` finishes, its output is stored as `session.state["renewable_energy_result"]` (because `output_key="renewable_energy_result"` was set). When `synthesis_agent` runs, its instruction template includes `{renewable_energy_result}` — ADK automatically fills this from session state.
+
+**Why indirect communication is better than direct messaging.** Direct agent-to-agent messaging introduces tight coupling — agent A needs to know about agent B's interface, location, and availability. If B changes or fails, A breaks. Indirect communication through shared state decouples them — A writes to a named key, B reads from a named key, neither knows about the other. You can swap out A or B independently without changing the other. You can add a new agent C that also reads from the same key. You can replay any agent's behavior by pre-populating the key manually for debugging.
+
+**How the orchestrator decides which agent to call.** In ADK's hierarchical mode, the coordinator's LLM reads every sub-agent's `description` field and decides which one to invoke based on the user's request. This is the same mechanism as tool routing: the sub-agent's description is the "docstring" that the coordinator LLM reads to make its routing decision. Write sub-agent descriptions with the same precision you'd use for tool docstrings.
+
+## Common Mistakes When Building Multi-Agent Systems
+
+**Mistake 1: Over-specialization.** Creating 15 highly specialized agents when 3 would do. Each agent boundary adds communication overhead (API calls, context window usage, potential errors in handoffs). Start with fewer, broader agents and specialize only when a single agent clearly fails at a specific task.
+
+**Mistake 2: No shared vocabulary.** If the Research Agent produces "EV market growth: 40% YoY" and the Writer Agent expects a structured JSON report, the handoff fails. Define the exact format each agent should produce and each agent should expect. Use `expected_output` in CrewAI tasks or explicit instructions in ADK agents.
+
+**Mistake 3: Parallel agents with conflicting writes.** In ADK's `ParallelAgent`, if two sub-agents write to the same `output_key`, the second one overwrites the first. Always give parallel agents unique `output_key` values. If you forget, you'll lose data silently — no error is raised.
+
+**Mistake 4: Not handling agent failure gracefully.** If one agent in a sequential pipeline fails (API timeout, invalid output, exception), the pipeline crashes. In production, wrap each agent call in error handling and decide: should the pipeline retry, skip the failed step, or abort entirely?
+
+**Mistake 5: Building multi-agent before single-agent.** Don't jump to multi-agent complexity until a single agent provably fails at the task. Multi-agent systems are harder to debug, more expensive to run, and introduce new failure modes. Always start simple and add agents only when you've demonstrated a clear need.
 
 ## Key Takeaways
 
