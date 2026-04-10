@@ -51,7 +51,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
           },
-        },{id: "post-chapter-16-resource-aware-optimization",
+        },{id: "post-chapter-18-guardrails-and-safety-patterns",
+        
+          title: "Chapter 18: Guardrails and Safety Patterns",
+        
+        description: "Capable agents without guardrails are dangerous agents. This chapter shows how to build the multi-layered defense systems that keep AI behavior safe, predictable, and aligned — from input validation to jailbreak detection to human oversight.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/guardrails-safety/";
+          
+        },
+      },{id: "post-chapter-17-reasoning-techniques",
+        
+          title: "Chapter 17: Reasoning Techniques",
+        
+        description: "How does an AI agent actually think? This chapter reveals the techniques that transform LLMs from pattern-matchers into deliberate problem-solvers: CoT, ToT, ReAct, self-correction, RLVR, and more.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/reasoning-techniques/";
+          
+        },
+      },{id: "post-chapter-16-resource-aware-optimization",
         
           title: "Chapter 16: Resource-Aware Optimization",
         
