@@ -1,0 +1,572 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 12: Exception Handling and Recovery | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="Real-world agents fail. Networks time out, APIs return errors, databases go down, data arrives malformed. This chapter is about building agents that handle every failure gracefully — detecting it, recovering from it, and keeping the user informed throughout."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/exception-handling/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  38 MIN READ  ·  FEBRUARY 18, 2026</p> <h1 class="post-title">Chapter 12: Exception Handling and Recovery</h1> <p class="post-lead">Real-world agents fail. Networks time out, APIs return errors, databases go down, data arrives malformed. This chapter is about building agents that handle every failure gracefully — detecting it, recovering from it, and keeping the user informed throughout.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">February 18, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fexception-handling%2F&amp;text=Chapter+12%3A+Exception+Handling+and+Recovery" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fexception-handling%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#why-agents-break-in-the-real-world">Why Agents Break in the Real World</a></li> <li class="toc-entry toc-h2"><a href="#the-three-phases-of-exception-management">The Three Phases of Exception Management</a></li> <li class="toc-entry toc-h2"> <a href="#phase-1-error-detection">Phase 1: Error Detection</a> <ul> <li class="toc-entry toc-h3"><a href="#types-of-errors-agents-encounter">Types of Errors Agents Encounter</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#phase-2-error-handling-strategies">Phase 2: Error Handling Strategies</a> <ul> <li class="toc-entry toc-h3"><a href="#strategy-1-retry-with-exponential-backoff">Strategy 1: Retry with Exponential Backoff</a></li> <li class="toc-entry toc-h3"><a href="#strategy-2-fallback-mechanisms">Strategy 2: Fallback Mechanisms</a></li> <li class="toc-entry toc-h3"><a href="#strategy-3-graceful-degradation">Strategy 3: Graceful Degradation</a></li> <li class="toc-entry toc-h3"><a href="#strategy-4-circuit-breaker">Strategy 4: Circuit Breaker</a></li> <li class="toc-entry toc-h3"><a href="#strategy-5-logging-and-observability">Strategy 5: Logging and Observability</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#phase-3-recovery-strategies">Phase 3: Recovery Strategies</a> <ul> <li class="toc-entry toc-h3"><a href="#state-rollback">State Rollback</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#the-adk-implementation-sequentialagent-with-fallback">The ADK Implementation: SequentialAgent with Fallback</a> <ul> <li class="toc-entry toc-h3"><a href="#the-complete-flow-visualized">The Complete Flow Visualized</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#live-failure-simulation">Live Failure Simulation</a></li> <li class="toc-entry toc-h2"><a href="#common-mistakes-in-exception-handling">Common Mistakes in Exception Handling</a></li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">38 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fexception-handling%2F&amp;text=Chapter+12%3A+Exception+Handling+and+Recovery" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fexception-handling%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="why-agents-break-in-the-real-world">Why Agents Break in the Real World</h2> <div class="concept-box"> <span class="concept-label">Before You Start — Key Terms Explained</span> <p><strong>Exception:</strong> An unexpected event that disrupts the normal flow of a program. In Python, exceptions are objects that represent errors — <code>ConnectionError</code> means the network failed, <code>ValueError</code> means the data had the wrong format, <code>TimeoutError</code> means a request took too long. When an exception occurs and isn't handled, the program crashes.</p> <p style="margin-top:0.5rem"><strong>try/except (Python's error handling):</strong> A code structure that lets you attempt an operation and gracefully handle any errors it raises. Inside <code>try</code> you write the risky code. Inside <code>except</code> you write what to do if it fails. The program doesn't crash — it follows your fallback path instead.</p> <p style="margin-top:0.5rem"><strong>Exponential backoff:</strong> A retry strategy where each retry waits longer than the previous one. Wait 1 second, then 2, then 4, then 8. This prevents "thundering herd" — where thousands of clients all retry simultaneously, overwhelming an already-struggling server.</p> <p style="margin-top:0.5rem"><strong>Graceful degradation:</strong> Providing reduced functionality instead of complete failure. A chatbot that can't access the customer database might still answer general questions — reduced capability, but still useful. Better than refusing to respond at all.</p> <p style="margin-top:0.5rem"><strong>Idempotency:</strong> A property of operations where calling them multiple times has the same effect as calling them once. GET requests are idempotent (reading data doesn't change it). POST requests often aren't (calling "send_email" twice sends two emails). Important for retry logic — only retry idempotent operations automatically.</p> <p style="margin-top:0.5rem"><strong>Circuit breaker:</strong> A pattern that automatically stops calling a failing service after a threshold of failures. Like an electrical circuit breaker that trips when it detects an overload. Prevents cascading failures where one broken service causes the entire system to hang waiting for responses that will never come.</p> <p style="margin-top:0.5rem"><strong>Fallback:</strong> An alternative approach that activates when the primary approach fails. If the precise GPS lookup fails, fall back to city-level location data. If the payment processor is down, fall back to a backup processor. Fallbacks ensure some functionality is preserved even when components fail.</p> </div> <p>Every pattern in this series has operated in idealized conditions: tools work, APIs respond, data arrives in the expected format. But deploy an agent in production and reality is messier:</p> <ul> <li>The weather API returns a <code class="language-plaintext highlighter-rouge">503 Service Unavailable</code> during peak traffic</li> <li>The database query times out because another process is holding a lock</li> <li>The LLM returns JSON with a missing field your code expects</li> <li>The email service rejects the request because the recipient’s inbox is full</li> <li>A third-party service changes its response format without notice</li> <li>The user provides malformed input that breaks a tool’s parameter validation</li> <li>A network packet drops mid-request, leaving the connection in an ambiguous state</li> </ul> <p>None of these are bugs in your agent’s logic. They’re the normal chaos of distributed systems. And a well-designed agent handles all of them — not by pretending they won’t happen, but by anticipating them and planning responses.</p> <p>The <strong>Exception Handling and Recovery</strong> pattern is about building agents that are <strong>resilient</strong> — capable of detecting failures, responding to them appropriately, and restoring operation — rather than <strong>fragile</strong> agents that crash on first contact with an unexpected input.</p> <p>This distinction matters enormously for production deployment. An agent that handles failures gracefully is trustworthy. An agent that crashes unpredictably is a liability, regardless of how intelligent its core reasoning is.</p> <hr> <h2 id="the-three-phases-of-exception-management">The Three Phases of Exception Management</h2> <p>Exception handling in agents follows a clear three-phase structure:</p> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">EXCEPTION HANDLING AND RECOVERY — three-phase structure</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body" style="padding:1.25rem 1.5rem;"> <div class="ns-node ns-node-cyan" style="max-width:320px;"> <div class="ns-node-title">Agent Attempts Action</div> <div class="ns-node-sub">Tool call, API request, database query, LLM invocation — any operation that interacts with an external system can fail.</div> </div> <div class="ns-arrow"></div> <div class="ns-decision" style="max-width:220px;"> <div class="ns-node-title">Success?</div> </div> <div class="ns-arrow"></div> <div class="ns-branch-row" style="max-width:540px;"> <div class="ns-branch"> <span class="ns-label-green">Yes</span> <div class="ns-arrow ns-arrow-green"></div> <div class="ns-node ns-node-green"><div class="ns-node-title">Continue Normal Flow</div></div> </div> <div class="ns-branch"> <span class="ns-label-red">No — exception raised</span> <div class="ns-arrow ns-arrow-red"></div> <div class="ns-phase" style="gap:0.4rem;"> <div class="ns-phase-title">PHASE 1 — Error Detection</div> <div class="ns-node ns-node-red" style="max-width:none;"> <div class="ns-node-title">Identify &amp; Classify the Error</div> <div class="ns-node-sub">What type? HTTP error, timeout, validation error, auth failure, data format error? Severity? Transient or permanent?</div> </div> <div class="ns-node ns-node-amber" style="max-width:none;"> <div class="ns-node-title">PHASE 2 — Error Handling</div> <div class="ns-node-sub">Log → Retry (if transient) → Fallback (if retry exhausted) → Degrade gracefully → Notify</div> </div> <div class="ns-node ns-node-purple" style="max-width:none;"> <div class="ns-node-title">PHASE 3 — Recovery</div> <div class="ns-node-sub">State rollback → Diagnosis → Self-correction / Replan → Escalate to human if unresolvable</div> </div> </div> </div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-green" style="max-width:280px;"> <div class="ns-node-title">Stable Operation Restored</div> <div class="ns-node-sub">Either with full functionality, reduced functionality, or having escalated to human — but always in a defined, controlled state.</div> </div> </div> </div> <hr> <h2 id="phase-1-error-detection">Phase 1: Error Detection</h2> <p>You can’t handle what you don’t know about. Error detection is the surveillance layer — continuously monitoring for signals that indicate something has gone wrong.</p> <h3 id="types-of-errors-agents-encounter">Types of Errors Agents Encounter</h3> <div class="exc-types-wrapper"> <div class="exc-type-grid"> <div class="exc-type-card exc-type-network"> <div class="exc-type-icon">🌐</div> <div class="exc-type-name">Network Errors</div> <div class="exc-type-desc">Connection refused, DNS resolution failure, SSL certificate expired, request timeout. The external service is unreachable — not necessarily broken, just unavailable right now.</div> <div class="exc-type-codes"> <code>ConnectionError</code> · <code>TimeoutError</code> · <code>SSLError</code> </div> <div class="exc-type-strategy">Usually transient → retry with backoff</div> </div> <div class="exc-type-card exc-type-api"> <div class="exc-type-icon">⚡</div> <div class="exc-type-name">API / HTTP Errors</div> <div class="exc-type-desc">4xx errors (client mistakes: 400 Bad Request, 401 Unauthorized, 404 Not Found, 429 Rate Limited). 5xx errors (server problems: 500 Internal Error, 503 Unavailable). Each requires different handling.</div> <div class="exc-type-codes"> <code>HTTPError</code> · status codes 4xx/5xx</div> <div class="exc-type-strategy">429/5xx → retry · 4xx → fix request or abort</div> </div> <div class="exc-type-card exc-type-data"> <div class="exc-type-icon">📋</div> <div class="exc-type-name">Data / Format Errors</div> <div class="exc-type-desc">The API returned valid JSON but with different field names. The LLM output wasn't parseable as JSON. A required field is null. The date format changed. These require validation and format handling.</div> <div class="exc-type-codes"> <code>JSONDecodeError</code> · <code>KeyError</code> · <code>ValueError</code> </div> <div class="exc-type-strategy">Validate → parse defensively → fallback schema</div> </div> <div class="exc-type-card exc-type-llm"> <div class="exc-type-icon">🤖</div> <div class="exc-type-name">LLM Output Errors</div> <div class="exc-type-desc">The LLM was asked for JSON but returned prose. The LLM generated a tool call with wrong parameter types. The output is logically incoherent. These are probabilistic failures — even with temperature=0, they occasionally occur.</div> <div class="exc-type-codes">Structural validation failures · Schema mismatch</div> <div class="exc-type-strategy">Validate output → retry with clarified prompt</div> </div> <div class="exc-type-card exc-type-logic"> <div class="exc-type-icon">⚠️</div> <div class="exc-type-name">Logic / Semantic Errors</div> <div class="exc-type-desc">The agent took an action that is technically valid but semantically wrong — deleting the wrong record, sending to the wrong recipient, reading the wrong file. These are the hardest to detect because no exception is raised.</div> <div class="exc-type-codes">No Python exception — requires semantic validation</div> <div class="exc-type-strategy">Confirmation steps · human review for irreversible actions</div> </div> <div class="exc-type-card exc-type-resource"> <div class="exc-type-icon">💾</div> <div class="exc-type-name">Resource Errors</div> <div class="exc-type-desc">Context window exceeded, rate limit hit, token budget exhausted, memory full, disk full. These are quota and capacity constraints, not bugs — but they require the same structured handling.</div> <div class="exc-type-codes"> <code>ContextLengthError</code> · <code>RateLimitError</code> </div> <div class="exc-type-strategy">Summarize context → reduce payload → queue request</div> </div> </div> </div> <style>.exc-type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;margin:1.5rem 0}.exc-type-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;display:flex;flex-direction:column;gap:.4rem;background:rgba(128,128,128,0.04)}.exc-type-network{border-left:3px solid #2698ba}.exc-type-api{border-left:3px solid #e6a817}.exc-type-data{border-left:3px solid #c97af2}.exc-type-llm{border-left:3px solid #4fc97e}.exc-type-logic{border-left:3px solid #ff6b6b}.exc-type-resource{border-left:3px solid #7dcfff}.exc-type-icon{font-size:1.1rem}.exc-type-name{font-size:.85rem;font-weight:700;color:var(--global-text-color)}.exc-type-desc{font-size:.78rem;color:var(--global-text-color-light);line-height:1.5}.exc-type-codes{font-size:.68rem;font-family:monospace;color:#7dcfff}.exc-type-strategy{font-size:.68rem;font-family:monospace;color:#4fc97e;margin-top:auto;padding-top:.3rem;border-top:1px solid var(--global-divider-color)}</style> <hr> <h2 id="phase-2-error-handling-strategies">Phase 2: Error Handling Strategies</h2> <p>Once an error is detected, you need a playbook — a structured set of responses based on the error type and severity. The five strategies below cover the full range from “this will resolve itself” to “this needs a human.”</p> <h3 id="strategy-1-retry-with-exponential-backoff">Strategy 1: Retry with Exponential Backoff</h3> <p>The most common strategy for transient errors. The operation failed temporarily — wait a moment and try again.</p> <p><strong>Why exponential backoff?</strong> If your request failed because the server is overloaded and 10,000 other clients all retry at exactly the same time (1 second later), you’ve just made the overload worse. Exponential backoff spreads retries out: different clients wait different amounts before retrying, reducing the “retry storm” problem.</p> <div class="exc-backoff-wrapper"> <div class="exc-backoff-header"> <span class="exc-backoff-title">EXPONENTIAL BACKOFF VISUALIZATION</span> <button class="exc-backoff-btn" id="backoffRunBtn">▶ Simulate Retry</button> </div> <div class="exc-backoff-body"> <div class="exc-backoff-timeline" id="backoffTimeline"></div> <div class="exc-backoff-result" id="backoffResult" style="display:none"></div> </div> </div> <style>.exc-backoff-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}.exc-backoff-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.exc-backoff-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.exc-backoff-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer}.exc-backoff-btn:hover{background:rgba(38,152,186,0.12);border-color:#2698ba;color:#2698ba}.exc-backoff-body{padding:1.1rem;display:flex;flex-direction:column;gap:.5rem}.exc-backoff-timeline{display:flex;flex-direction:column;gap:.4rem}.exc-attempt{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border-radius:6px;border:1px solid var(--global-divider-color);background:rgba(128,128,128,0.03);animation:bofIn .3s ease;font-size:.8rem}@keyframes bofIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}.exc-attempt.fail{border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.05)}.exc-attempt.success{border-color:rgba(79,201,126,0.3);background:rgba(79,201,126,0.07)}.exc-attempt-num{font-family:monospace;font-size:.65rem;font-weight:700;min-width:70px;flex-shrink:0;color:var(--global-text-color-light)}.exc-attempt-bar{height:6px;border-radius:3px;flex-shrink:0}.exc-attempt-wait{font-size:.72rem;font-family:monospace;color:var(--global-text-color-light);flex-shrink:0}.exc-attempt-status{font-size:.72rem;font-family:monospace;flex-shrink:0}.exc-attempt.fail .exc-attempt-status{color:#ff6b6b}.exc-attempt.success .exc-attempt-status{color:#4fc97e}.exc-backoff-result{padding:.55rem .85rem;border-radius:6px;font-size:.8rem;font-family:monospace;text-align:center}.exc-backoff-result.success{background:rgba(79,201,126,0.08);color:#4fc97e;border:1px solid rgba(79,201,126,0.2)}.exc-backoff-result.fail{background:rgba(255,107,107,0.08);color:#ff6b6b;border:1px solid rgba(255,107,107,0.2)}</style> <script>
+document.addEventListener('DOMContentLoaded', function(){
+  var btn = document.getElementById('backoffRunBtn');
+  if (!btn) return;
+  var running = false;
+
+  // Simulate: attempts 1-3 fail (503), attempt 4 succeeds
+  var ATTEMPTS = [
+    { wait: '0s (immediate)', status: '503 Service Unavailable', fail: true,  barW: 20 },
+    { wait: '1s wait',        status: '503 Service Unavailable', fail: true,  barW: 40 },
+    { wait: '2s wait',        status: '503 Service Unavailable', fail: true,  barW: 70 },
+    { wait: '4s wait',        status: '200 OK — Success!',       fail: false, barW: 100 },
+  ];
+
+  btn.addEventListener('click', async function(){
+    if (running) return;
+    running = true;
+    btn.textContent = '⏳ Running…';
+    btn.disabled = true;
+
+    var timeline = document.getElementById('backoffTimeline');
+    var result   = document.getElementById('backoffResult');
+    timeline.innerHTML = '';
+    result.style.display = 'none';
+
+    for (var i = 0; i < ATTEMPTS.length; i++) {
+      await new Promise(function(r){ setTimeout(r, 700); });
+      var a = ATTEMPTS[i];
+      var div = document.createElement('div');
+      div.className = 'exc-attempt ' + (a.fail ? 'fail' : 'success');
+      div.innerHTML =
+        '<span class="exc-attempt-num">Attempt ' + (i+1) + '</span>' +
+        '<div class="exc-attempt-bar" style="width:' + a.barW + 'px;background:' + (a.fail ? '#ff6b6b' : '#4fc97e') + ';"></div>' +
+        '<span class="exc-attempt-wait">' + a.wait + '</span>' +
+        '<span class="exc-attempt-status">' + a.status + '</span>';
+      timeline.appendChild(div);
+    }
+
+    await new Promise(function(r){ setTimeout(r, 400); });
+    result.className = 'exc-backoff-result success';
+    result.textContent = 'Succeeded on attempt 4 after 7s total wait (0 + 1 + 2 + 4 = 7s). Exponential backoff formula: wait = base_delay × (2^attempt)';
+    result.style.display = 'block';
+
+    running = false;
+    btn.textContent = '↺ Replay';
+    btn.disabled = false;
+  });
+});
+</script> <p>Here’s how to implement retry with exponential backoff in Python:</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">import</span> <span class="n">random</span>
+
+<span class="k">def</span> <span class="nf">retry_with_backoff</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">max_delay</span><span class="o">=</span><span class="mf">60.0</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Execute `func` with exponential backoff on failure.
+
+    Args:
+        func: The callable to retry. Should raise an exception on failure.
+        max_retries: Maximum number of retry attempts (not counting first try).
+        base_delay: Initial wait time in seconds.
+        max_delay: Maximum wait time cap in seconds.
+    Returns:
+        The result of func() if it eventually succeeds.
+    Raises:
+        The last exception raised by func if all retries are exhausted.
+    </span><span class="sh">"""</span>
+    <span class="n">last_exception</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># +1 for the initial try
+</span>        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nf">func</span><span class="p">()</span>  <span class="c1"># Try the operation
+</span>
+        <span class="nf">except </span><span class="p">(</span><span class="nb">ConnectionError</span><span class="p">,</span> <span class="nb">TimeoutError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># These are transient — worth retrying
+</span>            <span class="n">last_exception</span> <span class="o">=</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="k">break</span>  <span class="c1"># No more retries — fall through to raise
+</span>
+            <span class="c1"># Exponential backoff with jitter
+</span>            <span class="c1"># jitter = random noise to prevent synchronized retries from multiple clients
+</span>            <span class="n">wait_time</span> <span class="o">=</span> <span class="nf">min</span><span class="p">(</span><span class="n">base_delay</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">attempt</span><span class="p">),</span> <span class="n">max_delay</span><span class="p">)</span>
+            <span class="n">jitter</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="nf">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait_time</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># ±10% randomness
+</span>            <span class="n">actual_wait</span> <span class="o">=</span> <span class="n">wait_time</span> <span class="o">+</span> <span class="n">jitter</span>
+
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Attempt </span><span class="si">{</span><span class="n">attempt</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s"> failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">. Waiting </span><span class="si">{</span><span class="n">actual_wait</span><span class="si">:</span><span class="p">.</span><span class="mi">1</span><span class="n">f</span><span class="si">}</span><span class="s">s before retry...</span><span class="sh">"</span><span class="p">)</span>
+            <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="n">actual_wait</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c1"># Non-transient errors (auth failures, invalid requests) — don't retry
+</span>            <span class="k">raise</span>  <span class="c1"># Re-raise immediately, no retry
+</span>
+    <span class="k">raise</span> <span class="n">last_exception</span>  <span class="c1"># All retries exhausted — propagate final exception
+</span></code></pre></div></div> <blockquote> <p><strong>Why separate <code class="language-plaintext highlighter-rouge">ConnectionError/TimeoutError</code> from the general <code class="language-plaintext highlighter-rouge">Exception</code>?</strong> Retrying makes sense for transient failures — the server is temporarily busy, the network had a hiccup. It makes no sense for permanent failures — a <code class="language-plaintext highlighter-rouge">401 Unauthorized</code> error won’t become authorized just because you waited and tried again. Separate exception types for different retry policies prevents wasting retries on errors that will never resolve themselves.</p> </blockquote> <blockquote> <p><strong>What is “jitter”?</strong> Without jitter, if 1,000 clients all hit a rate limit at the same moment and all back off for exactly 1 second, they all retry at exactly the same moment — still overwhelming the server. Adding random noise (±10% of the wait time) spreads their retries across a window, significantly reducing the “synchronized retry storm” problem.</p> </blockquote> <h3 id="strategy-2-fallback-mechanisms">Strategy 2: Fallback Mechanisms</h3> <p>When retries are exhausted, activate an alternative approach. Fallbacks are pre-planned alternatives that provide some value when the primary approach is unavailable.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_location_info</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Attempt precise location lookup, fall back to city-level if unavailable.
+    </span><span class="sh">"""</span>
+    <span class="c1"># Primary: precise geocoding API
+</span>    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">precise_location_api</span><span class="p">.</span><span class="nf">lookup</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">precision</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">precise</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+
+    <span class="nf">except </span><span class="p">(</span><span class="n">APIError</span><span class="p">,</span> <span class="nb">TimeoutError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Precise lookup failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">. Activating fallback...</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="c1"># Fallback 1: city-level lookup from a different provider
+</span>        <span class="k">try</span><span class="p">:</span>
+            <span class="n">city</span> <span class="o">=</span> <span class="nf">extract_city_from_address</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">city_lookup_api</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">city</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">precision</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">city-level</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span> <span class="sh">"</span><span class="s">degraded</span><span class="sh">"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">fallback_error</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">City-level fallback also failed: </span><span class="si">{</span><span class="n">fallback_error</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+            <span class="c1"># Fallback 2: cached/static data
+</span>            <span class="n">cached</span> <span class="o">=</span> <span class="n">location_cache</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cached</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">precision</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">cached</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">data</span><span class="sh">"</span><span class="p">:</span> <span class="n">cached</span><span class="p">,</span> <span class="sh">"</span><span class="s">degraded</span><span class="sh">"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="sh">"</span><span class="s">stale</span><span class="sh">"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+
+            <span class="c1"># No fallback available
+</span>            <span class="k">return</span> <span class="p">{</span><span class="sh">"</span><span class="s">precision</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">none</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">error</span><span class="sh">"</span><span class="p">:</span> <span class="nf">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="sh">"</span><span class="s">degraded</span><span class="sh">"</span><span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+</code></pre></div></div> <blockquote> <p><strong>The fallback hierarchy.</strong> Good fallback design has multiple levels: (1) primary approach, (2) alternative service with full data, (3) service with reduced data, (4) cached data, (5) graceful failure message. Each level provides less value but more availability. The agent always has a path forward.</p> </blockquote> <blockquote> <p><strong>Mark degraded results clearly.</strong> The <code class="language-plaintext highlighter-rouge">"degraded": True</code> flag in the return value tells downstream code and the LLM that this result is less reliable than normal. The LLM can then communicate appropriately to the user: “I found city-level location data — detailed address lookup was temporarily unavailable.”</p> </blockquote> <h3 id="strategy-3-graceful-degradation">Strategy 3: Graceful Degradation</h3> <p>Provide partial functionality rather than complete failure. When one component fails, other components continue working.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">process_user_request</span><span class="p">(</span><span class="n">user_query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Process request with graceful degradation of individual components.
+    </span><span class="sh">"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">query</span><span class="sh">"</span><span class="p">:</span> <span class="n">user_query</span><span class="p">,</span> <span class="sh">"</span><span class="s">components_used</span><span class="sh">"</span><span class="p">:</span> <span class="p">[]}</span>
+
+    <span class="c1"># Attempt 1: Personalization (nice-to-have, not critical)
+</span>    <span class="k">try</span><span class="p">:</span>
+        <span class="n">preferences</span> <span class="o">=</span> <span class="n">user_preference_db</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">personalization</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">preferences</span>
+        <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">components_used</span><span class="sh">"</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="sh">"</span><span class="s">personalization</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Personalization failed — continue without it
+</span>        <span class="nf">log_warning</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Personalization unavailable for </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">personalization</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># Use defaults
+</span>
+    <span class="c1"># Attempt 2: Real-time data (important, but not blocking)
+</span>    <span class="k">try</span><span class="p">:</span>
+        <span class="n">live_data</span> <span class="o">=</span> <span class="n">market_data_api</span><span class="p">.</span><span class="nf">get_latest</span><span class="p">()</span>
+        <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">market_data</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">live_data</span>
+        <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">components_used</span><span class="sh">"</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="sh">"</span><span class="s">real_time_data</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># Fall back to cached data from last successful fetch
+</span>        <span class="n">cached</span> <span class="o">=</span> <span class="n">cache</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">"</span><span class="s">market_data</span><span class="sh">"</span><span class="p">,</span> <span class="n">max_age_seconds</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached</span><span class="p">:</span>
+            <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">market_data</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cached</span>
+            <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">data_freshness</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">cached (may be up to 5min old)</span><span class="sh">"</span>
+            <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">components_used</span><span class="sh">"</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="sh">"</span><span class="s">cached_data</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">market_data</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">data_freshness</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="sh">"</span><span class="s">unavailable</span><span class="sh">"</span>
+
+    <span class="c1"># Core functionality — this must succeed
+</span>    <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">answer</span><span class="sh">"</span><span class="p">]</span> <span class="o">=</span> <span class="n">llm</span><span class="p">.</span><span class="nf">generate</span><span class="p">(</span>
+        <span class="n">query</span><span class="o">=</span><span class="n">user_query</span><span class="p">,</span>
+        <span class="n">context</span><span class="o">=</span><span class="n">response</span>
+    <span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="sh">"</span><span class="s">components_used</span><span class="sh">"</span><span class="p">].</span><span class="nf">append</span><span class="p">(</span><span class="sh">"</span><span class="s">llm_core</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">response</span>
+</code></pre></div></div> <blockquote> <p><strong>Why not catch everything at the top level?</strong> A single <code class="language-plaintext highlighter-rouge">try/except</code> around the entire function would either catch everything (and lose detail about what failed) or re-raise on first failure (no degradation). Component-level try/except gives you surgical control: some components are optional (personalization), some have fallbacks (real-time data → cache), and some are required (the LLM call). Each component’s failure is handled exactly as its criticality demands.</p> </blockquote> <h3 id="strategy-4-circuit-breaker">Strategy 4: Circuit Breaker</h3> <p>The circuit breaker pattern prevents cascading failures by automatically stopping calls to a consistently failing service.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="n">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="k">class</span> <span class="nc">CircuitState</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">CLOSED</span>   <span class="o">=</span> <span class="sh">"</span><span class="s">closed</span><span class="sh">"</span>    <span class="c1"># Normal operation — calls pass through
+</span>    <span class="n">OPEN</span>     <span class="o">=</span> <span class="sh">"</span><span class="s">open</span><span class="sh">"</span>      <span class="c1"># Failing — calls blocked immediately
+</span>    <span class="n">HALF_OPEN</span> <span class="o">=</span> <span class="sh">"</span><span class="s">half_open</span><span class="sh">"</span> <span class="c1"># Testing — one call allowed to check recovery
+</span>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CircuitBreaker</span><span class="p">:</span>
+    <span class="n">failure_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>         <span class="c1"># Open after this many consecutive failures
+</span>    <span class="n">recovery_timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>          <span class="c1"># Seconds to wait before half-open
+</span>    <span class="n">state</span><span class="p">:</span> <span class="n">CircuitState</span> <span class="o">=</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">CLOSED</span>
+    <span class="n">failure_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">last_failure_time</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">OPEN</span><span class="p">:</span>
+            <span class="c1"># Check if recovery timeout has elapsed
+</span>            <span class="k">if</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">self</span><span class="p">.</span><span class="n">last_failure_time</span> <span class="o">&gt;</span> <span class="nf">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">recovery_timeout</span><span class="p">):</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">HALF_OPEN</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Circuit HALF-OPEN: testing if service recovered...</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="nc">Exception</span><span class="p">(</span><span class="sh">"</span><span class="s">Circuit OPEN: service unavailable. Skipping call to prevent cascade.</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nf">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">_on_success</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">_on_failure</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">_on_success</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">failure_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">HALF_OPEN</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Circuit CLOSED: service has recovered.</span><span class="sh">"</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">CLOSED</span>
+
+    <span class="k">def</span> <span class="nf">_on_failure</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">failure_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">last_failure_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">failure_count</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">failure_threshold</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">CircuitState</span><span class="p">.</span><span class="n">OPEN</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Circuit OPENED after </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">failure_count</span><span class="si">}</span><span class="s"> failures. Will retry in </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">recovery_timeout</span><span class="si">}</span><span class="s">s.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why is the circuit breaker needed when you already have retry logic?</strong> Without a circuit breaker, every request retries independently — even if you <em>know</em> the service has been failing for the past 10 minutes. The circuit breaker creates shared knowledge: once enough requests have failed, <em>all</em> subsequent requests immediately fail fast rather than waiting for a timeout. This frees up resources and prevents the cascade where one slow service causes the entire system to pile up with waiting threads.</p> </blockquote> <blockquote> <p><strong>The three states explained:</strong> CLOSED = normal (all calls pass through). OPEN = failed (all calls immediately rejected, no actual call made). HALF_OPEN = recovery probe (one call allowed — if it succeeds, CLOSED; if it fails, back to OPEN with refreshed timeout).</p> </blockquote> <h3 id="strategy-5-logging-and-observability">Strategy 5: Logging and Observability</h3> <p>You cannot improve what you cannot see. Comprehensive logging transforms failures from mysteries into actionable data.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">logging</span>
+<span class="kn">import</span> <span class="n">traceback</span>
+<span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Configure structured logging
+</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="p">.</span><span class="nf">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">log_agent_error</span><span class="p">(</span>
+    <span class="n">error</span><span class="p">:</span> <span class="nb">Exception</span><span class="p">,</span>
+    <span class="n">agent_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">attempt_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">context</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    Log a structured error record for debugging and monitoring.
+    </span><span class="sh">"""</span>
+    <span class="n">error_record</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">timestamp</span><span class="sh">"</span><span class="p">:</span>      <span class="n">datetime</span><span class="p">.</span><span class="nf">utcnow</span><span class="p">().</span><span class="nf">isoformat</span><span class="p">(),</span>
+        <span class="sh">"</span><span class="s">agent</span><span class="sh">"</span><span class="p">:</span>          <span class="n">agent_name</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">action</span><span class="sh">"</span><span class="p">:</span>         <span class="n">action</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">attempt</span><span class="sh">"</span><span class="p">:</span>        <span class="n">attempt_number</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">error_type</span><span class="sh">"</span><span class="p">:</span>     <span class="nf">type</span><span class="p">(</span><span class="n">error</span><span class="p">).</span><span class="n">__name__</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">error_message</span><span class="sh">"</span><span class="p">:</span>  <span class="nf">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span>
+        <span class="sh">"</span><span class="s">error_traceback</span><span class="sh">"</span><span class="p">:</span> <span class="n">traceback</span><span class="p">.</span><span class="nf">format_exc</span><span class="p">(),</span>
+        <span class="sh">"</span><span class="s">inputs</span><span class="sh">"</span><span class="p">:</span>         <span class="n">inputs</span><span class="p">,</span>    <span class="c1"># What was the agent trying to do?
+</span>        <span class="sh">"</span><span class="s">context</span><span class="sh">"</span><span class="p">:</span>        <span class="n">context</span><span class="p">,</span>   <span class="c1"># What was the system state?
+</span>    <span class="p">}</span>
+
+    <span class="c1"># JSON format enables querying with log analytics tools (Splunk, Datadog, etc.)
+</span>    <span class="n">logger</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">(</span><span class="n">error_record</span><span class="p">))</span>
+</code></pre></div></div> <blockquote> <p><strong>Why structured JSON logging instead of plain text?</strong> Plain text logs like <code class="language-plaintext highlighter-rouge">"Error: connection failed at 14:32"</code> are readable but not queryable. JSON logs like <code class="language-plaintext highlighter-rouge">{"error_type": "ConnectionError", "agent": "billing_agent", "attempt": 3}</code> can be filtered, aggregated, and alerted on by log management tools. You can ask: “Show me all <code class="language-plaintext highlighter-rouge">ConnectionError</code> events from <code class="language-plaintext highlighter-rouge">billing_agent</code> in the last hour with more than 2 retries” — impossible with plain text, trivial with structured JSON.</p> </blockquote> <hr> <h2 id="phase-3-recovery-strategies">Phase 3: Recovery Strategies</h2> <p>Handling an error keeps the system running. Recovery restores it to full health.</p> <h3 id="state-rollback">State Rollback</h3> <p>When an agent performs multiple steps and fails partway through, incomplete actions can leave the system in a corrupted state. State rollback reverses completed steps.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TransactionManager</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">
+    Manages multi-step agent operations with rollback on failure.
+    Like a database transaction — either everything succeeds, or everything rolls back.
+    </span><span class="sh">"""</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">completed_steps</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Stack of (step_name, undo_function) pairs
+</span>
+    <span class="k">def</span> <span class="nf">execute_step</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">step_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">undo_action</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Execute one step and register its undo operation.</span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nf">action</span><span class="p">()</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">completed_steps</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">step_name</span><span class="p">,</span> <span class="n">undo_action</span><span class="p">))</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✓ Step completed: </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">✗ Step failed: </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s"> — </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">rollback_all</span><span class="p">()</span>
+            <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">rollback_all</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">Undo all completed steps in reverse order.</span><span class="sh">"""</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Rolling back </span><span class="si">{</span><span class="nf">len</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">completed_steps</span><span class="p">)</span><span class="si">}</span><span class="s"> completed steps...</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">self</span><span class="p">.</span><span class="n">completed_steps</span><span class="p">:</span>
+            <span class="n">step_name</span><span class="p">,</span> <span class="n">undo_fn</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">completed_steps</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nf">undo_fn</span><span class="p">()</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  ↩ Rolled back: </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+            <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="c1"># Log rollback failure but continue trying other rollbacks
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">  ⚠ Rollback failed for </span><span class="si">{</span><span class="n">step_name</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+
+<span class="c1"># Usage example: booking a travel package
+</span><span class="k">def</span> <span class="nf">book_travel_package</span><span class="p">(</span><span class="n">flight_id</span><span class="p">,</span> <span class="n">hotel_id</span><span class="p">,</span> <span class="n">car_id</span><span class="p">):</span>
+    <span class="n">tx</span> <span class="o">=</span> <span class="nc">TransactionManager</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Each step: (action, undo_action)
+</span>        <span class="n">tx</span><span class="p">.</span><span class="nf">execute_step</span><span class="p">(</span>
+            <span class="sh">"</span><span class="s">book_flight</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">action</span>   <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">flight_api</span><span class="p">.</span><span class="nf">book</span><span class="p">(</span><span class="n">flight_id</span><span class="p">),</span>
+            <span class="n">undo_action</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">flight_api</span><span class="p">.</span><span class="nf">cancel</span><span class="p">(</span><span class="n">flight_id</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">tx</span><span class="p">.</span><span class="nf">execute_step</span><span class="p">(</span>
+            <span class="sh">"</span><span class="s">book_hotel</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">action</span>   <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">hotel_api</span><span class="p">.</span><span class="nf">book</span><span class="p">(</span><span class="n">hotel_id</span><span class="p">),</span>
+            <span class="n">undo_action</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">hotel_api</span><span class="p">.</span><span class="nf">cancel</span><span class="p">(</span><span class="n">hotel_id</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">tx</span><span class="p">.</span><span class="nf">execute_step</span><span class="p">(</span>
+            <span class="sh">"</span><span class="s">book_car</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">action</span>   <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">car_api</span><span class="p">.</span><span class="nf">book</span><span class="p">(</span><span class="n">car_id</span><span class="p">),</span>
+            <span class="n">undo_action</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">car_api</span><span class="p">.</span><span class="nf">cancel</span><span class="p">(</span><span class="n">car_id</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">✅ All bookings successful!</span><span class="sh">"</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">❌ Booking failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s">. All completed bookings have been cancelled.</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">raise</span>
+</code></pre></div></div> <blockquote> <p><strong>Why reverse order for rollback?</strong> If you completed steps A → B → C and step D fails, you need to undo C before B, and B before A. Undoing in original order could leave dependencies in place that make the undo impossible. Think of building with Lego: you take apart the last piece first, not the first piece first.</p> </blockquote> <blockquote> <p><strong>Why continue rolling back even if a rollback step fails?</strong> Because the goal of rollback is to restore the most complete clean state possible. If hotel rollback fails but car rollback succeeds, you’ve at least recovered the car booking cost. Stopping at the first rollback failure would leave more resources locked.</p> </blockquote> <hr> <h2 id="the-adk-implementation-sequentialagent-with-fallback">The ADK Implementation: SequentialAgent with Fallback</h2> <p>Google ADK’s <code class="language-plaintext highlighter-rouge">SequentialAgent</code> provides a natural structure for implementing the primary → fallback → response pattern using session state as the coordination mechanism.</p> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">SequentialAgent</span>
+</code></pre></div></div> <blockquote> <p><strong>Why use a SequentialAgent for exception handling?</strong> Each “handler” in the exception handling pipeline is a distinct responsibility: the primary handler tries the best approach, the fallback handler activates if needed, and the response handler presents whatever result was obtained. <code class="language-plaintext highlighter-rouge">SequentialAgent</code> guarantees these run in order and share state through <code class="language-plaintext highlighter-rouge">session.state</code> — making the coordination explicit and debuggable.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Agent 1: Attempts the primary approach — high precision
+</span><span class="n">primary_handler</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">primary_handler</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+Your job is to get precise location information.
+Use the get_precise_location_info tool with the user</span><span class="sh">'</span><span class="s">s provided address.
+If the tool succeeds, store the result in state[</span><span class="sh">"</span><span class="s">location_result</span><span class="sh">"</span><span class="s">].
+If the tool fails for any reason, store True in state[</span><span class="sh">"</span><span class="s">primary_location_failed</span><span class="sh">"</span><span class="s">].
+Always set state[</span><span class="sh">"</span><span class="s">primary_location_failed</span><span class="sh">"</span><span class="s">] to either True or False.
+</span><span class="sh">"""</span><span class="p">,</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_precise_location_info</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why store the failure signal in <code class="language-plaintext highlighter-rouge">state["primary_location_failed"]</code>?</strong> The secondary agent needs to know whether the primary succeeded or failed. Session state is the shared communication channel between sequential agents in ADK — it’s the equivalent of a shared variable that both agents can read and write. Without this explicit signal, the fallback agent would have no way to know whether to activate.</p> </blockquote> <blockquote> <p><strong>Why “Always set state[‘primary_location_failed’] to either True or False”?</strong> This is defensive instruction design. Without it, the agent might only set the flag when it fails, leaving it unset (and thus <code class="language-plaintext highlighter-rouge">None</code>) when it succeeds. The fallback agent then can’t reliably distinguish “succeeded” from “flag not set.” Explicit True/False handling is more reliable than absence/presence.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Agent 2: Conditional fallback — only activates if primary failed
+</span><span class="n">fallback_handler</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">fallback_handler</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+Check the value of state[</span><span class="sh">"</span><span class="s">primary_location_failed</span><span class="sh">"</span><span class="s">].
+
+If it is True:
+  - Extract the city name from the user</span><span class="sh">'</span><span class="s">s original query
+  - Use the get_general_area_info tool with that city name
+  - Store the result in state[</span><span class="sh">"</span><span class="s">location_result</span><span class="sh">"</span><span class="s">]
+  - Store </span><span class="sh">"</span><span class="s">city-level (degraded)</span><span class="sh">"</span><span class="s"> in state[</span><span class="sh">"</span><span class="s">data_precision</span><span class="sh">"</span><span class="s">]
+
+If it is False:
+  - Do nothing. The primary handler already succeeded.
+</span><span class="sh">"""</span><span class="p">,</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_general_area_info</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why check state in the instruction rather than in code?</strong> The conditional logic (“if failed, activate; if not, do nothing”) is expressed in natural language because the agent’s LLM reads it and decides what to do. This is the ADK way — the LLM is the control flow mechanism for agent behavior. Alternative: pre-check in Python and skip the agent if not needed, which is also valid and more efficient for deterministic conditions.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Agent 3: Presents results regardless of which path succeeded
+</span><span class="n">response_agent</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">response_agent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.0-flash-exp</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+Review the location information in state[</span><span class="sh">"</span><span class="s">location_result</span><span class="sh">"</span><span class="s">].
+
+Present this information clearly to the user.
+If state[</span><span class="sh">"</span><span class="s">data_precision</span><span class="sh">"</span><span class="s">] is </span><span class="sh">"</span><span class="s">city-level (degraded)</span><span class="sh">"</span><span class="s">, mention that
+you</span><span class="sh">'</span><span class="s">re showing city-level data because detailed lookup was temporarily unavailable.
+
+If state[</span><span class="sh">"</span><span class="s">location_result</span><span class="sh">"</span><span class="s">] is empty or does not exist, apologize that
+you could not retrieve location information and suggest trying again later.
+</span><span class="sh">"""</span><span class="p">,</span>
+    <span class="n">tools</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># This agent only reasons — no tool calls needed
+</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why does the response agent have <code class="language-plaintext highlighter-rouge">tools=[]</code>?</strong> The response agent’s job is purely to interpret and communicate the state — it doesn’t need to call any tools. Giving it an empty tool list makes this explicit and prevents the LLM from attempting unnecessary tool calls. It’s also more efficient — no tool schema is sent to the model.</p> </blockquote> <blockquote> <p><strong>Why have a separate response agent at all?</strong> The response format shouldn’t be the responsibility of either the primary or fallback handler — they’re focused on data retrieval. Separating presentation from retrieval means: if you want to change the response format (add more context, translate to another language, format as HTML), you only change the response agent without touching the retrieval logic.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Assemble: SequentialAgent ensures guaranteed execution order
+</span><span class="n">robust_location_agent</span> <span class="o">=</span> <span class="nc">SequentialAgent</span><span class="p">(</span>
+    <span class="n">name</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">robust_location_agent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">sub_agents</span> <span class="o">=</span> <span class="p">[</span><span class="n">primary_handler</span><span class="p">,</span> <span class="n">fallback_handler</span><span class="p">,</span> <span class="n">response_agent</span><span class="p">]</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>What happens if even the fallback fails?</strong> The response agent is designed to handle this: <code class="language-plaintext highlighter-rouge">"If state['location_result'] is empty or does not exist, apologize..."</code> This is the final safety net — no matter what happens upstream, the response agent always runs and always produces a response that makes sense to the user. The user never sees an unhandled exception; they always get a coherent message.</p> </blockquote> <h3 id="the-complete-flow-visualized">The Complete Flow Visualized</h3> <pre><code class="language-mermaid">graph TD
+    U([User: "Find info for 123 Main St"]) --&gt; PA[primary_handler]
+    PA --&gt;|tool call| GPS[get_precise_location_info]
+    GPS --&gt;|success| S1[state: location_result = precise data&lt;br&gt;primary_location_failed = False]
+    GPS --&gt;|error: 503| S2[state: primary_location_failed = True]
+    S1 --&gt; FB[fallback_handler]
+    S2 --&gt; FB
+    FB --&gt;|failed=False| SKIP[Do nothing — primary succeeded]
+    FB --&gt;|failed=True| CITY[get_general_area_info tool]
+    CITY --&gt; S3[state: location_result = city data&lt;br&gt;data_precision = city-level]
+    SKIP --&gt; RA[response_agent]
+    S3 --&gt; RA
+    RA --&gt; OUT([User sees: location info with appropriate context])
+    style PA fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style FB fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+    style RA fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
+    style OUT fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
+</code></pre> <hr> <h2 id="live-failure-simulation">Live Failure Simulation</h2> <div class="exc-sim-wrapper"> <div class="exc-sim-header"> <span class="exc-sim-title">EXCEPTION HANDLING DEMO — simulate tool failure and recovery</span> <div style="display:flex;gap:0.5rem;"> <select class="exc-sim-select" id="excScenario"> <option value="0">Scenario: API timeout → retry → success</option> <option value="1">Scenario: Auth failure → abort immediately</option> <option value="2">Scenario: 3 retries exhausted → fallback activates</option> <option value="3">Scenario: Malformed JSON → retry with clarified prompt</option> </select> <button class="exc-sim-btn" id="excSimRunBtn">▶ Run</button> </div> </div> <div class="exc-sim-body" id="excSimBody"> <div class="exc-sim-hint">Select a scenario above and click Run to see how the agent handles it.</div> </div> </div> <style>.exc-sim-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.exc-sim-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05);flex-wrap:wrap;gap:.5rem}.exc-sim-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.exc-sim-select{font-family:monospace;font-size:.7rem;padding:.28rem .6rem;border-radius:4px;border:1px solid var(--global-divider-color);background:var(--global-bg-color);color:var(--global-text-color);cursor:pointer}.exc-sim-btn{font-family:monospace;font-size:.72rem;padding:.3rem .75rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer}.exc-sim-btn:hover{background:rgba(38,152,186,0.12);border-color:#2698ba;color:#2698ba}.exc-sim-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem;min-height:80px}.exc-sim-hint{font-size:.8rem;color:var(--global-text-color-light);font-style:italic}.exc-sim-event{padding:.5rem .75rem;border-radius:5px;font-size:.78rem;border:1px solid var(--global-divider-color);animation:excEvIn .25s ease}@keyframes excEvIn{from{opacity:0}to{opacity:1}}.exc-ev-attempt{background:rgba(128,128,128,0.05)}.exc-ev-error{background:rgba(255,107,107,0.06);border-color:rgba(255,107,107,0.2)}.exc-ev-retry{background:rgba(230,168,23,0.06);border-color:rgba(230,168,23,0.2)}.exc-ev-fallback{background:rgba(201,122,242,0.06);border-color:rgba(201,122,242,0.2)}.exc-ev-success{background:rgba(79,201,126,0.07);border-color:rgba(79,201,126,0.2)}.exc-ev-abort{background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.3)}</style> <script>
+var EXC_SCENARIOS = [
+  [
+    { type:'attempt', text:'🔧 Calling weather_api.get(city="London")...' },
+    { type:'error',   text:'❌ Error: TimeoutError — request exceeded 10s timeout' },
+    { type:'retry',   text:'⏱ Transient error detected. Waiting 1s before retry 1/3...' },
+    { type:'attempt', text:'🔧 Retry 1: Calling weather_api.get(city="London")...' },
+    { type:'success', text:'✅ Success on retry 1. Response: {"temp": 15, "condition": "Cloudy"}' },
+  ],
+  [
+    { type:'attempt', text:'🔧 Calling crm_api.get_customer(id="12345")...' },
+    { type:'error',   text:'❌ Error: HTTP 401 Unauthorized — API key is invalid or expired' },
+    { type:'abort',   text:'🚫 Permanent error (4xx) — retrying will not help. Aborting and alerting operator.' },
+  ],
+  [
+    { type:'attempt', text:'🔧 Calling payment_processor.charge(amount=99.99)...' },
+    { type:'error',   text:'❌ Error: HTTP 503 Service Unavailable' },
+    { type:'retry',   text:'⏱ Waiting 1s before retry 1/3...' },
+    { type:'attempt', text:'🔧 Retry 1: payment_processor.charge(amount=99.99)...' },
+    { type:'error',   text:'❌ Error: HTTP 503 Service Unavailable' },
+    { type:'retry',   text:'⏱ Waiting 2s before retry 2/3...' },
+    { type:'attempt', text:'🔧 Retry 2: payment_processor.charge(amount=99.99)...' },
+    { type:'error',   text:'❌ Error: HTTP 503 Service Unavailable' },
+    { type:'retry',   text:'⏱ Waiting 4s before retry 3/3...' },
+    { type:'attempt', text:'🔧 Retry 3: payment_processor.charge(amount=99.99)...' },
+    { type:'error',   text:'❌ Error: HTTP 503 — Max retries exhausted' },
+    { type:'fallback',text:'🔄 Activating fallback: backup_payment_processor...' },
+    { type:'success', text:'✅ Fallback succeeded. Transaction ID: txn_backup_7821. User notified that backup processor was used.' },
+  ],
+  [
+    { type:'attempt', text:'🤖 Requesting JSON output from LLM...' },
+    { type:'error',   text:'❌ JSONDecodeError: LLM returned prose instead of JSON: "The answer is 42 and the unit is meters..."' },
+    { type:'retry',   text:'🔧 Retry with clarified prompt: "You MUST respond with ONLY valid JSON. No prose. Example: {\"value\": 42, \"unit\": \"meters\"}"' },
+    { type:'success', text:'✅ Valid JSON received on retry: {"value": 42, "unit": "meters", "confidence": 0.95}' },
+  ]
+];
+
+document.addEventListener('DOMContentLoaded', function(){
+  var runBtn = document.getElementById('excSimRunBtn');
+  var select = document.getElementById('excScenario');
+  if (!runBtn) return;
+  var running = false;
+  var TYPE_CLASS = { attempt:'exc-ev-attempt', error:'exc-ev-error', retry:'exc-ev-retry', fallback:'exc-ev-fallback', success:'exc-ev-success', abort:'exc-ev-abort' };
+
+  runBtn.addEventListener('click', async function(){
+    if (running) return;
+    running = true;
+    runBtn.textContent = '⏳'; runBtn.disabled = true;
+    var body = document.getElementById('excSimBody');
+    body.innerHTML = '';
+    var scenario = EXC_SCENARIOS[parseInt(select.value)];
+    for (var i = 0; i < scenario.length; i++) {
+      await new Promise(function(r){ setTimeout(r, 500); });
+      var e = scenario[i];
+      var div = document.createElement('div');
+      div.className = 'exc-sim-event exc-ev-' + e.type;
+      div.textContent = e.text;
+      body.appendChild(div);
+    }
+    running = false; runBtn.textContent = '↺ Run'; runBtn.disabled = false;
+  });
+});
+</script> <hr> <h2 id="common-mistakes-in-exception-handling">Common Mistakes in Exception Handling</h2> <p><strong>Mistake 1: Catching everything with a bare <code class="language-plaintext highlighter-rouge">except Exception</code>.</strong> A single catch-all handler loses all information about what went wrong. Different errors need different responses — a <code class="language-plaintext highlighter-rouge">401 Unauthorized</code> needs credentials fixed; a <code class="language-plaintext highlighter-rouge">503</code> needs a retry. Catch specific exception types and handle each appropriately.</p> <p><strong>Mistake 2: Retrying non-idempotent operations.</strong> If <code class="language-plaintext highlighter-rouge">send_email()</code> fails partway, should you retry it? Only if the email service guarantees idempotency (same message ID = only sent once). Otherwise, retrying sends duplicate emails. Always ask: “Is it safe to call this twice?” before adding retry logic.</p> <p><strong>Mistake 3: Swallowing exceptions silently.</strong> <code class="language-plaintext highlighter-rouge">except Exception: pass</code> is one of the most dangerous patterns in programming. The error is hidden from logs, from monitoring, from the developer, and from the user. The system appears to be running correctly while actually failing silently. Always log exceptions, even if you handle them gracefully.</p> <p><strong>Mistake 4: Logging after a failed rollback, not the original error.</strong> If your rollback fails, the error you log is the rollback failure — but the root cause is the original operation failure. Log the original error <em>first</em>, then attempt rollback, then log any rollback failures separately.</p> <p><strong>Mistake 5: No circuit breaker for external dependencies.</strong> Without circuit breakers, a slow or failed external service causes your agent to pile up with threads waiting for timeouts. Each request waits 10 seconds before failing — with 100 concurrent users, you suddenly have 1,000 seconds of accumulated wait time. Circuit breakers fail fast, freeing resources immediately.</p> <p><strong>Mistake 6: Not testing failure paths.</strong> Error handling code is only tested when things go wrong — which means in production, when you least want surprises. Deliberately inject failures in testing: mock the API to return 503, send malformed JSON, trigger timeouts. Ensure your error handling actually works before deploying.</p> <hr> <h2 id="at-a-glance">At a Glance</h2> <div class="exc-summary-card"> <div class="exc-summary-col"> <div class="exc-summary-label">WHAT</div> <p>A structured approach to detecting, handling, and recovering from operational failures in AI agents — covering network errors, API failures, data format errors, LLM output failures, and logic errors, with specific strategies for each.</p> </div> <div class="exc-summary-divider"></div> <div class="exc-summary-col"> <div class="exc-summary-label">WHY</div> <p>Real-world systems fail constantly. An agent without exception handling is fragile — one API error crashes the entire conversation. An agent with exception handling is resilient — it detects problems, recovers where possible, degrades gracefully where not, and always leaves the user informed.</p> </div> <div class="exc-summary-divider"></div> <div class="exc-summary-col"> <div class="exc-summary-label">RULE OF THUMB</div> <p>Use this pattern for any production agent that interacts with external systems — which means every production agent. The implementation complexity scales with the criticality of the application: more retries, more fallbacks, and more human escalation paths for higher-stakes systems.</p> </div> </div> <style>.exc-summary-card{display:flex;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.exc-summary-card{flex-direction:column}}.exc-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.exc-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.exc-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.exc-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#ff6b6b}</style> <hr> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <p><strong>Expect failures, design for them.</strong> Production agents encounter network timeouts, API errors, malformed data, LLM output failures, and resource exhaustion constantly. These are not edge cases — they are normal operating conditions. Design for them explicitly, not as an afterthought.</p> </li> <li> <p><strong>Classify errors before handling them.</strong> Transient errors (network glitches, rate limits, server overload) warrant retries. Permanent errors (authentication failures, invalid requests, missing resources) should fail fast — retrying wastes time and resources. Know the difference.</p> </li> <li> <p><strong>Exponential backoff with jitter is the right default retry strategy.</strong> Linear backoff creates retry storms. Exponential backoff spreads load. Jitter (randomization) prevents synchronized retries from multiple clients. The formula: <code class="language-plaintext highlighter-rouge">wait = base × 2^attempt + random(0, base × 0.1)</code>.</p> </li> <li> <p><strong>Fallback hierarchies provide resilience in depth.</strong> Primary approach fails? Try alternative service. That fails? Use cached data. That fails? Return a graceful degradation message. Each level provides less value but more availability. Design the full hierarchy before deployment.</p> </li> <li> <p><strong>Circuit breakers prevent cascading failures.</strong> When a service is consistently failing, stop calling it immediately rather than making every request wait for a timeout. Fail fast, preserve resources, check periodically whether the service has recovered.</p> </li> <li> <p><strong>Log everything, swallow nothing.</strong> <code class="language-plaintext highlighter-rouge">except Exception: pass</code> is production debt. Every caught exception should be logged with structured context (agent name, action, inputs, error type, traceback). This data is essential for diagnosing production issues.</p> </li> <li> <p><strong>State rollback is critical for multi-step operations.</strong> If a 5-step workflow fails at step 3, steps 1 and 2 need to be undone — otherwise you have partial, corrupted state. Use the transaction pattern: register undo operations at each step, roll back in reverse order on failure.</p> </li> <li> <p><strong>In ADK, use SequentialAgent + session state for primary/fallback flows.</strong> The primary handler sets <code class="language-plaintext highlighter-rouge">state["failed"] = True/False</code>. The fallback handler reads this signal and activates only if needed. The response agent presents results regardless of which path was taken. Explicit state signaling makes the coordination debuggable.</p> </li> </ul> <hr> <p><em>Next up — Chapter 13: Human-in-the-Loop, where agents pause at critical decision points, present their reasoning, and request human approval before taking irreversible actions.</em></p> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/resource-aware-optimization/">Chapter 16: Resource-Aware Optimization</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/a2a/">Chapter 15: Inter-Agent Communication (A2A)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/rag/">Chapter 14: Knowledge Retrieval (RAG)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/human-in-the-loop/">Chapter 13: Human-in-the-Loop</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/goal-setting-monitoring/">Chapter 11: Goal Setting and Monitoring</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> <script>
+// ── VS Code-style code blocks: traffic-light header + safe line numbers ───────
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll(
+    '.post-content figure.highlight, .post-content div.highlight'
+  ).forEach(function (block) {
+
+    // 1. Detect language from code element class
+    var lang = '';
+    var codeEl = block.querySelector('code');
+    if (codeEl) {
+      var m = (codeEl.className || '').match(/language-(\w[\w+-]*)/);
+      if (m) lang = m[1];
+    }
+
+    // 2. Build traffic-light header
+    var hdr = document.createElement('div');
+    hdr.className = 'cb-header';
+    hdr.innerHTML =
+      '<div class="cb-dots">' +
+        '<span class="cb-dot cb-red"></span>' +
+        '<span class="cb-dot cb-yellow"></span>' +
+        '<span class="cb-dot cb-green"></span>' +
+      '</div>' +
+      '<span class="cb-lang">' + (lang || 'code') + '</span>' +
+      '<div class="cb-dots-spacer"></div>';
+    block.insertBefore(hdr, block.firstChild);
+
+    // 3. Safe line numbers — count from textContent, NEVER touch innerHTML
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    var inner  = pre.querySelector('code') || pre;
+    var text   = inner.textContent || '';
+    var lines  = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+    var count  = Math.max(lines.length, 1);
+
+    // Build a separate number column — placed BEFORE pre, not inside it
+    var nums = document.createElement('div');
+    nums.className = 'cb-line-nums';
+    nums.setAttribute('aria-hidden', 'true');
+    for (var i = 1; i <= count; i++) {
+      var sp = document.createElement('span');
+      sp.textContent = i;
+      nums.appendChild(sp);
+    }
+
+    // Wrap [nums | pre] in a flex row so they scroll as one unit
+    var area = document.createElement('div');
+    area.className = 'cb-code-area';
+    pre.parentNode.insertBefore(area, pre);
+    area.appendChild(nums);
+    area.appendChild(pre);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>

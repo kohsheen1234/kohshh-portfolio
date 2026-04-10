@@ -51,7 +51,95 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
           },
-        },{id: "post-chapter-8-memory-management",
+        },{id: "post-chapter-16-resource-aware-optimization",
+        
+          title: "Chapter 16: Resource-Aware Optimization",
+        
+        description: "Not every question needs a supercomputer. Resource-aware optimization routes simple queries to cheap, fast models and reserves expensive, powerful ones for genuinely hard problems — saving cost without sacrificing quality.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/resource-aware-optimization/";
+          
+        },
+      },{id: "post-chapter-15-inter-agent-communication-a2a",
+        
+          title: "Chapter 15: Inter-Agent Communication (A2A)",
+        
+        description: "MCP connects agents to tools. A2A connects agents to agents. The Agent2Agent protocol is the missing standard that lets any AI agent — regardless of framework — collaborate with any other.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/a2a/";
+          
+        },
+      },{id: "post-chapter-14-knowledge-retrieval-rag",
+        
+          title: "Chapter 14: Knowledge Retrieval (RAG)",
+        
+        description: "LLMs know a lot — but their knowledge stopped the day training ended. RAG is the bridge between static model weights and the live, private, specific knowledge that makes agents actually useful.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/rag/";
+          
+        },
+      },{id: "post-chapter-13-human-in-the-loop",
+        
+          title: "Chapter 13: Human-in-the-Loop",
+        
+        description: "Full autonomy sounds ideal — but in high-stakes domains, the cost of a single AI error is too high. Human-in-the-Loop is the pattern that keeps humans in control of the decisions that matter most.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/human-in-the-loop/";
+          
+        },
+      },{id: "post-chapter-12-exception-handling-and-recovery",
+        
+          title: "Chapter 12: Exception Handling and Recovery",
+        
+        description: "Real-world agents fail. Networks time out, APIs return errors, databases go down, data arrives malformed. This chapter is about building agents that handle every failure gracefully — detecting it, recovering from it, and keeping the user informed throughout.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/exception-handling/";
+          
+        },
+      },{id: "post-chapter-11-goal-setting-and-monitoring",
+        
+          title: "Chapter 11: Goal Setting and Monitoring",
+        
+        description: "Without goals, agents react. With goals, agents pursue. This chapter shows how to give AI agents specific objectives, measurable success criteria, and the feedback loops that keep them on track.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/goal-setting-monitoring/";
+          
+        },
+      },{id: "post-chapter-10-model-context-protocol-mcp",
+        
+          title: "Chapter 10: Model Context Protocol (MCP)",
+        
+        description: "Every tool integration so far required custom code. MCP changes that — a universal standard that lets any LLM connect to any tool, database, or service without bespoke glue code for each pair.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/mcp/";
+          
+        },
+      },{id: "post-chapter-9-learning-and-adaptation",
+        
+          title: "Chapter 9: Learning and Adaptation",
+        
+        description: "Every pattern so far assumes the agent stays the same. Learning and adaptation break that assumption — agents that improve through experience, rewrite their own code, and discover better algorithms than humans designed.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/learning-adaptation/";
+          
+        },
+      },{id: "post-chapter-8-memory-management",
         
           title: "Chapter 8: Memory Management",
         

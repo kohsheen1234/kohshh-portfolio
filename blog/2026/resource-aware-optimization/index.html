@@ -1,0 +1,496 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 16: Resource-Aware Optimization | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="Not every question needs a supercomputer. Resource-aware optimization routes simple queries to cheap, fast models and reserves expensive, powerful ones for genuinely hard problems — saving cost without sacrificing quality."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/resource-aware-optimization/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  30 MIN READ  ·  MARCH 06, 2026</p> <h1 class="post-title">Chapter 16: Resource-Aware Optimization</h1> <p class="post-lead">Not every question needs a supercomputer. Resource-aware optimization routes simple queries to cheap, fast models and reserves expensive, powerful ones for genuinely hard problems — saving cost without sacrificing quality.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">March 06, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fresource-aware-optimization%2F&amp;text=Chapter+16%3A+Resource-Aware+Optimization" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fresource-aware-optimization%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-overspending-problem">The Overspending Problem</a></li> <li class="toc-entry toc-h2"><a href="#the-model-tier-landscape">The Model Tier Landscape</a></li> <li class="toc-entry toc-h2"><a href="#the-three-agent-architecture">The Three-Agent Architecture</a></li> <li class="toc-entry toc-h2"><a href="#interactive-query-router-demo">Interactive: Query Router Demo</a></li> <li class="toc-entry toc-h2"> <a href="#the-code-three-implementations">The Code: Three Implementations</a> <ul> <li class="toc-entry toc-h3"><a href="#implementation-1-adk-with-model-tiers">Implementation 1: ADK with Model Tiers</a></li> <li class="toc-entry toc-h3"><a href="#implementation-2-query-router-agent">Implementation 2: Query Router Agent</a></li> <li class="toc-entry toc-h3"><a href="#implementation-3-the-critique-agent">Implementation 3: The Critique Agent</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#openrouter-multi-provider-optimization">OpenRouter: Multi-Provider Optimization</a> <ul> <li class="toc-entry toc-h3"><a href="#sequential-fallback-chain">Sequential Fallback Chain</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#implementation-4-full-three-tier-system-with-openai">Implementation 4: Full Three-Tier System with OpenAI</a></li> <li class="toc-entry toc-h2"> <a href="#the-nine-optimization-techniques">The Nine Optimization Techniques</a> <ul> <li class="toc-entry toc-h4"><a href="#dynamic-model-switching">Dynamic Model Switching</a></li> <li class="toc-entry toc-h4"><a href="#adaptive-tool-selection">Adaptive Tool Selection</a></li> <li class="toc-entry toc-h4"><a href="#contextual-pruning">Contextual Pruning</a></li> <li class="toc-entry toc-h4"><a href="#proactive-resource-prediction">Proactive Resource Prediction</a></li> <li class="toc-entry toc-h4"><a href="#cost-sensitive-multi-agent-coordination">Cost-Sensitive Multi-Agent Coordination</a></li> <li class="toc-entry toc-h4"><a href="#energy-efficient-deployment">Energy-Efficient Deployment</a></li> <li class="toc-entry toc-h4"><a href="#parallelization-awareness">Parallelization Awareness</a></li> <li class="toc-entry toc-h4"><a href="#learned-resource-allocation">Learned Resource Allocation</a></li> <li class="toc-entry toc-h4"><a href="#graceful-degradation--fallback">Graceful Degradation + Fallback</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">30 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fresource-aware-optimization%2F&amp;text=Chapter+16%3A+Resource-Aware+Optimization" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fresource-aware-optimization%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="the-overspending-problem">The Overspending Problem</h2> <div class="concept-box"> <span class="concept-label">Before You Start — Key Terms Explained</span> <p><strong>Token:</strong> The unit LLMs use for pricing and context length measurement. Roughly 4 characters of text = 1 token. "What is the capital of France?" is about 8 tokens. A 10-page document is roughly 2,500 tokens. Every LLM API call charges you for both input tokens (your prompt) and output tokens (the model's response).</p> <p style="margin-top:0.5rem"><strong>Model tiers:</strong> LLM providers offer multiple models at different price/capability points. "Flash" or "Mini" models are fast and cheap, designed for high-volume simple tasks. "Pro" or "Opus" models are powerful and expensive, designed for complex reasoning. The price difference can be 10–100× between tiers.</p> <p style="margin-top:0.5rem"><strong>Latency:</strong> The time between sending a request and receiving the full response. Cheaper, smaller models typically respond in 0.5–2 seconds. Larger, more capable models may take 5–30 seconds for complex reasoning. In real-time applications, latency directly affects user experience.</p> <p style="margin-top:0.5rem"><strong>Router agent:</strong> An agent whose sole job is to classify incoming requests and forward them to the appropriate downstream handler. The router itself typically uses a cheap, fast model — the routing decision must not cost more than the savings it generates.</p> <p style="margin-top:0.5rem"><strong>Critique agent:</strong> An agent that evaluates the quality of another agent's output. Used for quality assurance, self-correction loops, and identifying systematic failures in routing decisions (e.g., if the cheap model keeps producing bad results for certain query types).</p> <p style="margin-top:0.5rem"><strong>OpenRouter:</strong> A third-party service that provides a unified API endpoint for hundreds of AI models from different providers (OpenAI, Anthropic, Google, Meta, etc.). Instead of integrating each provider separately, you send all requests to OpenRouter with a model name, and it handles routing, billing, and failover.</p> <p style="margin-top:0.5rem"><strong>Graceful degradation:</strong> When a preferred system is unavailable, falling back to a less capable but still functional alternative rather than failing completely. (Covered in depth in Chapter 12.)</p> </div> <p>Imagine you run a customer support system powered by GPT-4 Pro. It handles 100,000 queries per day. Many of those queries are:</p> <ul> <li>“What are your business hours?” (trivial lookup)</li> <li>“How do I reset my password?” (template response)</li> <li>“Is my order shipped?” (database lookup)</li> <li>“What’s the return policy?” (static FAQ)</li> </ul> <p>These questions do not require sophisticated reasoning. GPT-4o-mini handles them perfectly. But if you’re routing everything to GPT-4 Pro, you’re paying 15–20× more per query than necessary — for zero quality improvement on simple questions.</p> <p>At 100,000 queries/day, 80% of which are simple:</p> <ul> <li> <strong>Without optimization:</strong> 100,000 × $0.003/query = <strong>$300/day = $9,000/month</strong> </li> <li> <strong>With optimization:</strong> 80,000 × $0.0003 + 20,000 × $0.003 = <strong>$24 + $60 = $84/day = $2,520/month</strong> </li> </ul> <p>That’s a <strong>70% cost reduction</strong> — same quality, same user experience, same output for the queries that matter.</p> <p><strong>Resource-aware optimization</strong> is the pattern that makes this happen systematically. It’s not just about cost — it’s about matching the computational resource to the task’s actual requirements across three dimensions: <strong>cost</strong> (API pricing), <strong>latency</strong> (response time), and <strong>quality</strong> (output accuracy and sophistication).</p> <hr> <h2 id="the-model-tier-landscape">The Model Tier Landscape</h2> <p>Before building a resource-aware system, you need to understand the trade-offs across model tiers:</p> <div class="rao-model-compare-wrapper"> <div class="rao-mc-header"> <span class="rao-mc-title">MODEL TIER COMPARISON — hover to explore</span> <span class="rao-mc-sub">Relative values — exact pricing varies by provider and date</span> </div> <canvas id="modelTierChart" style="display:block;width:100%;max-width:600px;margin:0 auto;"></canvas> <div class="rao-mc-legend"> <div class="rao-mc-leg"> <span class="rao-mc-dot" style="background:#4fc97e"></span>Flash / Mini (fast, cheap)</div> <div class="rao-mc-leg"> <span class="rao-mc-dot" style="background:#e6a817"></span>Standard / Balanced</div> <div class="rao-mc-leg"> <span class="rao-mc-dot" style="background:#ff6b6b"></span>Pro / Opus (powerful, expensive)</div> </div> <div class="rao-mc-tooltip" id="raoTooltip" style="display:none"></div> </div> <style>.rao-model-compare-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0;position:relative}.rao-mc-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05);flex-wrap:wrap;gap:.4rem}.rao-mc-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.rao-mc-sub{font-size:.65rem;color:var(--global-text-color-light)}.rao-mc-legend{display:flex;gap:1.25rem;padding:.6rem 1.1rem;border-top:1px solid var(--global-divider-color);flex-wrap:wrap}.rao-mc-leg{display:flex;align-items:center;gap:.4rem;font-size:.72rem;color:var(--global-text-color-light)}.rao-mc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.rao-mc-tooltip{position:fixed;background:var(--global-bg-color);border:1px solid var(--global-divider-color);border-radius:6px;padding:.5rem .75rem;font-size:.73rem;color:var(--global-text-color);pointer-events:none;z-index:200;max-width:230px;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.35)}</style> <script>
+(function(){
+  var canvas = document.getElementById('modelTierChart');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var tooltip = document.getElementById('raoTooltip');
+  var dpr = window.devicePixelRatio || 1;
+  var W = Math.min(600, canvas.parentElement.getBoundingClientRect().width - 24);
+  var H = 240;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.scale(dpr, dpr);
+
+  var dims = ['Cost/token', 'Speed', 'Reasoning', 'Context', 'Best for'];
+  var tiers = [
+    { name: 'Flash / Mini', color: '#4fc97e', scores: [1, 5, 2, 3],
+      detail: 'e.g. Gemini Flash 2.5, GPT-4o-mini\nIdeal for: FAQ, classification, simple extraction, routing decisions' },
+    { name: 'Standard', color: '#e6a817', scores: [3, 3, 4, 4],
+      detail: 'e.g. GPT-4o, Gemini 1.5 Pro\nIdeal for: general tasks, coding, document analysis, customer support' },
+    { name: 'Pro / Opus', color: '#ff6b6b', scores: [5, 2, 5, 5],
+      detail: 'e.g. Gemini 2.5 Pro, Claude Opus 4\nIdeal for: complex reasoning, research synthesis, critical decisions' },
+  ];
+
+  var ML=90, MR=20, MT=24, MB=36;
+  var PW=W-ML-MR, PH=H-MT-MB;
+  var nDims=4, nTiers=tiers.length;
+  var gW=PW/nDims, bW=(gW*0.65)/nTiers, bGap=(gW*0.35)/(nTiers+1);
+  var hitRects=[];
+
+  function getTheme(){ var s=getComputedStyle(document.documentElement); return {text:s.getPropertyValue('--global-text-color').trim()||'#e0e0e0',muted:s.getPropertyValue('--global-text-color-light').trim()||'#888',div:s.getPropertyValue('--global-divider-color').trim()||'#333'}; }
+
+  function draw(hD, hT){
+    ctx.clearRect(0,0,W,H); hitRects=[];
+    var th=getTheme();
+    for(var v=1;v<=5;v++){
+      var gy=MT+(1-(v-1)/4)*PH;
+      ctx.strokeStyle=th.div; ctx.lineWidth=0.5; ctx.setLineDash([3,3]);
+      ctx.beginPath(); ctx.moveTo(ML,gy); ctx.lineTo(ML+PW,gy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle=th.muted; ctx.font='10px monospace'; ctx.textAlign='right';
+      ctx.fillText(v, ML-5, gy+3.5);
+    }
+    for(var di=0;di<nDims;di++){
+      var gx=ML+di*gW;
+      for(var ti=0;ti<nTiers;ti++){
+        var bx=gx+bGap*(ti+1)+bW*ti;
+        var sc=tiers[ti].scores[di];
+        var bh=(sc-1)/4*PH, by=MT+PH-bh;
+        var isH=(hD===di&&hT===ti);
+        var alpha=(hD===null)?1:(isH?1:0.22);
+        ctx.globalAlpha=alpha; ctx.fillStyle=tiers[ti].color;
+        ctx.fillRect(bx,by,bW,bh); ctx.globalAlpha=1;
+        hitRects.push({x:bx,y:by,w:bW,h:bh,di:di,ti:ti,sc:sc});
+      }
+      ctx.fillStyle=th.muted; ctx.font='9px monospace'; ctx.textAlign='center';
+      ctx.fillText(dims[di],gx+gW/2,H-MB+14);
+    }
+  }
+  draw(null,null);
+
+  canvas.addEventListener('mousemove',function(e){
+    var rect=canvas.getBoundingClientRect(), mx=e.clientX-rect.left, my=e.clientY-rect.top, hit=null;
+    for(var i=0;i<hitRects.length;i++){ var r=hitRects[i]; if(mx>=r.x&&mx<=r.x+r.w&&my>=r.y&&my<=r.y+r.h){hit=r;break;} }
+    if(hit){
+      draw(hit.di,hit.ti);
+      tooltip.style.display='block'; tooltip.style.left=(e.clientX+12)+'px'; tooltip.style.top=(e.clientY-10)+'px';
+      tooltip.innerHTML='<strong>'+tiers[hit.ti].name+'</strong><br><em>'+dims[hit.di]+'</em>: '+hit.sc+'/5<br><span style="color:var(--global-text-color-light)">'+tiers[hit.ti].detail.replace(/\n/g,'<br>')+'</span>';
+      canvas.style.cursor='pointer';
+    } else { draw(null,null); tooltip.style.display='none'; canvas.style.cursor='default'; }
+  });
+  canvas.addEventListener('mouseleave',function(){ draw(null,null); tooltip.style.display='none'; });
+})();
+</script> <p>The chart shows the fundamental trade-off: cost and speed move in opposite directions from quality. A Flash model is 5× faster and much cheaper, but scores lower on complex reasoning. A Pro model excels at reasoning but is slower and expensive. Resource-aware optimization exploits this: use the cheap model where it’s good enough, reserve the expensive one for where it’s actually needed.</p> <hr> <h2 id="the-three-agent-architecture">The Three-Agent Architecture</h2> <p>Resource-aware optimization is typically implemented as a three-agent system:</p> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">RESOURCE-AWARE OPTIMIZATION ARCHITECTURE</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body" style="padding:1.25rem 1.5rem;"> <div class="ns-node ns-node-cyan" style="max-width:300px;"> <div class="ns-node-title">Incoming Query</div> <div class="ns-node-sub">User question, task, or request — unknown complexity at arrival time</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-purple" style="max-width:340px;"> <div class="ns-node-title">Router Agent (Flash model)</div> <div class="ns-node-sub">Classifies complexity: simple / reasoning / internet_search. Uses a cheap model — routing cost must be much less than the savings it generates.</div> </div> <div class="ns-arrow"></div> <div class="ns-row" style="max-width:540px;"> <div class="ns-node ns-node-green"> <div class="ns-node-title">Flash Model</div> <div class="ns-node-sub">Simple queries · Fast · Low cost · High volume capacity</div> </div> <div class="ns-node ns-node-amber"> <div class="ns-node-title">Pro Model</div> <div class="ns-node-sub">Complex reasoning · Thorough · High cost · Reserved for hard problems</div> </div> <div class="ns-node"> <div class="ns-node-title">Search + Model</div> <div class="ns-node-sub">Live data needed · Retrieve first · Synthesize second</div> </div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-amber" style="max-width:340px;"> <div class="ns-node-title">Critique Agent (optional)</div> <div class="ns-node-sub">Evaluates output quality. Feeds back into router logic — if Flash keeps failing on certain query types, router learns to route those to Pro instead.</div> </div> <div class="ns-arrow"></div> <div class="ns-node ns-node-green" style="max-width:300px;"> <div class="ns-node-title">Final Response</div> <div class="ns-node-sub">Correct answer · Delivered within budget · Appropriate latency for the query type</div> </div> </div> </div> <hr> <h2 id="interactive-query-router-demo">Interactive: Query Router Demo</h2> <p>See how the router classifies different queries and routes them to the right model:</p> <div class="rao-demo-wrapper"> <div class="rao-demo-header"> <span class="rao-demo-title">QUERY ROUTER LIVE DEMO</span> <button class="rao-demo-btn" id="raoDemoRunBtn" disabled>▶ Route Query</button> </div> <div class="rao-demo-queries"> <button class="rao-q-btn active" data-idx="0" onclick="raoSelect(0)">Simple fact</button> <button class="rao-q-btn" data-idx="1" onclick="raoSelect(1)">Complex reasoning</button> <button class="rao-q-btn" data-idx="2" onclick="raoSelect(2)">Current events</button> <button class="rao-q-btn" data-idx="3" onclick="raoSelect(3)">Math problem</button> </div> <div class="rao-demo-body"> <div class="rao-demo-query-display"> <span class="rao-q-label">QUERY</span> <span class="rao-q-text" id="raoQueryText">What is the capital of Australia?</span> </div> <div class="rao-demo-steps" id="raoDemoSteps"></div> </div> </div> <style>.rao-demo-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.rao-demo-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05)}.rao-demo-title{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.rao-demo-btn{font-family:monospace;font-size:.72rem;padding:.3rem .8rem;border-radius:4px;border:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color);cursor:pointer;transition:background .15s}.rao-demo-btn:not(:disabled):hover{background:rgba(38,152,186,0.12);border-color:#2698ba;color:#2698ba}.rao-demo-btn:disabled{opacity:.4;cursor:default}.rao-demo-queries{display:flex;border-bottom:1px solid var(--global-divider-color);overflow-x:auto}.rao-q-btn{flex:1;min-width:100px;padding:.5rem;font-family:monospace;font-size:.68rem;border:0;border-right:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color-light);cursor:pointer;white-space:nowrap}.rao-q-btn:last-child{border-right:0}.rao-q-btn.active{background:rgba(38,152,186,0.1);color:#2698ba;font-weight:700}.rao-demo-body{padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.75rem}.rao-demo-query-display{border:1px solid var(--global-divider-color);border-radius:6px;padding:.6rem .9rem;display:flex;align-items:center;gap:.75rem;background:rgba(128,128,128,0.04)}.rao-q-label{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:#2698ba;flex-shrink:0}.rao-q-text{font-size:.82rem;color:var(--global-text-color);font-family:monospace}.rao-demo-steps{display:flex;flex-direction:column;gap:.5rem}.rao-step{border:1px solid var(--global-divider-color);border-radius:7px;padding:.65rem .85rem;animation:raoIn .3s ease}@keyframes raoIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}.rao-step-label{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--global-text-color-light);margin-bottom:.3rem}.rao-step-content{font-size:.8rem;color:var(--global-text-color);line-height:1.55}.rao-step.classify{border-color:rgba(201,122,242,0.3);background:rgba(201,122,242,0.05)}.rao-step.route{border-color:rgba(230,168,23,0.3);background:rgba(230,168,23,0.05)}.rao-step.answer{border-color:rgba(79,201,126,0.3);background:rgba(79,201,126,0.07)}.rao-step-model{font-size:.65rem;font-family:monospace;padding:.1em .4em;border-radius:3px;margin-left:.4rem}.rao-model-flash{background:rgba(79,201,126,0.15);color:#4fc97e;border:1px solid rgba(79,201,126,0.3)}.rao-model-pro{background:rgba(255,107,107,0.12);color:#ff6b6b;border:1px solid rgba(255,107,107,0.3)}.rao-model-search{background:rgba(38,152,186,0.12);color:#7dcfff;border:1px solid rgba(38,152,186,0.3)}</style> <script>
+var RAO_QUERIES = [
+  {
+    text: "What is the capital of Australia?",
+    classification: "simple",
+    reason: "Direct factual recall — no reasoning chain needed. Any small model has this memorized.",
+    model: "gpt-4o-mini (Flash)",
+    modelClass: "flash",
+    cost: "~$0.0003",
+    latency: "0.8s",
+    answer: "The capital of Australia is Canberra, not Sydney as many people assume. Canberra was purpose-built as a compromise between Sydney and Melbourne when Australia federated in 1901."
+  },
+  {
+    text: "Should a startup use microservices or a monolith for its first product?",
+    classification: "reasoning",
+    reason: "Multi-factor trade-off analysis requiring understanding of team size, deployment complexity, technical debt, scalability timing. Needs sophisticated reasoning.",
+    model: "gemini-2.5-pro (Pro)",
+    modelClass: "pro",
+    cost: "~$0.015",
+    latency: "8.2s",
+    answer: "For a first product, almost always start with a monolith. Microservices add operational overhead (service discovery, network latency, distributed tracing) that slows down a small team. Migrate to microservices only after you understand the natural seam lines in your domain — typically when you have 5+ teams working on the same codebase."
+  },
+  {
+    text: "What did the Fed announce about interest rates this week?",
+    classification: "internet_search",
+    reason: "Requires real-time information from this week — no training data can contain this. Must search the web first, then synthesize.",
+    model: "Search → gpt-4o (Standard)",
+    modelClass: "search",
+    cost: "~$0.008",
+    latency: "4.5s",
+    answer: "[After web search] Based on recent news: The Federal Reserve held rates steady at 4.25–4.50% at their latest FOMC meeting, citing continued progress on inflation but noting uncertainty around trade policy impacts. (Source: Reuters, this week)"
+  },
+  {
+    text: "If a train leaves Chicago at 9am going 80mph, and another leaves Boston at 10am going 65mph, when do they meet (1,000 miles apart)?",
+    classification: "reasoning",
+    reason: "Multi-step mathematical word problem requiring algebraic reasoning. Flash models often make arithmetic errors on word problems; Pro model handles with higher reliability.",
+    model: "o4-mini (Reasoning)",
+    modelClass: "pro",
+    cost: "~$0.012",
+    latency: "6.1s",
+    answer: "Train A travels at 80mph from mile 0. Train B travels at 65mph from mile 1000 toward Train A. They approach at 80+65=145mph. Train B starts 1 hour later, so by 10am Train A is at mile 80. Remaining gap: 920 miles at 145mph combined = 6.34 hours. They meet at approximately 4:20pm, roughly 587 miles from Chicago."
+  }
+];
+
+var raoIdx = 0;
+var raoRunning = false;
+
+function raoSelect(idx) {
+  raoIdx = idx;
+  document.querySelectorAll('.rao-q-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelector('.rao-q-btn[data-idx="'+idx+'"]').classList.add('active');
+  document.getElementById('raoQueryText').textContent = RAO_QUERIES[idx].text;
+  document.getElementById('raoDemoSteps').innerHTML = '';
+  var btn = document.getElementById('raoDemoRunBtn');
+  btn.disabled = false;
+  btn.textContent = '▶ Route Query';
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  raoSelect(0);
+  var btn = document.getElementById('raoDemoRunBtn');
+  btn.addEventListener('click', async function(){
+    if (raoRunning) return;
+    raoRunning = true;
+    btn.disabled = true;
+    btn.textContent = '⏳ Routing…';
+
+    var steps = document.getElementById('raoDemoSteps');
+    steps.innerHTML = '';
+    var q = RAO_QUERIES[raoIdx];
+
+    await new Promise(function(r){ setTimeout(r, 500); });
+    var s1 = document.createElement('div'); s1.className = 'rao-step classify';
+    s1.innerHTML = '<div class="rao-step-label">01 — Classification (Router Agent)</div>' +
+      '<div class="rao-step-content"><strong>Category: ' + q.classification + '</strong><br>' + q.reason + '</div>';
+    steps.appendChild(s1);
+
+    await new Promise(function(r){ setTimeout(r, 700); });
+    var s2 = document.createElement('div'); s2.className = 'rao-step route';
+    s2.innerHTML = '<div class="rao-step-label">02 — Model Selection</div>' +
+      '<div class="rao-step-content">Selected: <strong>' + q.model + '</strong>' +
+      '<span class="rao-step-model rao-model-' + q.modelClass + '">' + q.modelClass.toUpperCase() + '</span><br>' +
+      'Estimated cost: <strong>' + q.cost + '</strong> &nbsp;·&nbsp; Expected latency: <strong>' + q.latency + '</strong></div>';
+    steps.appendChild(s2);
+
+    await new Promise(function(r){ setTimeout(r, 800); });
+    var s3 = document.createElement('div'); s3.className = 'rao-step answer';
+    s3.innerHTML = '<div class="rao-step-label">03 — Response</div>' +
+      '<div class="rao-step-content">' + q.answer + '</div>';
+    steps.appendChild(s3);
+
+    raoRunning = false;
+    btn.textContent = '↺ Try Again';
+    btn.disabled = false;
+  });
+});
+</script> <hr> <h2 id="the-code-three-implementations">The Code: Three Implementations</h2> <h3 id="implementation-1-adk-with-model-tiers">Implementation 1: ADK with Model Tiers</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">Agent</span>
+
+<span class="c1"># Tier 1: Fast, cheap — for simple queries, routing, classification
+</span><span class="n">gemini_flash_agent</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">GeminiFlashAgent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.5-flash</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">A fast, cost-efficient agent for simple, well-defined queries.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Answer concisely. For factual questions, give the direct answer without elaboration. Be fast.</span><span class="sh">"</span>
+<span class="p">)</span>
+
+<span class="c1"># Tier 2: Powerful, expensive — for complex reasoning
+</span><span class="n">gemini_pro_agent</span> <span class="o">=</span> <span class="nc">Agent</span><span class="p">(</span>
+    <span class="n">name</span>        <span class="o">=</span> <span class="sh">"</span><span class="s">GeminiProAgent</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.5-pro</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">A highly capable agent for complex analytical and reasoning tasks.</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">instruction</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Take your time to reason carefully. Show your thought process. Prioritize accuracy over brevity.</span><span class="sh">"</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why different instructions for different tiers?</strong> The instruction shapes the model’s behavior beyond just its capability. The Flash agent is told to be concise and fast — it shouldn’t pad its responses. The Pro agent is told to reason carefully and show work — it should use its full capability, even if that means longer responses. The instruction <em>activates</em> the tier’s strengths.</p> </blockquote> <h3 id="implementation-2-query-router-agent">Implementation 2: Query Router Agent</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">BaseAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.events</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="n">google.adk.agents.invocation_context</span> <span class="kn">import</span> <span class="n">InvocationContext</span>
+<span class="kn">from</span> <span class="n">typing</span> <span class="kn">import</span> <span class="n">AsyncGenerator</span>
+
+<span class="k">class</span> <span class="nc">QueryRouterAgent</span><span class="p">(</span><span class="n">BaseAgent</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Routes incoming queries to the appropriate model tier based on complexity.</span><span class="sh">"""</span>
+    <span class="n">name</span><span class="p">:</span>        <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">QueryRouter</span><span class="sh">"</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Routes queries to Flash (simple) or Pro (complex) based on analysis.</span><span class="sh">"</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_run_async_impl</span><span class="p">(</span>
+        <span class="n">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">InvocationContext</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncGenerator</span><span class="p">[</span><span class="n">Event</span><span class="p">,</span> <span class="bp">None</span><span class="p">]:</span>
+        <span class="n">user_query</span>    <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="n">current_message</span><span class="p">.</span><span class="n">text</span>
+        <span class="n">query_words</span>   <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">user_query</span><span class="p">.</span><span class="nf">split</span><span class="p">())</span>
+        <span class="n">query_lower</span>   <span class="o">=</span> <span class="n">user_query</span><span class="p">.</span><span class="nf">lower</span><span class="p">()</span>
+
+        <span class="c1"># Complexity signals
+</span>        <span class="n">is_long_query</span>      <span class="o">=</span> <span class="n">query_words</span> <span class="o">&gt;</span> <span class="mi">20</span>
+        <span class="n">needs_reasoning</span>    <span class="o">=</span> <span class="nf">any</span><span class="p">(</span><span class="n">kw</span> <span class="ow">in</span> <span class="n">query_lower</span> <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span>
+                                <span class="p">[</span><span class="sh">'</span><span class="s">why</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">how</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">explain</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">compare</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">analyze</span><span class="sh">'</span><span class="p">,</span>
+                                 <span class="sh">'</span><span class="s">evaluate</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">design</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">recommend</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">trade-off</span><span class="sh">'</span><span class="p">])</span>
+        <span class="n">needs_current_data</span> <span class="o">=</span> <span class="nf">any</span><span class="p">(</span><span class="n">kw</span> <span class="ow">in</span> <span class="n">query_lower</span> <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span>
+                                <span class="p">[</span><span class="sh">'</span><span class="s">today</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">this week</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">latest</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">current</span><span class="sh">'</span><span class="p">,</span>
+                                 <span class="sh">'</span><span class="s">recent</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">now</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2025</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">2026</span><span class="sh">'</span><span class="p">])</span>
+        <span class="n">needs_math</span>         <span class="o">=</span> <span class="nf">any</span><span class="p">(</span><span class="n">kw</span> <span class="ow">in</span> <span class="n">query_lower</span> <span class="k">for</span> <span class="n">kw</span> <span class="ow">in</span>
+                                <span class="p">[</span><span class="sh">'</span><span class="s">calculate</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">solve</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">equation</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">probability</span><span class="sh">'</span><span class="p">,</span>
+                                 <span class="sh">'</span><span class="s">percent</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">if x then</span><span class="sh">'</span><span class="p">])</span>
+
+        <span class="c1"># Routing decision
+</span>        <span class="k">if</span> <span class="n">needs_current_data</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="sh">"</span><span class="s">search_and_synthesize</span><span class="sh">"</span>
+            <span class="n">model_used</span> <span class="o">=</span> <span class="sh">"</span><span class="s">google_search + gemini-2.5-flash</span><span class="sh">"</span>
+        <span class="k">elif</span> <span class="n">needs_reasoning</span> <span class="ow">or</span> <span class="n">needs_math</span> <span class="ow">or</span> <span class="n">is_long_query</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="sh">"</span><span class="s">complex</span><span class="sh">"</span>
+            <span class="n">model_used</span> <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.5-pro</span><span class="sh">"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">route</span> <span class="o">=</span> <span class="sh">"</span><span class="s">simple</span><span class="sh">"</span>
+            <span class="n">model_used</span> <span class="o">=</span> <span class="sh">"</span><span class="s">gemini-2.5-flash</span><span class="sh">"</span>
+
+        <span class="k">yield</span> <span class="nc">Event</span><span class="p">(</span>
+            <span class="n">author</span>  <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Routing </span><span class="sh">'</span><span class="si">{</span><span class="n">user_query</span><span class="p">[</span><span class="si">:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s">...</span><span class="sh">'</span><span class="s"> → </span><span class="si">{</span><span class="n">route</span><span class="si">}</span><span class="s"> (model: </span><span class="si">{</span><span class="n">model_used</span><span class="si">}</span><span class="s">)</span><span class="sh">"</span>
+        <span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Rule-based vs LLM-based routing.</strong> This implementation uses keyword matching — fast and predictable, but brittle. It will misclassify edge cases (e.g., “why is the sky blue?” is classified as complex because of “why” but is actually simple). A more sophisticated router would use an LLM to classify queries based on semantic understanding rather than keywords. The trade-off: LLM routing is ~$0.0001 per classification call but far more accurate. Use keyword routing for high-volume, cost-critical systems; use LLM routing when accuracy matters more than classification cost.</p> </blockquote> <blockquote> <p><strong>Why check <code class="language-plaintext highlighter-rouge">needs_current_data</code> first?</strong> The routing conditions are evaluated in priority order. If a query needs current data, that overrides complexity — even a simple question about today’s news requires search. By checking this first, you ensure real-time queries always get search capability, not just a model upgrade.</p> </blockquote> <h3 id="implementation-3-the-critique-agent">Implementation 3: The Critique Agent</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CRITIC_SYSTEM_PROMPT</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+You are the Critique Agent — the quality assurance layer of our multi-model system.
+Your function: evaluate responses from other models and identify systematic failures.
+
+For each response you review, assess:
+1. ACCURACY: Is the factual content correct?
+2. COMPLETENESS: Does it fully address the question?
+3. APPROPRIATE DEPTH: Is the detail level right for the question</span><span class="sh">'</span><span class="s">s complexity?
+4. ROUTING SIGNAL: Was this the right model for this query type?
+
+Return structured feedback:
+- verdict: </span><span class="sh">"</span><span class="s">correct</span><span class="sh">"</span><span class="s"> | </span><span class="sh">"</span><span class="s">needs_refinement</span><span class="sh">"</span><span class="s"> | </span><span class="sh">"</span><span class="s">wrong_model</span><span class="sh">"</span><span class="s">
+- if wrong_model: suggest </span><span class="sh">"</span><span class="s">should_use_flash</span><span class="sh">"</span><span class="s"> | </span><span class="sh">"</span><span class="s">should_use_pro</span><span class="sh">"</span><span class="s">
+- specific_issues: list of concrete problems found
+- confidence: 0.0 to 1.0
+
+Be constructive. Flag systematic misrouting — if Flash keeps struggling with
+a category, that</span><span class="sh">'</span><span class="s">s a signal to update the router</span><span class="sh">'</span><span class="s">s classification rules.
+</span><span class="sh">"""</span>
+</code></pre></div></div> <blockquote> <p><strong>Why “wrong_model” is a routing signal, not just a quality signal.</strong> When the Critique Agent says “wrong_model: should_use_flash,” it’s identifying a case where the router sent a simple query to the Pro model unnecessarily — overspending. When it says “wrong_model: should_use_pro,” it’s identifying a case where the router sent a complex query to Flash — producing a poor result. Both are actionable: the first wastes money, the second wastes quality. Tracking these misrouting events over time reveals systematic biases in the router’s classification logic that can be corrected.</p> </blockquote> <hr> <h2 id="openrouter-multi-provider-optimization">OpenRouter: Multi-Provider Optimization</h2> <p>OpenRouter is a third-party service that simplifies resource-aware optimization by providing:</p> <ul> <li>A single API endpoint for 200+ models from all major providers</li> <li>Automatic model selection (<code class="language-plaintext highlighter-rouge">openrouter/auto</code>)</li> <li>Sequential fallback chains</li> <li>Real-time pricing and latency data</li> </ul> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span><span class="p">,</span> <span class="n">json</span>
+
+<span class="c1"># Simple request with automatic model selection
+</span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span>
+    <span class="n">url</span>     <span class="o">=</span> <span class="sh">"</span><span class="s">https://openrouter.ai/api/v1/chat/completions</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">Authorization</span><span class="sh">"</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Bearer </span><span class="si">{</span><span class="n">OPENROUTER_API_KEY</span><span class="si">}</span><span class="sh">"</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">X-Title</span><span class="sh">"</span><span class="p">:</span>       <span class="sh">"</span><span class="s">My Agent App</span><span class="sh">"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">({</span>
+        <span class="sh">"</span><span class="s">model</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">openrouter/auto</span><span class="sh">"</span><span class="p">,</span>     <span class="c1"># ← OpenRouter picks the best model for this query
+</span>        <span class="sh">"</span><span class="s">messages</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">What is the capital of France?</span><span class="sh">"</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">})</span>
+<span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">"model": "openrouter/auto"</code></strong>: OpenRouter analyzes the prompt and selects the most cost-effective model that can handle it well. For a simple factual question, it might choose a Flash-tier model. For a complex reasoning question, it upgrades automatically. The selection considers: prompt complexity, available model performance data, current pricing, and latency requirements.</p> </blockquote> <h3 id="sequential-fallback-chain">Sequential Fallback Chain</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Fallback chain: try Claude 3.5 Sonnet first, fall back to a cheaper model if it fails
+</span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span>
+    <span class="n">url</span>  <span class="o">=</span> <span class="sh">"</span><span class="s">https://openrouter.ai/api/v1/chat/completions</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="sh">"</span><span class="s">Authorization</span><span class="sh">"</span><span class="p">:</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Bearer </span><span class="si">{</span><span class="n">OPENROUTER_API_KEY</span><span class="si">}</span><span class="sh">"</span><span class="p">},</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">({</span>
+        <span class="sh">"</span><span class="s">models</span><span class="sh">"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="sh">"</span><span class="s">anthropic/claude-sonnet-4-5</span><span class="sh">"</span><span class="p">,</span>  <span class="c1"># Try first — preferred quality
+</span>            <span class="sh">"</span><span class="s">openai/gpt-4o-mini</span><span class="sh">"</span><span class="p">,</span>           <span class="c1"># Fallback 1 — if Claude is unavailable
+</span>            <span class="sh">"</span><span class="s">google/gemini-flash-1.5</span><span class="sh">"</span><span class="p">,</span>      <span class="c1"># Fallback 2 — cheapest option
+</span>        <span class="p">],</span>
+        <span class="sh">"</span><span class="s">messages</span><span class="sh">"</span><span class="p">:</span> <span class="p">[{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">user_query</span><span class="p">}]</span>
+    <span class="p">})</span>
+<span class="p">)</span>
+
+<span class="c1"># The response includes which model was actually used
+</span><span class="n">model_used</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="nf">json</span><span class="p">()[</span><span class="sh">"</span><span class="s">model</span><span class="sh">"</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Served by: </span><span class="si">{</span><span class="n">model_used</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong>Why the fallback chain is valuable in production.</strong> LLM APIs have outages, rate limits, and regional availability issues. If you’re hard-coded to one model and it goes down, your entire application fails. The fallback chain provides automatic resilience: Claude is down → seamlessly serve from GPT-4o-mini → users never notice. This is <a href="/kohshh-portfolio/blog/2026/exception-handling/">graceful degradation</a> (Chapter 12) applied at the model layer.</p> </blockquote> <blockquote> <p><strong>The response always tells you which model was used.</strong> This is critical for cost tracking, quality auditing, and identifying when fallbacks fire more than expected. If you notice you’re serving from the fallback 30% of the time, that’s a signal your primary model has reliability issues you should address.</p> </blockquote> <hr> <h2 id="implementation-4-full-three-tier-system-with-openai">Implementation 4: Full Three-Tier System with OpenAI</h2> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span><span class="p">,</span> <span class="n">json</span><span class="p">,</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="kn">from</span> <span class="n">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="nf">load_dotenv</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="nc">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">"</span><span class="s">OPENAI_API_KEY</span><span class="sh">"</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">classify_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Use a cheap model to classify query complexity — the router itself must be cheap.</span><span class="sh">"""</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">chat</span><span class="p">.</span><span class="n">completions</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+        <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">gpt-4o-mini</span><span class="sh">"</span><span class="p">,</span>   <span class="c1"># Cheapest capable classifier
+</span>        <span class="n">temperature</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>               <span class="c1"># Deterministic — routing must be consistent
+</span>        <span class="n">messages</span>    <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">system</span><span class="sh">"</span><span class="p">,</span>
+                <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="p">(</span>
+                    <span class="sh">"</span><span class="s">Classify the user prompt into exactly one category: </span><span class="sh">"</span>
+                    <span class="sh">"</span><span class="s">simple, reasoning, or internet_search.</span><span class="se">\n\n</span><span class="sh">"</span>
+                    <span class="sh">"</span><span class="s">- simple: direct factual questions answerable from training data</span><span class="se">\n</span><span class="sh">"</span>
+                    <span class="sh">"</span><span class="s">- reasoning: logic, math, multi-step analysis, trade-off evaluation</span><span class="se">\n</span><span class="sh">"</span>
+                    <span class="sh">"</span><span class="s">- internet_search: requires current data, real-time events, recent news</span><span class="se">\n\n</span><span class="sh">"</span>
+                    <span class="sh">"</span><span class="s">Respond ONLY with JSON: {</span><span class="se">\"</span><span class="s">classification</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">&lt;category&gt;</span><span class="se">\"</span><span class="s">}</span><span class="sh">"</span>
+                <span class="p">)</span>
+            <span class="p">},</span>
+            <span class="p">{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="nf">loads</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">message</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">temperature=0</code> for the classifier.</strong> The classification decision must be deterministic and consistent. If the same query is classified differently on each call, the system becomes unpredictable — the same query might get routed to Flash one time and Pro the next, producing different costs and quality. <code class="language-plaintext highlighter-rouge">temperature=0</code> ensures the same input always produces the same classification.</p> </blockquote> <blockquote> <p><strong>Why use <code class="language-plaintext highlighter-rouge">gpt-4o-mini</code> for classification, not a cheaper model?</strong> The classifier needs to reliably distinguish “simple,” “reasoning,” and “internet_search” — this requires semantic understanding beyond keyword matching. Using a model that’s too cheap might produce unreliable classifications, routing complex queries to Flash (wrong quality) or simple queries to Pro (wrong cost). The classification model should be the cheapest model that classifies accurately for your query distribution.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">generate_response</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">classification</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">search_results</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Route to the appropriate model based on classification.</span><span class="sh">"""</span>
+    <span class="k">if</span> <span class="n">classification</span> <span class="o">==</span> <span class="sh">"</span><span class="s">simple</span><span class="sh">"</span><span class="p">:</span>
+        <span class="n">model</span>      <span class="o">=</span> <span class="sh">"</span><span class="s">gpt-4o-mini</span><span class="sh">"</span>    <span class="c1"># $0.15/1M input, $0.60/1M output
+</span>        <span class="n">full_prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+
+    <span class="k">elif</span> <span class="n">classification</span> <span class="o">==</span> <span class="sh">"</span><span class="s">reasoning</span><span class="sh">"</span><span class="p">:</span>
+        <span class="n">model</span>       <span class="o">=</span> <span class="sh">"</span><span class="s">o4-mini</span><span class="sh">"</span>       <span class="c1"># Reasoning model with chain-of-thought
+</span>        <span class="n">full_prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+
+    <span class="k">elif</span> <span class="n">classification</span> <span class="o">==</span> <span class="sh">"</span><span class="s">internet_search</span><span class="sh">"</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="sh">"</span><span class="s">gpt-4o</span><span class="sh">"</span>              <span class="c1"># Standard model for synthesis with search context
+</span>        <span class="k">if</span> <span class="n">search_results</span><span class="p">:</span>
+            <span class="n">search_context</span> <span class="o">=</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">([</span>
+                <span class="sa">f</span><span class="sh">"</span><span class="s">Title: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">title</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s">Snippet: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">snippet</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s">URL: </span><span class="si">{</span><span class="n">r</span><span class="p">[</span><span class="sh">'</span><span class="s">link</span><span class="sh">'</span><span class="p">]</span><span class="si">}</span><span class="sh">"</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">search_results</span>
+            <span class="p">])</span>
+            <span class="n">full_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"""</span><span class="s">Use ONLY these web results to answer. Cite sources.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">search_context</span><span class="si">}</span><span class="se">\n\n</span><span class="s">Question: </span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="sh">"""</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">full_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Note: web search returned no results. Answer from training data with a caveat.</span><span class="se">\n\n</span><span class="si">{</span><span class="n">prompt</span><span class="si">}</span><span class="sh">"</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">chat</span><span class="p">.</span><span class="n">completions</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+        <span class="n">model</span>    <span class="o">=</span> <span class="n">model</span><span class="p">,</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="n">full_prompt</span><span class="p">}],</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">message</span><span class="p">.</span><span class="n">content</span><span class="p">,</span> <span class="n">model</span>
+</code></pre></div></div> <blockquote> <p><strong>Why different models for different categories?</strong> Each model was chosen for the category it dominates:</p> <ul> <li> <code class="language-plaintext highlighter-rouge">gpt-4o-mini</code> for “simple”: cheapest model that handles factual recall with high reliability</li> <li> <code class="language-plaintext highlighter-rouge">o4-mini</code> for “reasoning”: the <code class="language-plaintext highlighter-rouge">o</code>-series models have explicit chain-of-thought reasoning built in, dramatically improving performance on math and multi-step logic vs standard models</li> <li> <code class="language-plaintext highlighter-rouge">gpt-4o</code> for “search”: synthesis tasks require reading and integrating retrieved text, a task standard models handle well; the full <code class="language-plaintext highlighter-rouge">gpt-4o</code> is better than mini for this use case</li> </ul> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">handle_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Orchestrate the full resource-aware pipeline.</span><span class="sh">"""</span>
+    <span class="c1"># Step 1: Classify (cheap)
+</span>    <span class="n">classification</span> <span class="o">=</span> <span class="nf">classify_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">)[</span><span class="sh">"</span><span class="s">classification</span><span class="sh">"</span><span class="p">]</span>
+
+    <span class="c1"># Step 2: Retrieve if needed (medium cost)
+</span>    <span class="n">search_results</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">classification</span> <span class="o">==</span> <span class="sh">"</span><span class="s">internet_search</span><span class="sh">"</span><span class="p">:</span>
+        <span class="n">search_results</span> <span class="o">=</span> <span class="nf">google_search</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="c1"># Step 3: Generate (model cost depends on classification)
+</span>    <span class="n">answer</span><span class="p">,</span> <span class="n">model_used</span> <span class="o">=</span> <span class="nf">generate_response</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">classification</span><span class="p">,</span> <span class="n">search_results</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="sh">"</span><span class="s">classification</span><span class="sh">"</span><span class="p">:</span> <span class="n">classification</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">model_used</span><span class="sh">"</span><span class="p">:</span>     <span class="n">model_used</span><span class="p">,</span>
+        <span class="sh">"</span><span class="s">response</span><span class="sh">"</span><span class="p">:</span>       <span class="n">answer</span><span class="p">,</span>
+    <span class="p">}</span>
+</code></pre></div></div> <blockquote> <p><strong>The pipeline’s cost structure.</strong> Every query pays the classification cost (cheap, ~$0.0001). Then the routing kicks in:</p> <ul> <li>Simple queries: pay cheap generation cost (~$0.0003) → total ~$0.0004</li> <li>Reasoning queries: pay Pro generation cost (~$0.015) → total ~$0.0151</li> <li>Search queries: pay search API cost (~$0.005) + standard generation (~$0.008) → total ~$0.0131</li> </ul> <p>The classification cost is negligible. The savings come from routing ~70-80% of queries to cheap models instead of expensive ones.</p> </blockquote> <hr> <h2 id="the-nine-optimization-techniques">The Nine Optimization Techniques</h2> <p>Resource-aware optimization extends beyond model switching. Here’s the full spectrum:</p> <div class="rao-techniques-grid"> <div class="rao-tech-card"> <span class="rao-tech-num">01</span> <h4>Dynamic Model Switching</h4> <p>Route to different model tiers based on query complexity. The pattern we've been building throughout this chapter.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">02</span> <h4>Adaptive Tool Selection</h4> <p>Choose between tools based on cost and speed. Use a cached database lookup before an expensive live API call. Prefer a local index before a web search.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">03</span> <h4>Contextual Pruning</h4> <p>Summarize or truncate long conversation history before sending to the LLM. Fewer input tokens = lower cost. Prioritize the most recent and most relevant context.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">04</span> <h4>Proactive Resource Prediction</h4> <p>Forecast expected query volume and provision resources in advance. Avoids cold-start latency and capacity shortfalls during peak traffic.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">05</span> <h4>Cost-Sensitive Multi-Agent Coordination</h4> <p>Optimize communication costs between agents in addition to computation. Batch small messages, compress serialized state, avoid redundant cross-agent calls.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">06</span> <h4>Energy-Efficient Deployment</h4> <p>For edge devices (IoT, mobile), minimize inference frequency and prefer quantized, compressed models. Important for battery-constrained environments.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">07</span> <h4>Parallelization Awareness</h4> <p>When multiple independent sub-tasks exist, parallelize them (Chapter 3 pattern). Total time = max(T_tasks), not sum(T_tasks). Coordinate resource allocation across parallel branches.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">08</span> <h4>Learned Resource Allocation</h4> <p>Use the Critique Agent's feedback over time to retrain the router. If Flash consistently fails on certain query patterns, update the classifier. The system improves from its own production traffic.</p> </div> <div class="rao-tech-card"> <span class="rao-tech-num">09</span> <h4>Graceful Degradation + Fallback</h4> <p>When primary resources are exhausted or unavailable, automatically fall back to cheaper/simpler alternatives. Serve a reduced-quality response rather than failing completely. (Chapter 12 pattern applied at the resource layer.)</p> </div> </div> <style>.rao-techniques-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.85rem;margin:1.5rem 0}.rao-tech-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.rao-tech-num{font-family:monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#e6a817}.rao-tech-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.rao-tech-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}</style> <hr> <h2 id="at-a-glance">At a Glance</h2> <div class="rao-summary-card"> <div class="rao-summary-col"> <div class="rao-summary-label">WHAT</div> <p>A pattern for dynamically matching computational resources to task requirements. Simple queries route to cheap, fast models. Complex queries route to powerful, expensive ones. A critique agent monitors quality and improves routing over time.</p> </div> <div class="rao-summary-divider"></div> <div class="rao-summary-col"> <div class="rao-summary-label">WHY</div> <p>Routing all queries to the most capable (and most expensive) model wastes 70-90% of API costs on queries that a much cheaper model handles equally well. Resource-aware optimization preserves quality where it matters while eliminating waste where it doesn't.</p> </div> <div class="rao-summary-divider"></div> <div class="rao-summary-col"> <div class="rao-summary-label">RULE OF THUMB</div> <p>Start by measuring your query distribution: what fraction is simple, complex, or search-requiring? If &gt;50% is simple, this pattern pays for itself immediately. Use OpenRouter for easy multi-model fallback; build custom routers when query distribution requires specialized classification.</p> </div> </div> <style>.rao-summary-card{display:flex;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.rao-summary-card{flex-direction:column}}.rao-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.rao-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.rao-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.rao-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#e6a817}</style> <hr> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <p><strong>Over-provisioning is the default failure mode.</strong> Without resource optimization, developers pick one capable model and route everything to it. This works but wastes 70-90% of API budget on queries that didn’t need that capability.</p> </li> <li> <p><strong>The routing cost must be much less than the savings.</strong> If classifying a query costs $0.001 and the savings from routing to a cheaper model is $0.0005, routing costs more than it saves. Use the cheapest reliable classifier — <code class="language-plaintext highlighter-rouge">gpt-4o-mini</code>, Gemini Flash, or keyword matching.</p> </li> <li> <p><strong><code class="language-plaintext highlighter-rouge">temperature=0</code> for all routing and classification calls.</strong> The routing decision must be deterministic. Non-zero temperature introduces randomness into which model serves a query, making cost and quality unpredictable and unreproducible.</p> </li> <li> <p><strong>The three-tier classification (simple / reasoning / internet_search) covers 95% of cases.</strong> These three categories map cleanly to different computational requirements: factual recall, chain-of-thought reasoning, and real-time retrieval. Most production systems can start with just these three.</p> </li> <li> <p><strong>OpenRouter provides zero-code fallback chains.</strong> Instead of implementing retry/fallback logic yourself, the <code class="language-plaintext highlighter-rouge">"models": [list]</code> parameter in OpenRouter handles it automatically. The simplest resilient multi-model system is a one-line configuration change.</p> </li> <li> <p><strong>The Critique Agent converts production traffic into training data.</strong> Every query where the Critique Agent says “wrong_model” is a labeled example of router misclassification. Collect these, analyze the patterns, and update the router’s classification logic. The system improves itself from its own errors.</p> </li> <li> <p><strong>Model tiers are not fixed — the landscape changes fast.</strong> What’s “Pro” today becomes “Flash” next year. Gemini 2.5 Flash matches the capability of last year’s Pro models. Build your resource-aware system with abstraction between the routing logic and the specific model names — use configuration or constants, not hardcoded strings, so updating model choices requires changing one line not twenty.</p> </li> </ul> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/a2a/">Chapter 15: Inter-Agent Communication (A2A)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/rag/">Chapter 14: Knowledge Retrieval (RAG)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/human-in-the-loop/">Chapter 13: Human-in-the-Loop</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/exception-handling/">Chapter 12: Exception Handling and Recovery</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/goal-setting-monitoring/">Chapter 11: Goal Setting and Monitoring</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> <script>
+// ── VS Code-style code blocks: traffic-light header + safe line numbers ───────
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll(
+    '.post-content figure.highlight, .post-content div.highlight'
+  ).forEach(function (block) {
+
+    // 1. Detect language from code element class
+    var lang = '';
+    var codeEl = block.querySelector('code');
+    if (codeEl) {
+      var m = (codeEl.className || '').match(/language-(\w[\w+-]*)/);
+      if (m) lang = m[1];
+    }
+
+    // 2. Build traffic-light header
+    var hdr = document.createElement('div');
+    hdr.className = 'cb-header';
+    hdr.innerHTML =
+      '<div class="cb-dots">' +
+        '<span class="cb-dot cb-red"></span>' +
+        '<span class="cb-dot cb-yellow"></span>' +
+        '<span class="cb-dot cb-green"></span>' +
+      '</div>' +
+      '<span class="cb-lang">' + (lang || 'code') + '</span>' +
+      '<div class="cb-dots-spacer"></div>';
+    block.insertBefore(hdr, block.firstChild);
+
+    // 3. Safe line numbers — count from textContent, NEVER touch innerHTML
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    var inner  = pre.querySelector('code') || pre;
+    var text   = inner.textContent || '';
+    var lines  = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+    var count  = Math.max(lines.length, 1);
+
+    // Build a separate number column — placed BEFORE pre, not inside it
+    var nums = document.createElement('div');
+    nums.className = 'cb-line-nums';
+    nums.setAttribute('aria-hidden', 'true');
+    for (var i = 1; i <= count; i++) {
+      var sp = document.createElement('span');
+      sp.textContent = i;
+      nums.appendChild(sp);
+    }
+
+    // Wrap [nums | pre] in a flex row so they scroll as one unit
+    var area = document.createElement('div');
+    area.className = 'cb-code-area';
+    pre.parentNode.insertBefore(area, pre);
+    area.appendChild(nums);
+    area.appendChild(pre);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>

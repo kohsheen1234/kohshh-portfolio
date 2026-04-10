@@ -1,0 +1,379 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Chapter 15: Inter-Agent Communication (A2A) | Kohsheen Tiku </title> <meta name="author" content="Kohsheen Tiku"> <meta name="description" content="MCP connects agents to tools. A2A connects agents to agents. The Agent2Agent protocol is the missing standard that lets any AI agent — regardless of framework — collaborate with any other."> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; media-src 'self' https:; frame-src 'self' https:; connect-src 'self' https:;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/bootstrap.min.css?v=a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/academicons.min.css?v=f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/scholar-icons.css?v=62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-github.css?v=591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%E2%9A%9B%EF%B8%8F&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/kohshh-portfolio/assets/css/main.css?v=d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://kohsheen1234.github.io/kohshh-portfolio/blog/2026/a2a/"> <script src="/kohshh-portfolio/assets/js/theme.js?v=6122e1834c03451b40aebb78ae55c180"></script> <link defer rel="stylesheet" href="/kohshh-portfolio/assets/css/jekyll-pygments-themes-native.css?v=5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-lighter" href="/kohshh-portfolio/"> <span class="font-weight-bold">Kohsheen</span> Tiku </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/">about </a> </li> <li class="nav-item active"> <a class="nav-link" href="/kohshh-portfolio/blog/">blog </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/playlists/">playlists </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/publications/">publications </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/projects/">projects </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/cv/">CV </a> </li> <li class="nav-item "> <a class="nav-link" href="/kohshh-portfolio/teaching/">teaching </a> </li> <li class="nav-item"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <i class="fa-solid fa-magnifying-glass"></i> </button> </li> <li class="toggle-container"> <button id="light-toggle" title="Change theme"> <i class="fa-half-sun-moon" id="light-toggle-system"></i> <i class="fa-solid fa-moon" id="light-toggle-dark"></i> <i class="fa-solid fa-sun" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <p class="post-kicker">ARTICLE  ·  28 MIN READ  ·  MARCH 02, 2026</p> <h1 class="post-title">Chapter 15: Inter-Agent Communication (A2A)</h1> <p class="post-lead">MCP connects agents to tools. A2A connects agents to agents. The Agent2Agent protocol is the missing standard that lets any AI agent — regardless of framework — collaborate with any other.</p> <div class="post-author-row"> <div class="post-author-info"> <span class="post-author-name">Kohsheen Tiku</span> <span class="post-author-sep">·</span> <span class="post-author-date">March 02, 2026</span> </div> <div class="post-share-btns"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fa2a%2F&amp;text=Chapter+15%3A+Inter-Agent+Communication+%28A2A%29" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-x-twitter"></i> Share </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fa2a%2F" target="_blank" rel="noopener" class="post-share-btn"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> </div> </div> <hr class="post-divider"> </header> <div class="post-body has-toc"> <aside class="post-toc-sidebar"> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">IN THIS ARTICLE</p> <div id="table-of-contents"> <ul id="toc" class="section-nav"> <li class="toc-entry toc-h2"><a href="#the-missing-link-in-multi-agent-systems">The Missing Link in Multi-Agent Systems</a></li> <li class="toc-entry toc-h2"><a href="#a2a-vs-mcp-two-complementary-protocols">A2A vs MCP: Two Complementary Protocols</a></li> <li class="toc-entry toc-h2"><a href="#the-three-core-actors">The Three Core Actors</a></li> <li class="toc-entry toc-h2"><a href="#the-agent-card-a-digital-identity">The Agent Card: A Digital Identity</a></li> <li class="toc-entry toc-h2"><a href="#the-four-interaction-mechanisms">The Four Interaction Mechanisms</a></li> <li class="toc-entry toc-h2"><a href="#the-task-lifecycle">The Task Lifecycle</a></li> <li class="toc-entry toc-h2"> <a href="#the-code-building-an-a2a-calendar-agent">The Code: Building an A2A Calendar Agent</a> <ul> <li class="toc-entry toc-h3"><a href="#part-1-the-adk-agent-with-calendar-tools">Part 1: The ADK Agent with Calendar Tools</a></li> <li class="toc-entry toc-h3"><a href="#part-2-defining-the-agent-card-and-starting-the-a2a-server">Part 2: Defining the Agent Card and Starting the A2A Server</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#the-complete-a2a-flow-visualized">The Complete A2A Flow Visualized</a></li> <li class="toc-entry toc-h2"> <a href="#security-how-a2a-stays-safe">Security: How A2A Stays Safe</a> <ul> <li class="toc-entry toc-h4"><a href="#mutual-tls-mtls">Mutual TLS (mTLS)</a></li> <li class="toc-entry toc-h4"><a href="#credential-handling">Credential Handling</a></li> <li class="toc-entry toc-h4"><a href="#audit-logs">Audit Logs</a></li> <li class="toc-entry toc-h4"><a href="#agent-card-security">Agent Card Security</a></li> </ul> </li> <li class="toc-entry toc-h2"> <a href="#practical-applications">Practical Applications</a> <ul> <li class="toc-entry toc-h4"><a href="#multi-framework-collaboration">Multi-Framework Collaboration</a></li> <li class="toc-entry toc-h4"><a href="#enterprise-workflow-automation">Enterprise Workflow Automation</a></li> <li class="toc-entry toc-h4"><a href="#dynamic-capability-discovery">Dynamic Capability Discovery</a></li> <li class="toc-entry toc-h4"><a href="#cross-organization-collaboration">Cross-Organization Collaboration</a></li> </ul> </li> <li class="toc-entry toc-h2"><a href="#at-a-glance">At a Glance</a></li> <li class="toc-entry toc-h2"><a href="#key-takeaways">Key Takeaways</a></li> </ul> </div> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">READ TIME</p> <p class="toc-read-time">28 min read</p> </div> <div class="toc-sidebar-section"> <p class="toc-sidebar-label">SHARE</p> <div class="toc-share-links"> <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fa2a%2F&amp;text=Chapter+15%3A+Inter-Agent+Communication+%28A2A%29" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-x-twitter"></i> Share on X </a> <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fkohsheen1234.github.io%2Fkohshh-portfolio%2Fblog%2F2026%2Fa2a%2F" target="_blank" rel="noopener" class="toc-share-link"> <i class="fa-brands fa-linkedin"></i> Share on LinkedIn </a> </div> </div> </aside> <article class="post-content"> <div id="markdown-content"> <h2 id="the-missing-link-in-multi-agent-systems">The Missing Link in Multi-Agent Systems</h2> <div class="concept-box"> <span class="concept-label">Before You Start — Key Terms Explained</span> <p><strong>Interoperability:</strong> The ability of different systems — built by different companies, using different technologies — to work together without custom translation layers. USB is an interoperable standard. HTTP is an interoperable standard. A2A aims to be the interoperable standard for agent communication.</p> <p style="margin-top:0.5rem"><strong>Protocol:</strong> A set of agreed-upon rules for communication. (Covered in Chapter 10 — MCP.) A2A is a protocol specifically for agent-to-agent communication over HTTP.</p> <p style="margin-top:0.5rem"><strong>JSON-RPC 2.0:</strong> A protocol for calling functions remotely using JSON messages. Format: <code>{"jsonrpc":"2.0","method":"sendTask","params":{...},"id":1}</code>. A2A uses JSON-RPC 2.0 as its message format over HTTP/HTTPS.</p> <p style="margin-top:0.5rem"><strong>Server-Sent Events (SSE):</strong> A web standard where a server maintains a persistent HTTP connection and pushes data to the client over time, without the client needing to make repeated requests. Used in A2A for streaming updates from agent to agent.</p> <p style="margin-top:0.5rem"><strong>mTLS (Mutual TLS):</strong> A security protocol where BOTH sides of a connection authenticate themselves — not just the server proving its identity to the client, but the client also proving its identity to the server. Prevents unauthorized agents from connecting to your A2A server.</p> <p style="margin-top:0.5rem"><strong>Opaque system:</strong> A system where the internal implementation is hidden from the caller. An A2A server is "opaque" to its client — the client knows what the server can do (from the Agent Card) but not how it does it. This is essential for framework independence.</p> <p style="margin-top:0.5rem"><strong>Webhook:</strong> A URL that a server can call to notify another system of an event. In A2A, a client can register a webhook URL and the server will POST to it when a long-running task completes — no need to poll.</p> </div> <p>In <a href="/kohshh-portfolio/blog/2026/multi-agent/">Chapter 7</a>, we built multi-agent systems where multiple agents collaborate. In <a href="/kohshh-portfolio/blog/2026/mcp/">Chapter 10</a>, we standardized how agents connect to tools via MCP. But there’s a gap that neither pattern addresses:</p> <p><strong>What happens when an agent built in Google ADK needs to collaborate with an agent built in LangGraph, which needs to call an agent built in CrewAI?</strong></p> <p>Without a standard, each pair of collaborating agents needs a custom integration — agent A knows how to call agent B using B’s specific API format, agent B knows how to call C using C’s format, and so on. This is the same integration explosion problem that MCP solved for tools — but at the agent layer.</p> <p>The table below shows why the problem gets serious fast:</p> <table> <thead> <tr> <th>Agents</th> <th>Framework pairs</th> <th>Custom integrations needed (without A2A)</th> </tr> </thead> <tbody> <tr> <td>5</td> <td>10 pairs</td> <td>10 integrations</td> </tr> <tr> <td>10</td> <td>45 pairs</td> <td>45 integrations</td> </tr> <tr> <td>50</td> <td>1,225 pairs</td> <td>1,225 integrations</td> </tr> </tbody> </table> <p><strong>Agent2Agent (A2A)</strong> is Google’s open protocol, launched in April 2025, that solves this. It defines a universal communication standard for agents — any agent that speaks A2A can work with any other A2A-compliant agent, regardless of whether they’re built with ADK, LangGraph, CrewAI, Azure AI Foundry, or any other framework.</p> <hr> <h2 id="a2a-vs-mcp-two-complementary-protocols">A2A vs MCP: Two Complementary Protocols</h2> <p>Before going deeper into A2A, the most important conceptual clarification:</p> <div class="a2a-comparison-split"> <div class="a2a-comp-card a2a-comp-mcp"> <div class="a2a-comp-icon">🔧</div> <div class="a2a-comp-name">Model Context Protocol (MCP)</div> <div class="a2a-comp-subtitle">Agent ↔ Tools / External Systems</div> <div class="a2a-comp-desc">MCP defines how an agent connects to external tools and data sources. When an agent needs to query a database, call a weather API, read a file, or execute code — it uses MCP to communicate with those resources.</div> <div class="a2a-comp-examples"> <div class="a2a-comp-ex">Agent → database (query)</div> <div class="a2a-comp-ex">Agent → file system (read/write)</div> <div class="a2a-comp-ex">Agent → REST API (call)</div> <div class="a2a-comp-ex">Agent → code interpreter (execute)</div> </div> <div class="a2a-comp-analogy">Analogy: How a person uses tools — a hammer, a computer, a calculator. The tools don't know about each other.</div> </div> <div class="a2a-comp-arrow">+</div> <div class="a2a-comp-card a2a-comp-a2a"> <div class="a2a-comp-icon">🤝</div> <div class="a2a-comp-name">Agent2Agent Protocol (A2A)</div> <div class="a2a-comp-subtitle">Agent ↔ Agent</div> <div class="a2a-comp-desc">A2A defines how agents communicate with each other. When an orchestrating agent needs to delegate a task to a specialist agent — possibly built by a different company in a different framework — it uses A2A to discover and interact with that remote agent.</div> <div class="a2a-comp-examples"> <div class="a2a-comp-ex">ADK agent → LangGraph agent (delegate task)</div> <div class="a2a-comp-ex">CrewAI agent → ADK agent (request analysis)</div> <div class="a2a-comp-ex">Orchestrator → specialist agents (parallel)</div> <div class="a2a-comp-ex">Any agent → any A2A-compliant agent</div> </div> <div class="a2a-comp-analogy">Analogy: How team members collaborate — a manager delegates to specialists. The specialists may have completely different backgrounds and use different methods.</div> </div> </div> <style>.a2a-comparison-split{display:flex;gap:.75rem;align-items:center;margin:1.5rem 0;flex-wrap:wrap}.a2a-comp-card{flex:1;min-width:240px;border:1px solid var(--global-divider-color);border-radius:8px;padding:1.1rem;display:flex;flex-direction:column;gap:.5rem}.a2a-comp-mcp{border-left:3px solid #2698ba;background:rgba(38,152,186,0.04)}.a2a-comp-a2a{border-left:3px solid #4fc97e;background:rgba(79,201,126,0.04)}.a2a-comp-arrow{font-size:1.5rem;font-weight:700;color:var(--global-text-color-light);flex-shrink:0}.a2a-comp-icon{font-size:1.2rem}.a2a-comp-name{font-size:.85rem;font-weight:700;color:var(--global-text-color)}.a2a-comp-subtitle{font-size:.72rem;font-family:monospace;color:#2698ba}.a2a-comp-a2a .a2a-comp-subtitle{color:#4fc97e}.a2a-comp-desc{font-size:.78rem;color:var(--global-text-color-light);line-height:1.55}.a2a-comp-examples{display:flex;flex-direction:column;gap:.2rem}.a2a-comp-ex{font-size:.7rem;font-family:monospace;color:var(--global-text-color-light)}.a2a-comp-analogy{font-size:.75rem;color:var(--global-text-color-light);font-style:italic;border-top:1px solid var(--global-divider-color);padding-top:.4rem;margin-top:auto}</style> <p><strong>The key insight:</strong> MCP and A2A are complementary. A single agent might use MCP to connect to its tools (databases, APIs, file systems) AND use A2A to collaborate with other agents. They solve different problems at different levels of the stack.</p> <hr> <h2 id="the-three-core-actors">The Three Core Actors</h2> <p>Every A2A interaction involves three roles:</p> <div class="ns-diagram"> <div class="ns-diagram-header"> <span class="ns-diagram-label">A2A ACTOR MODEL — three roles in every interaction</span> <button class="ns-expand-btn" onclick="openNsDiagram(this)"><svg width="11" height="11" viewbox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 5V1h4M11 7v4H7M1 5l4-4M11 7l-4 4"></path></svg> Expand</button> </div> <div class="ns-diagram-body" style="flex-direction:row;align-items:stretch;gap:0.75rem;padding:1.1rem 1.25rem;flex-wrap:wrap;"> <div class="ns-node ns-node-cyan" style="flex:1;min-width:150px;"> <div class="ns-node-title">User</div> <div class="ns-node-sub">The human initiating the request. Provides the high-level goal. Doesn't need to know which agents will collaborate to achieve it.</div> </div> <div style="display:flex;align-items:center;color:#4a5a6a;font-size:1.2rem;flex-shrink:0;">→</div> <div class="ns-node ns-node-purple" style="flex:1;min-width:150px;"> <div class="ns-node-title">A2A Client (Client Agent)</div> <div class="ns-node-sub">An AI agent acting on behalf of the user. Discovers remote agents via Agent Cards, formulates task requests, and coordinates the workflow. Could be ADK, LangGraph, CrewAI, or any framework.</div> </div> <div style="display:flex;align-items:center;color:#4a5a6a;font-size:1.2rem;flex-shrink:0;">→ HTTP →</div> <div class="ns-node ns-node-green" style="flex:1;min-width:150px;"> <div class="ns-node-title">A2A Server (Remote Agent)</div> <div class="ns-node-sub">An AI agent that exposes an HTTP endpoint for receiving tasks. Processes requests using its own internal logic (opaque to the client) and returns results. Can be any framework.</div> </div> </div> </div> <p><strong>Why “opaque”?</strong> The client agent doesn’t know whether the server agent uses GPT-4, Gemini, or Llama. It doesn’t know if the server uses LangGraph, CrewAI, or a custom implementation. All it knows is the Agent Card — what tasks the server can handle, what inputs it accepts, and what outputs it produces. This opaqueness is the key that makes framework independence possible.</p> <hr> <h2 id="the-agent-card-a-digital-identity">The Agent Card: A Digital Identity</h2> <p>The Agent Card is the cornerstone of A2A. It’s a JSON file that describes everything another agent needs to know to interact with yours — without you needing to share your internal implementation.</p> <div class="a2a-agentcard-wrapper"> <div class="a2a-agentcard-header"> <span class="a2a-agentcard-title">AGENT CARD EXPLORER — click any field to see what it means</span> </div> <div class="a2a-agentcard-body"> <div class="a2a-card-left"> <pre class="a2a-card-json" id="agentCardJson">{
+  <span class="acj-field" onclick="acField('name')">"name"</span>: "WeatherBot",
+  <span class="acj-field" onclick="acField('description')">"description"</span>: "Provides weather forecasts",
+  <span class="acj-field" onclick="acField('url')">"url"</span>: "http://weather.example.com/a2a",
+  <span class="acj-field" onclick="acField('version')">"version"</span>: "1.0.0",
+  <span class="acj-field" onclick="acField('capabilities')">"capabilities"</span>: {
+    "streaming": true,
+    "pushNotifications": false,
+    "stateTransitionHistory": true
+  },
+  <span class="acj-field" onclick="acField('authentication')">"authentication"</span>: {
+    "schemes": ["apiKey"]
+  },
+  <span class="acj-field" onclick="acField('skills')">"skills"</span>: [
+    {
+      "id": "get_current_weather",
+      "name": "Get Current Weather",
+      "description": "Real-time weather for any location",
+      "inputModes": ["text"],
+      "outputModes": ["text"],
+      "examples": ["What's the weather in Paris?"],
+      "tags": ["weather", "current", "real-time"]
+    }
+  ]
+}</pre> </div> <div class="a2a-card-right"> <div class="a2a-card-explanation" id="acExplanation"> <div class="ace-title">Click any field name</div> <div class="ace-desc">to see what it means and why it matters for agent interoperability</div> </div> </div> </div> </div> <style>.a2a-agentcard-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}.a2a-agentcard-header{padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.a2a-agentcard-body{display:flex;gap:0;flex-wrap:wrap}.a2a-card-left{flex:1.2;min-width:260px;border-right:1px solid var(--global-divider-color)}.a2a-card-right{flex:1;min-width:220px;padding:1rem}.a2a-card-json{background:#080808;margin:0;padding:1rem;font-size:.72rem;line-height:1.7;color:#cdd6f4;border-radius:0;border:0;white-space:pre;overflow-x:auto}.acj-field{color:#7dcfff;cursor:pointer;text-decoration:underline;text-underline-offset:2px}.acj-field:hover{color:#2698ba}.a2a-card-explanation{display:flex;flex-direction:column;gap:.5rem}.ace-title{font-size:.85rem;font-weight:700;color:var(--global-text-color)}.ace-desc{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6}.ace-code{font-size:.72rem;font-family:monospace;color:#7dcfff;background:rgba(0,0,0,0.2);border-radius:4px;padding:.4rem .6rem}</style> <script>
+var AC_EXPLANATIONS = {
+  name: {
+    title: '"name" — Human-readable identifier',
+    desc: 'The display name of the agent. Used by client agents and discovery registries to present the agent. Should be unique and descriptive enough that another agent can distinguish it from similar agents.',
+    code: '"name": "WeatherBot"'
+  },
+  description: {
+    title: '"description" — What this agent does',
+    desc: 'A natural-language description of the agent\'s purpose. Client agents (and the LLMs powering them) read this to decide whether to contact this agent for a given task. Write it as if explaining to a colleague, not just naming the agent.',
+    code: '"description": "Provides accurate weather forecasts and historical data."'
+  },
+  url: {
+    title: '"url" — The A2A endpoint',
+    desc: 'The HTTP URL where this agent\'s A2A server is running. Client agents send task requests to this URL using JSON-RPC 2.0 over HTTPS. This is the "phone number" of the agent.',
+    code: '"url": "http://weather-service.example.com/a2a"'
+  },
+  version: {
+    title: '"version" — API version',
+    desc: 'Semantic version (major.minor.patch). Client agents can use this to check compatibility. If a client agent was built against v1.x of this agent and the agent upgrades to v2.x with breaking changes, the version field signals incompatibility.',
+    code: '"version": "1.0.0"'
+  },
+  capabilities: {
+    title: '"capabilities" — Supported interaction modes',
+    desc: '• streaming: true = supports Server-Sent Events for real-time incremental results\n• pushNotifications: false = does NOT support webhook callbacks for async completion\n• stateTransitionHistory: true = tracks and returns all task state changes\nClient agents use this to know which interaction pattern to use.',
+    code: '"capabilities": {\n  "streaming": true,\n  "pushNotifications": false\n}'
+  },
+  authentication: {
+    title: '"authentication" — How to authenticate',
+    desc: 'Declares the authentication schemes this agent requires. "apiKey" = send an API key in the HTTP header. Other options: "bearer" (JWT token), "oauth2" (OAuth 2.0 flow). The client agent knows to include the right credentials before sending any request.',
+    code: '"authentication": {"schemes": ["apiKey"]}'
+  },
+  skills: {
+    title: '"skills" — Specific capabilities with examples',
+    desc: 'An array of discrete capabilities the agent offers. Each skill has: id (machine-readable identifier), name (human-readable), description (what it does), inputModes/outputModes (text, audio, video), examples (few-shot demonstrations for LLMs), and tags (for discovery filtering). Skills allow fine-grained routing — a client can pick the exact skill it needs.',
+    code: '"skills": [{"id": "get_current_weather", ...}]'
+  }
+};
+function acField(key) {
+  var ac = AC_EXPLANATIONS[key];
+  if (!ac) return;
+  var el = document.getElementById('acExplanation');
+  el.innerHTML = '<div class="ace-title">' + ac.title + '</div>' +
+    '<div class="ace-desc">' + ac.desc.replace(/\n/g, '<br>') + '</div>' +
+    '<div class="ace-code">' + ac.code + '</div>';
+}
+</script> <p><strong>Where is the Agent Card served?</strong> By convention, agents serve their Agent Card at <code class="language-plaintext highlighter-rouge">/.well-known/agent.json</code> on their domain. This is the <strong>Well-Known URI</strong> discovery method — any A2A client can find your agent’s capabilities by fetching <code class="language-plaintext highlighter-rouge">https://your-agent-domain.com/.well-known/agent.json</code>. No prior coordination needed.</p> <hr> <h2 id="the-four-interaction-mechanisms">The Four Interaction Mechanisms</h2> <p>A2A supports four distinct ways for agents to communicate, each suited to different latency and complexity requirements:</p> <div class="a2a-interact-wrapper"> <div class="a2a-interact-header"> <span class="a2a-interact-title">A2A INTERACTION MECHANISMS — select to compare</span> </div> <div class="a2a-interact-tabs"> <button class="a2a-itab active" data-idx="0" onclick="a2aTab(0)">Synchronous</button> <button class="a2a-itab" data-idx="1" onclick="a2aTab(1)">Async Polling</button> <button class="a2a-itab" data-idx="2" onclick="a2aTab(2)">Streaming (SSE)</button> <button class="a2a-itab" data-idx="3" onclick="a2aTab(3)">Webhooks</button> </div> <div class="a2a-interact-body"> <div class="a2a-icontent active" id="a2aIC0"> <div class="a2a-iname">Synchronous Request/Response</div> <div class="a2a-idesc">Client sends a request and waits — blocking — until the server returns a complete response. Simple and predictable. Suitable for tasks that complete within seconds.</div> <div class="a2a-iwhen"> <strong>When to use:</strong> Quick lookups (exchange rates, weather, simple calculations) where the response is fast and the client can afford to wait.</div> <div class="a2a-iflow">Client → <code>POST /a2a</code> (sendTask) → blocks → Server processes → complete result → Client continues</div> <pre class="a2a-ijson">{
+  "jsonrpc": "2.0",
+  "method": "sendTask",
+  "id": "1",
+  "params": {
+    "id": "task-001",
+    "sessionId": "session-001",
+    "message": {
+      "role": "user",
+      "parts": [{"type": "text", "text": "Exchange rate USD to EUR?"}]
+    },
+    "acceptedOutputModes": ["text/plain"]
+  }
+}</pre> </div> <div class="a2a-icontent" id="a2aIC1"> <div class="a2a-iname">Asynchronous Polling</div> <div class="a2a-idesc">Client sends request → server immediately returns "working" status + task ID → client goes off and does other work → client periodically polls for completion. Non-blocking for the client.</div> <div class="a2a-iwhen"> <strong>When to use:</strong> Tasks that take 10+ seconds (research, document generation, complex analysis) where blocking the client thread would be wasteful.</div> <div class="a2a-iflow">Client → sendTask → "working" + taskId → [client does other things] → Client polls getTask(taskId) → eventually "completed" + result</div> <pre class="a2a-ijson">// Initial request → server returns: {"status": "working", "id": "task-001"}
+// Later poll:
+{
+  "jsonrpc": "2.0",
+  "method": "getTask",
+  "params": {"id": "task-001"}
+}
+// Response: {"status": "completed", "result": {...}}</pre> </div> <div class="a2a-icontent" id="a2aIC2"> <div class="a2a-iname">Streaming (Server-Sent Events)</div> <div class="a2a-idesc">Client uses <code>sendTaskSubscribe</code> to open a persistent HTTP connection. The server pushes incremental results as they become available — like watching a document being written in real time. No polling needed.</div> <div class="a2a-iwhen"> <strong>When to use:</strong> Long documents, live research, real-time analysis where showing progress matters more than waiting for final output. The agent declares <code>"streaming": true</code> in its Agent Card.</div> <div class="a2a-iflow">Client → sendTaskSubscribe → open SSE connection → Server pushes: chunk 1 → chunk 2 → chunk 3 → "completed"</div> <pre class="a2a-ijson">{
+  "jsonrpc": "2.0",
+  "method": "sendTaskSubscribe",
+  "id": "2",
+  "params": {
+    "id": "task-002",
+    "message": {
+      "parts": [{"type": "text", "text": "Write a market analysis..."}]
+    }
+  }
+}
+// Server sends SSE events:
+// data: {"type": "progress", "content": "Researching market trends..."}
+// data: {"type": "artifact", "content": "## Market Analysis\n\n..."}
+// data: {"type": "completed"}</pre> </div> <div class="a2a-icontent" id="a2aIC3"> <div class="a2a-iname">Push Notifications (Webhooks)</div> <div class="a2a-idesc">Client registers a webhook URL when submitting a task. The client disconnects entirely. When the server finishes (hours or days later), it POSTs the result to the webhook URL. No persistent connection, no polling.</div> <div class="a2a-iwhen"> <strong>When to use:</strong> Very long-running tasks (overnight batch processing, multi-day research) where maintaining any connection would be wasteful. The agent declares <code>"pushNotifications": true</code> in its Agent Card.</div> <div class="a2a-iflow">Client → sendTask + webhookUrl → Server: "acknowledged" → [hours pass] → Server → POST webhookUrl → result delivered</div> <pre class="a2a-ijson">{
+  "jsonrpc": "2.0",
+  "method": "sendTask",
+  "params": {
+    "id": "task-003",
+    "message": {"parts": [{"type": "text", "text": "Analyze all Q1 data..."}]},
+    "pushNotification": {
+      "url": "https://my-agent.com/webhook/task-003",
+      "authentication": {"schemes": ["bearer"]}
+    }
+  }
+}</pre> </div> </div> </div> <style>.a2a-interact-wrapper{border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:2rem 0}.a2a-interact-header{padding:.75rem 1.1rem;border-bottom:1px solid var(--global-divider-color);background:rgba(128,128,128,0.05);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--global-text-color)}.a2a-interact-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--global-divider-color)}.a2a-itab{flex-shrink:0;padding:.5rem .9rem;font-family:monospace;font-size:.7rem;border:0;border-right:1px solid var(--global-divider-color);background:transparent;color:var(--global-text-color-light);cursor:pointer;transition:background .15s}.a2a-itab:last-child{border-right:0}.a2a-itab.active{background:rgba(79,201,126,0.1);color:#4fc97e;font-weight:700}.a2a-interact-body{padding:1.1rem}.a2a-icontent{display:none;flex-direction:column;gap:.65rem}.a2a-icontent.active{display:flex}.a2a-iname{font-size:.95rem;font-weight:700;color:var(--global-text-color)}.a2a-idesc{font-size:.83rem;color:var(--global-text-color);line-height:1.65}.a2a-iwhen{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6}.a2a-iflow{font-size:.75rem;font-family:monospace;color:#4fc97e;background:rgba(79,201,126,0.06);border-radius:5px;padding:.45rem .7rem;line-height:1.6}.a2a-ijson{background:#080808;margin:0;padding:.8rem 1rem;font-size:.7rem;line-height:1.65;color:#cdd6f4;border-radius:6px;border:1px solid rgba(255,255,255,0.07);white-space:pre;overflow-x:auto}</style> <script>
+function a2aTab(idx) {
+  document.querySelectorAll('.a2a-itab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.a2a-icontent').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelector('.a2a-itab[data-idx="'+idx+'"]').classList.add('active');
+  document.getElementById('a2aIC'+idx).classList.add('active');
+}
+</script> <hr> <h2 id="the-task-lifecycle">The Task Lifecycle</h2> <p>Every piece of work in A2A is a <strong>Task</strong> — an asynchronous unit of work with a unique ID and a defined state machine:</p> <pre><code class="language-mermaid">graph LR
+    SUB([submitted]) --&gt; WRK[working]
+    WRK --&gt;|needs more info| INP[input-required]
+    INP --&gt;|client provides info| WRK
+    WRK --&gt; COMP([completed])
+    WRK --&gt; FAIL([failed])
+    WRK --&gt; CANC([cancelled])
+    style SUB fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style WRK fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+    style INP fill:#141b2d,stroke:#c97af2,color:#e0e0e0
+    style COMP fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
+    style FAIL fill:#141b2d,stroke:#ff6b6b,color:#e0e0e0
+    style CANC fill:#141b2d,stroke:#4a5a6a,color:#e0e0e0
+</code></pre> <p>The <code class="language-plaintext highlighter-rouge">input-required</code> state is particularly important for multi-turn interactions. A remote agent might partially complete a task, determine it needs more information from the client, and pause — waiting for the client to provide the missing data before continuing. This enables rich back-and-forth collaboration between agents, not just one-shot requests.</p> <hr> <h2 id="the-code-building-an-a2a-calendar-agent">The Code: Building an A2A Calendar Agent</h2> <p>The A2A samples repository provides a complete example of a calendar agent built with ADK that exposes itself as an A2A server. Let’s walk through the key components.</p> <h3 id="part-1-the-adk-agent-with-calendar-tools">Part 1: The ADK Agent with Calendar Tools</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="n">google.adk.agents</span> <span class="kn">import</span> <span class="n">LlmAgent</span>
+<span class="kn">from</span> <span class="n">google.adk.tools.google_api_tool</span> <span class="kn">import</span> <span class="n">CalendarToolset</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">create_agent</span><span class="p">(</span><span class="n">client_id</span><span class="p">,</span> <span class="n">client_secret</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LlmAgent</span><span class="p">:</span>
+    <span class="sh">"""</span><span class="s">Constructs the ADK calendar agent with Google Calendar access.</span><span class="sh">"""</span>
+    <span class="c1"># Initialize the Google Calendar tool with OAuth credentials
+</span>    <span class="n">toolset</span> <span class="o">=</span> <span class="nc">CalendarToolset</span><span class="p">(</span><span class="n">client_id</span><span class="o">=</span><span class="n">client_id</span><span class="p">,</span> <span class="n">client_secret</span><span class="o">=</span><span class="n">client_secret</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nc">LlmAgent</span><span class="p">(</span>
+        <span class="n">model</span>       <span class="o">=</span> <span class="sh">'</span><span class="s">gemini-2.0-flash-001</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">name</span>        <span class="o">=</span> <span class="sh">'</span><span class="s">calendar_agent</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">An agent that can help manage a user</span><span class="sh">'</span><span class="s">s calendar</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="sa">f</span><span class="sh">"""</span><span class="s">
+You are an agent that can help manage a user</span><span class="sh">'</span><span class="s">s calendar.
+Users will request information about their calendar or ask to make changes.
+Use the provided tools for interacting with the Calendar API.
+
+If not specified, assume the user wants their </span><span class="sh">'</span><span class="s">primary</span><span class="sh">'</span><span class="s"> calendar.
+When using Calendar API tools, use well-formed RFC3339 timestamps.
+Today is </span><span class="si">{</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">()</span><span class="si">}</span><span class="s">.
+</span><span class="sh">"""</span><span class="p">,</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="k">await</span> <span class="n">toolset</span><span class="p">.</span><span class="nf">get_tools</span><span class="p">(),</span>
+    <span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">CalendarToolset</code></strong>: A pre-built ADK toolset that wraps the Google Calendar API as MCP-compatible tools. It handles OAuth 2.0 authentication flow, token management, and API call formatting. <code class="language-plaintext highlighter-rouge">toolset.get_tools()</code> returns a list of tool objects that the agent can call to read/write calendar data.</p> </blockquote> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">f"Today is {datetime.datetime.now()}"</code> in the instruction</strong>: This is dynamic instruction injection — the current date is embedded at agent creation time. Without it, the LLM might calculate “tomorrow” relative to its training cutoff date rather than today. This small detail ensures all date calculations are anchored to real-world time.</p> </blockquote> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">async def create_agent()</code>?</strong> The <code class="language-plaintext highlighter-rouge">toolset.get_tools()</code> call requires async execution (it may need to make network calls to fetch the tool schema from the Calendar API). The entire function is marked <code class="language-plaintext highlighter-rouge">async</code> to enable this. The <code class="language-plaintext highlighter-rouge">await</code> keyword pauses execution until <code class="language-plaintext highlighter-rouge">get_tools()</code> completes before constructing the agent.</p> </blockquote> <h3 id="part-2-defining-the-agent-card-and-starting-the-a2a-server">Part 2: Defining the Agent Card and Starting the A2A Server</h3> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">a2a.types</span> <span class="kn">import</span> <span class="n">AgentSkill</span><span class="p">,</span> <span class="n">AgentCard</span><span class="p">,</span> <span class="n">AgentCapabilities</span>
+<span class="kn">from</span> <span class="n">a2a.server.apps</span> <span class="kn">import</span> <span class="n">A2AStarletteApplication</span>
+<span class="kn">from</span> <span class="n">a2a.server.request_handlers</span> <span class="kn">import</span> <span class="n">DefaultRequestHandler</span>
+<span class="kn">from</span> <span class="n">a2a.server.tasks</span> <span class="kn">import</span> <span class="n">InMemoryTaskStore</span>
+<span class="kn">from</span> <span class="n">google.adk.runners</span> <span class="kn">import</span> <span class="n">Runner</span>
+</code></pre></div></div> <blockquote> <p><strong>Why these imports?</strong> A2A provides a Python SDK (<code class="language-plaintext highlighter-rouge">a2a</code> package) that handles the protocol details — JSON-RPC framing, task state management, SSE streaming, etc. Without it, you’d need to implement the full A2A protocol specification manually. The ADK <code class="language-plaintext highlighter-rouge">Runner</code> manages the agent’s execution lifecycle, session management, and tool call routing.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="c1"># 1. Define the agent's skill (what it can do)
+</span>    <span class="n">skill</span> <span class="o">=</span> <span class="nc">AgentSkill</span><span class="p">(</span>
+        <span class="nb">id</span>          <span class="o">=</span> <span class="sh">'</span><span class="s">check_availability</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">name</span>        <span class="o">=</span> <span class="sh">'</span><span class="s">Check Availability</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="sh">"</span><span class="s">Checks a user</span><span class="sh">'</span><span class="s">s availability for a time using their Google Calendar</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">tags</span>         <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">calendar</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">examples</span>     <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">Am I free from 10am to 11am tomorrow?</span><span class="sh">'</span><span class="p">],</span>
+    <span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">AgentSkill</code> is the fine-grained capability descriptor.</strong> While the <code class="language-plaintext highlighter-rouge">AgentCard</code> describes the agent overall, each <code class="language-plaintext highlighter-rouge">AgentSkill</code> describes a specific capability. This enables precise routing: if an orchestrating agent needs to check calendar availability (and not, say, create events), it can specifically request the <code class="language-plaintext highlighter-rouge">check_availability</code> skill. This granularity makes multi-agent systems more precise.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 2. Define the Agent Card (the agent's public identity)
+</span>    <span class="n">agent_card</span> <span class="o">=</span> <span class="nc">AgentCard</span><span class="p">(</span>
+        <span class="n">name</span>                <span class="o">=</span> <span class="sh">'</span><span class="s">Calendar Agent</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">description</span>         <span class="o">=</span> <span class="sh">"</span><span class="s">An agent that can manage a user</span><span class="sh">'</span><span class="s">s calendar</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">url</span>                 <span class="o">=</span> <span class="sa">f</span><span class="sh">'</span><span class="s">http://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s">/</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">version</span>             <span class="o">=</span> <span class="sh">'</span><span class="s">1.0.0</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">defaultInputModes</span>   <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">text</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">defaultOutputModes</span>  <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">text</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">capabilities</span>        <span class="o">=</span> <span class="nc">AgentCapabilities</span><span class="p">(</span><span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+        <span class="n">skills</span>              <span class="o">=</span> <span class="p">[</span><span class="n">skill</span><span class="p">],</span>
+    <span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">AgentCard</code> is the agent’s published identity.</strong> This is what gets served at <code class="language-plaintext highlighter-rouge">/.well-known/agent.json</code>. Any A2A client — regardless of framework — can fetch this URL and immediately understand: what this agent does, where to send requests, what authentication is required, whether streaming is supported, and which specific skills are available. The Agent Card makes the agent self-describing and discoverable without any prior coordination.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 3. Create the ADK agent with credentials from environment
+</span>    <span class="n">adk_agent</span> <span class="o">=</span> <span class="n">asyncio</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="nf">create_agent</span><span class="p">(</span>
+        <span class="n">client_id</span>     <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">GOOGLE_CLIENT_ID</span><span class="sh">'</span><span class="p">),</span>
+        <span class="n">client_secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="sh">'</span><span class="s">GOOGLE_CLIENT_SECRET</span><span class="sh">'</span><span class="p">),</span>
+    <span class="p">))</span>
+</code></pre></div></div> <blockquote> <p><strong>Why <code class="language-plaintext highlighter-rouge">os.getenv()</code> for credentials?</strong> Never hardcode API keys or OAuth secrets in source code — they’d be committed to version control and exposed. Environment variables are the standard way to pass secrets to running processes without embedding them in code. In production, these would be set via secrets management services (AWS Secrets Manager, Google Secret Manager, etc.).</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 4. Wire the ADK agent to the A2A execution infrastructure
+</span>    <span class="n">runner</span> <span class="o">=</span> <span class="nc">Runner</span><span class="p">(</span>
+        <span class="n">app_name</span>        <span class="o">=</span> <span class="n">agent_card</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">agent</span>           <span class="o">=</span> <span class="n">adk_agent</span><span class="p">,</span>
+        <span class="n">artifact_service</span> <span class="o">=</span> <span class="nc">InMemoryArtifactService</span><span class="p">(),</span>   <span class="c1"># stores file outputs
+</span>        <span class="n">session_service</span>  <span class="o">=</span> <span class="nc">InMemorySessionService</span><span class="p">(),</span>    <span class="c1"># tracks conversation state
+</span>        <span class="n">memory_service</span>   <span class="o">=</span> <span class="nc">InMemoryMemoryService</span><span class="p">(),</span>     <span class="c1"># long-term memory
+</span>    <span class="p">)</span>
+
+    <span class="n">agent_executor</span> <span class="o">=</span> <span class="nc">ADKAgentExecutor</span><span class="p">(</span><span class="n">runner</span><span class="p">,</span> <span class="n">agent_card</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">ADKAgentExecutor</code></strong> is the bridge between the A2A protocol layer and the ADK agent. When an A2A task request arrives (a JSON-RPC <code class="language-plaintext highlighter-rouge">sendTask</code> message), the executor: (1) extracts the message content, (2) calls <code class="language-plaintext highlighter-rouge">runner.run()</code> with the message, (3) collects the ADK agent’s responses and tool calls, and (4) formats them as A2A protocol responses. This adapter pattern means the ADK agent doesn’t need to know anything about the A2A protocol — the executor handles the translation.</p> </blockquote> <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1"># 5. Create the A2A web application
+</span>    <span class="n">request_handler</span> <span class="o">=</span> <span class="nc">DefaultRequestHandler</span><span class="p">(</span>
+        <span class="n">agent_executor</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="p">,</span>
+        <span class="n">task_store</span>     <span class="o">=</span> <span class="nc">InMemoryTaskStore</span><span class="p">()</span>  <span class="c1"># tracks task states
+</span>    <span class="p">)</span>
+
+    <span class="n">a2a_app</span> <span class="o">=</span> <span class="nc">A2AStarletteApplication</span><span class="p">(</span>
+        <span class="n">agent_card</span>    <span class="o">=</span> <span class="n">agent_card</span><span class="p">,</span>
+        <span class="n">http_handler</span>  <span class="o">=</span> <span class="n">request_handler</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 6. Add OAuth callback route (needed for Google Calendar auth)
+</span>    <span class="n">routes</span> <span class="o">=</span> <span class="n">a2a_app</span><span class="p">.</span><span class="nf">routes</span><span class="p">()</span>
+    <span class="n">routes</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nc">Route</span><span class="p">(</span>
+        <span class="n">path</span>     <span class="o">=</span> <span class="sh">'</span><span class="s">/authenticate</span><span class="sh">'</span><span class="p">,</span>
+        <span class="n">methods</span>  <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">GET</span><span class="sh">'</span><span class="p">],</span>
+        <span class="n">endpoint</span> <span class="o">=</span> <span class="n">handle_auth</span><span class="p">,</span>
+    <span class="p">))</span>
+
+    <span class="c1"># 7. Start the HTTP server
+</span>    <span class="n">app</span> <span class="o">=</span> <span class="nc">Starlette</span><span class="p">(</span><span class="n">routes</span><span class="o">=</span><span class="n">routes</span><span class="p">)</span>
+    <span class="n">uvicorn</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+</code></pre></div></div> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">A2AStarletteApplication</code></strong>: Creates a Starlette web application (a Python async web framework) that: (1) serves the Agent Card at <code class="language-plaintext highlighter-rouge">/.well-known/agent.json</code>, (2) handles incoming A2A task requests, (3) manages task state, (4) sends streaming responses via SSE when <code class="language-plaintext highlighter-rouge">streaming: true</code>. The entire A2A HTTP server is encapsulated in this single object.</p> </blockquote> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">InMemoryTaskStore</code></strong>: Stores the state of all active tasks (submitted, working, completed, failed) in memory. In production, you’d replace this with a persistent store (database) so task state survives server restarts. For development, in-memory is sufficient.</p> </blockquote> <blockquote> <p><strong><code class="language-plaintext highlighter-rouge">uvicorn.run()</code></strong>: Starts the ASGI server that will serve your A2A agent over HTTP. Uvicorn is a fast Python async HTTP server. Your agent is now accessible at <code class="language-plaintext highlighter-rouge">http://host:port/</code> — any A2A-compliant client can discover it via <code class="language-plaintext highlighter-rouge">/.well-known/agent.json</code> and send tasks to <code class="language-plaintext highlighter-rouge">/</code>.</p> </blockquote> <hr> <h2 id="the-complete-a2a-flow-visualized">The Complete A2A Flow Visualized</h2> <pre><code class="language-mermaid">graph TD
+    U([User: "Plan a birthday party for March 15"]) --&gt; CA[Client Agent — Orchestrator]
+    CA --&gt;|GET /.well-known/agent.json| DISC[Agent Discovery]
+    DISC --&gt;|Agent Card: capabilities, skills| CA
+    CA --&gt;|POST /a2a sendTask| CALSERV[Calendar Agent A2A Server]
+    CALSERV --&gt; ADK[ADK Agent Executor]
+    ADK --&gt;|tool call| GCAL[Google Calendar API]
+    GCAL --&gt;|availability data| ADK
+    ADK --&gt;|SSE streaming| CALSERV
+    CALSERV --&gt;|incremental results| CA
+    CA --&gt; RESP([Final response to user])
+    style CA fill:#141b2d,stroke:#2698ba,color:#e0e0e0
+    style CALSERV fill:#141b2d,stroke:#4fc97e,color:#e0e0e0
+    style ADK fill:#141b2d,stroke:#c97af2,color:#e0e0e0
+    style GCAL fill:#141b2d,stroke:#e6a817,color:#e0e0e0
+</code></pre> <hr> <h2 id="security-how-a2a-stays-safe">Security: How A2A Stays Safe</h2> <p>Security is built into A2A at multiple levels:</p> <div class="a2a-security-grid"> <div class="a2a-sec-card"> <div class="a2a-sec-icon">🔒</div> <h4>Mutual TLS (mTLS)</h4> <p>Both the A2A client and server authenticate themselves with TLS certificates. This prevents unauthorized agents from connecting and ensures both sides can trust the other's identity. Essential for enterprise deployments where you don't want random clients calling your agent.</p> </div> <div class="a2a-sec-card"> <div class="a2a-sec-icon">🔑</div> <h4>Credential Handling</h4> <p>Authentication credentials (API keys, OAuth tokens) are passed via HTTP Authorization headers — never in the URL or request body. The Agent Card declares which authentication scheme is required, so clients know what to send before making any requests.</p> </div> <div class="a2a-sec-card"> <div class="a2a-sec-icon">📋</div> <h4>Audit Logs</h4> <p>All inter-agent communications are logged — which agent sent what to which agent, when, and what was returned. This creates an immutable audit trail for accountability, debugging, security analysis, and compliance with regulations that require traceability of AI decisions.</p> </div> <div class="a2a-sec-card"> <div class="a2a-sec-icon">🪪</div> <h4>Agent Card Security</h4> <p>Even though Agent Cards contain capability descriptions (not secrets), they should be access-controlled. In enterprise environments, not everyone should be able to discover which agents exist and what they can do. Secure discovery endpoints with network restrictions or access tokens.</p> </div> </div> <style>.a2a-security-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;margin:1.5rem 0}.a2a-sec-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.a2a-sec-icon{font-size:1.1rem}.a2a-sec-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.a2a-sec-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}</style> <hr> <h2 id="practical-applications">Practical Applications</h2> <div class="a2a-usecases-grid"> <div class="a2a-uc-card"> <span class="a2a-uc-num">01</span> <h4>Multi-Framework Collaboration</h4> <p>An ADK orchestrator delegates research to a LangGraph specialist, analysis to a CrewAI analyst, and report generation to another ADK agent — all communicating through A2A regardless of framework differences.</p> </div> <div class="a2a-uc-card"> <span class="a2a-uc-num">02</span> <h4>Enterprise Workflow Automation</h4> <p>A master agent decomposes a complex business process: collect data → delegate to analyst agent → delegate to compliance agent → delegate to report agent. Each agent operates independently and communicates via A2A tasks.</p> </div> <div class="a2a-uc-card"> <span class="a2a-uc-num">03</span> <h4>Dynamic Capability Discovery</h4> <p>An orchestrator agent discovers available specialist agents at runtime by querying a registry of Agent Cards, selects the most appropriate one for each sub-task, and delegates — without any hardcoded agent references.</p> </div> <div class="a2a-uc-card"> <span class="a2a-uc-num">04</span> <h4>Cross-Organization Collaboration</h4> <p>Your company's AI agent collaborates with a partner company's AI agent via A2A. Neither side needs to expose internal implementation details — just the Agent Card interface. Inter-company AI integration becomes as easy as an API call.</p> </div> </div> <style>.a2a-usecases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.85rem;margin:1.5rem 0}.a2a-uc-card{border:1px solid var(--global-divider-color);border-radius:8px;padding:1rem;background:rgba(128,128,128,0.04);display:flex;flex-direction:column;gap:.4rem}.a2a-uc-num{font-family:monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;color:#4fc97e}.a2a-uc-card h4{font-size:.85rem;font-weight:700;margin:0;color:var(--global-text-color)}.a2a-uc-card p{font-size:.78rem;color:var(--global-text-color-light);margin:0;line-height:1.5}</style> <hr> <h2 id="at-a-glance">At a Glance</h2> <div class="a2a-summary-card"> <div class="a2a-summary-col"> <div class="a2a-summary-label">WHAT</div> <p>An open, HTTP-based standard for agent-to-agent communication. A2A defines how agents discover each other (Agent Cards), how they exchange tasks (JSON-RPC 2.0), and how results are returned (sync, polling, streaming, webhooks) — regardless of the framework each agent uses.</p> </div> <div class="a2a-summary-divider"></div> <div class="a2a-summary-col"> <div class="a2a-summary-label">WHY</div> <p>Without A2A, integrating N agents from M frameworks requires N×M custom integrations. A2A reduces this to N+M standard implementations. It's the USB standard for agent collaboration — write once, work with any compliant agent.</p> </div> <div class="a2a-summary-divider"></div> <div class="a2a-summary-col"> <div class="a2a-summary-label">vs MCP</div> <p>MCP = how an agent connects to tools and external resources. A2A = how agents connect to each other. Both are needed in production systems: MCP gives individual agents their capabilities; A2A lets capable agents collaborate.</p> </div> </div> <style>.a2a-summary-card{display:flex;border:1px solid var(--global-divider-color);border-radius:10px;overflow:hidden;margin:1.5rem 0}@media(max-width:640px){.a2a-summary-card{flex-direction:column}}.a2a-summary-col{flex:1;padding:1.1rem;background:rgba(128,128,128,0.03)}.a2a-summary-col p{font-size:.8rem;color:var(--global-text-color-light);line-height:1.6;margin:.4rem 0 0}.a2a-summary-divider{width:1px;background:var(--global-divider-color);flex-shrink:0}.a2a-summary-label{font-size:.62rem;font-weight:700;letter-spacing:.12em;color:#4fc97e}</style> <hr> <h2 id="key-takeaways">Key Takeaways</h2> <ul> <li> <p><strong>A2A is the missing standard between MCP and multi-agent systems.</strong> MCP connects agents to tools. A2A connects agents to each other. Together, they form a complete ecosystem: agents with tool access (MCP) collaborating with other agents (A2A).</p> </li> <li> <p><strong>The Agent Card is the protocol’s foundation.</strong> It makes agents self-describing and discoverable — any A2A client can learn an agent’s capabilities, endpoint, authentication requirements, and skills just by fetching its Agent Card JSON. This is what makes true interoperability possible.</p> </li> <li> <p><strong>Four interaction patterns cover every latency profile.</strong> Synchronous for fast tasks, polling for medium tasks, streaming SSE for incremental results, webhooks for overnight tasks. The Agent Card declares which patterns are supported — clients choose accordingly.</p> </li> <li> <p><strong>The <code class="language-plaintext highlighter-rouge">input-required</code> state enables multi-turn agent conversations.</strong> A remote agent can pause mid-task, request more information from the client, and resume once the information is provided. This supports complex collaborative workflows, not just one-shot requests.</p> </li> <li> <p><strong>A2A is opaque by design.</strong> The client agent doesn’t know or care what framework the server agent uses, what LLM it calls, or how it processes requests. This opacity is what makes framework independence real — you can replace the server-side implementation entirely without changing any client.</p> </li> <li> <p><strong>The A2A Python SDK encapsulates all protocol complexity.</strong> <code class="language-plaintext highlighter-rouge">A2AStarletteApplication</code>, <code class="language-plaintext highlighter-rouge">ADKAgentExecutor</code>, <code class="language-plaintext highlighter-rouge">DefaultRequestHandler</code>, and <code class="language-plaintext highlighter-rouge">InMemoryTaskStore</code> handle the JSON-RPC framing, task state machine, SSE streaming, and HTTP routing. You implement the agent logic; the SDK handles the protocol.</p> </li> <li> <p><strong>Security must be explicit.</strong> Declare authentication requirements in the Agent Card. Use mTLS for production. Log all inter-agent communications. Control who can discover your Agent Card. These aren’t optional features — they’re prerequisites for deploying A2A in enterprise environments.</p> </li> <li> <p><strong>Industry adoption is accelerating.</strong> Atlassian, Box, LangChain, MongoDB, Salesforce, SAP, ServiceNow, Microsoft (Azure AI Foundry), Auth0 — the A2A ecosystem is growing fast. Agents you build today to the A2A standard will be composable with agents from any of these platforms.</p> </li> </ul> </div> </article> </div> <br> <hr> <br> <ul class="list-disc pl-8"></ul> <h2 class="text-3xl font-semibold mb-4 mt-12">Enjoy Reading This Article?</h2> <p class="mb-2">Here are some more articles you might like to read next:</p> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/resource-aware-optimization/">Chapter 16: Resource-Aware Optimization</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/rag/">Chapter 14: Knowledge Retrieval (RAG)</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/human-in-the-loop/">Chapter 13: Human-in-the-Loop</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/exception-handling/">Chapter 12: Exception Handling and Recovery</a> </li> <li class="my-2"> <a class="text-pink-700 underline font-semibold hover:text-pink-800" href="/kohshh-portfolio/blog/2026/goal-setting-monitoring/">Chapter 11: Goal Setting and Monitoring</a> </li> </div> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var toc = document.getElementById('table-of-contents');
+    if (!toc) return;
+
+    var headings = document.querySelectorAll('#markdown-content h1[id], #markdown-content h2[id], #markdown-content h3[id], #markdown-content h4[id]');
+    var tocLinks = toc.querySelectorAll('a[href^="#"]');
+    if (!headings.length || !tocLinks.length) return;
+
+    var linkMap = {};
+    tocLinks.forEach(function (link) {
+      var id = link.getAttribute('href').slice(1);
+      linkMap[id] = link;
+    });
+
+    function setActive(id) {
+      tocLinks.forEach(function (link) {
+        link.closest('li').classList.remove('toc-active');
+      });
+      if (id && linkMap[id]) {
+        linkMap[id].closest('li').classList.add('toc-active');
+      }
+    }
+
+    var activeId = null;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          activeId = entry.target.id;
+          setActive(activeId);
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  });
+</script> <script>
+// Auto-play every interactive chart/demo when it scrolls 30% into view
+document.addEventListener('DOMContentLoaded', function () {
+  // Map: CSS selector for the wrapper → CSS selector for its play button
+  var AUTO_PLAY = [
+    ['.chain-demo-wrapper',       '#chainRunBtn'],
+    ['.chain-chart-wrapper',      '#chartPlayBtn'],
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+    ['.par-demo-wrapper',         '#parDemoRunBtn'],
+    ['.refl-loop-wrapper',        '#reflLoopBtn'],
+    ['.refl-quality-wrapper',     '#qualityPlayBtn'],
+    ['.tool-lifecycle-wrapper',   '#lifecycleBtn'],
+    ['.tool-sim-wrapper',         '#simRunBtn'],
+    ['.plan-gen-wrapper',         '#planRunBtn'],
+    ['.mas-team-wrapper',         '#masTeamRunBtn'],
+    ['.mem-demo-wrapper',         '#memDemoPlayBtn'],
+    ['.refl-demo-wrapper',        null],   // tab-based, no play btn
+    ['.par-timeline-wrapper',     '#timelinePlayBtn'],
+  ];
+
+  if (!window.IntersectionObserver) return;
+
+  var playObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var data = entry.target._autoPlayData;
+      if (!data) return;
+      playObserver.unobserve(entry.target);
+      setTimeout(function () {
+        var btn = data.btn;
+        if (btn && !btn.disabled && (btn.textContent.includes('▶') || btn.textContent.includes('Run'))) {
+          btn.click();
+        }
+      }, 400);  // small delay so the element is fully visible before animating
+    });
+  }, { threshold: 0.3 });
+
+  AUTO_PLAY.forEach(function (pair) {
+    var wrapperSel = pair[0], btnSel = pair[1];
+    var wrapper = document.querySelector(wrapperSel);
+    if (!wrapper) return;
+    var btn = btnSel ? document.querySelector(btnSel) : null;
+    wrapper._autoPlayData = { btn: btn };
+    playObserver.observe(wrapper);
+  });
+});
+</script> <script>
+// ── VS Code-style code blocks: traffic-light header + safe line numbers ───────
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll(
+    '.post-content figure.highlight, .post-content div.highlight'
+  ).forEach(function (block) {
+
+    // 1. Detect language from code element class
+    var lang = '';
+    var codeEl = block.querySelector('code');
+    if (codeEl) {
+      var m = (codeEl.className || '').match(/language-(\w[\w+-]*)/);
+      if (m) lang = m[1];
+    }
+
+    // 2. Build traffic-light header
+    var hdr = document.createElement('div');
+    hdr.className = 'cb-header';
+    hdr.innerHTML =
+      '<div class="cb-dots">' +
+        '<span class="cb-dot cb-red"></span>' +
+        '<span class="cb-dot cb-yellow"></span>' +
+        '<span class="cb-dot cb-green"></span>' +
+      '</div>' +
+      '<span class="cb-lang">' + (lang || 'code') + '</span>' +
+      '<div class="cb-dots-spacer"></div>';
+    block.insertBefore(hdr, block.firstChild);
+
+    // 3. Safe line numbers — count from textContent, NEVER touch innerHTML
+    var pre = block.querySelector('pre');
+    if (!pre) return;
+    var inner  = pre.querySelector('code') || pre;
+    var text   = inner.textContent || '';
+    var lines  = text.split('\n');
+    if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+    var count  = Math.max(lines.length, 1);
+
+    // Build a separate number column — placed BEFORE pre, not inside it
+    var nums = document.createElement('div');
+    nums.className = 'cb-line-nums';
+    nums.setAttribute('aria-hidden', 'true');
+    for (var i = 1; i <= count; i++) {
+      var sp = document.createElement('span');
+      sp.textContent = i;
+      nums.appendChild(sp);
+    }
+
+    // Wrap [nums | pre] in a flex row so they scroll as one unit
+    var area = document.createElement('div');
+    area.className = 'cb-code-area';
+    pre.parentNode.insertBefore(area, pre);
+    area.appendChild(nums);
+    area.appendChild(pre);
+  });
+});
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2026 Kohsheen Tiku. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/masonry.js?v=a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.7.0/dist/mermaid.min.js" integrity="sha256-TtLOdUA8mstPoO6sGvHIGx2ceXrrX4KgIItO06XOn8A=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js" integrity="sha256-1rA678n2xEx7x4cTZ5x4wpUCj6kUMZEZ5cxLSVSFWxw=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/mermaid-setup.js?v=e1f5ced34af5bb77b0d1d569c1b6c1d4" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/zoom.js?v=85ddb88934d28b74e78031fd54cf8308"></script> <script src="/kohshh-portfolio/assets/js/no_defer.js?v=2781658a0a2b13ed609542042a859126"></script> <script defer src="/kohshh-portfolio/assets/js/common.js?v=c15de51d4bb57887caa2c21988d97279"></script> <script defer src="/kohshh-portfolio/assets/js/copy_code.js?v=c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/kohshh-portfolio/assets/js/jupyter_new_tab.js?v=d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script src="/kohshh-portfolio/assets/js/mathjax-setup.js?v=a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/kohshh-portfolio/assets/js/progress-bar.js?v=2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/kohshh-portfolio/assets/js/vanilla-back-to-top.min.js?v=f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/kohshh-portfolio/assets/js/search/ninja-keys.min.js?v=a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/kohshh-portfolio/assets/js/search-setup.js?v=6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/kohshh-portfolio/assets/js/search-data.js"></script> <script src="/kohshh-portfolio/assets/js/shortcut-key.js?v=ccc841c459bfc0e64c1c2b5acd10df02"></script> </body> </html>
