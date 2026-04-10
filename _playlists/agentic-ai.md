@@ -39,4 +39,6 @@ posts:
     title: "Chapter 17: Reasoning Techniques"
   - url: /blog/2026/guardrails-safety/
     title: "Chapter 18: Guardrails and Safety Patterns"
+  - url: /blog/2026/evaluation-monitoring/
+    title: "Chapter 19: Evaluation and Monitoring"
 ---
