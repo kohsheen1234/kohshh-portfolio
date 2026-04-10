@@ -51,7 +51,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
           },
-        },{id: "post-chapter-18-guardrails-and-safety-patterns",
+        },{id: "post-chapter-19-evaluation-and-monitoring",
+        
+          title: "Chapter 19: Evaluation and Monitoring",
+        
+        description: "Building an agent is the beginning. Knowing whether it&#39;s actually working — accurately, efficiently, safely, and reliably — is the ongoing challenge. This chapter covers the complete framework for measuring and maintaining agent performance in production.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/evaluation-monitoring/";
+          
+        },
+      },{id: "post-chapter-18-guardrails-and-safety-patterns",
         
           title: "Chapter 18: Guardrails and Safety Patterns",
         
