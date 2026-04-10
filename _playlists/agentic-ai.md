@@ -35,4 +35,8 @@ posts:
     title: "Chapter 15: Inter-Agent Communication (A2A)"
   - url: /blog/2026/resource-aware-optimization/
     title: "Chapter 16: Resource-Aware Optimization"
+  - url: /blog/2026/reasoning-techniques/
+    title: "Chapter 17: Reasoning Techniques"
+  - url: /blog/2026/guardrails-safety/
+    title: "Chapter 18: Guardrails and Safety Patterns"
 ---
