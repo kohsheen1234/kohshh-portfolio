@@ -2,33 +2,34 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: AI Engineer | Quantitative Researcher | Applied Mathematics
 
 profile:
   align: right
   image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  image_circular: false
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>Bangalore, India</p>
+    <p>kohsheen.t@gmail.com</p>
 
-selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+selected_papers: true
+social: true
 
 announcements:
-  enabled: true # includes a list of news items
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
+  enabled: false
+  scrollable: true
+  limit: 5
 
 latest_posts:
   enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
+  scrollable: true
+  limit: 3
 ---
 
-Write your biography here. Tell the world about yourself. Link to your favorite [subreddit](https://www.reddit.com). You can put a picture in, too. The code is already in, just name your picture `prof_pic.jpg` and put it in the `img/` folder.
+I'm an AI Engineer at [Apexon](https://www.apexon.com/), currently embedded at Goldman Sachs within the Reconciliation team, where I design anomaly detection pipelines, data normalization systems using RAG architectures, and AI-powered root cause analysis tools for trade break resolution.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+Before this, I worked as a Quantitative Researcher at [WorldQuant](https://www.worldquant.com/), deploying equity trading strategies across US markets and ranking in the top 10 of the International Quant Championship 2024. At [Bank of America](https://www.bankofamerica.com/), I built an end-to-end portfolio optimization pipeline using hierarchical reinforcement learning for goal-based investing, achieving an 18% improvement in annualized returns with a Sharpe ratio of 2.3 over traditional methods.
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+My engineering background spans distributed systems and cloud infrastructure. At [Cisco](https://www.cisco.com/), I scaled Webex Calling APIs, modernized the B2BUA for Kubernetes-based cloud deployment, and built real-time monitoring systems with the ELK Stack. Earlier, at [Insights Software](https://www.insightsoftware.com/), I developed high-performance ODBC/JDBC drivers for Hadoop/Hive ecosystems, and at [Samsung R&D](https://research.samsung.com/), I led a team building CNN-driven NLP models for Bixby's device-specific utterance classification.
+
+I hold a Master's in Applied Mathematics from [NYU Tandon School of Engineering](https://engineering.nyu.edu/) and a Bachelor's in Computer Science from [BMS College of Engineering](https://www.bmsce.ac.in/), Bangalore.
