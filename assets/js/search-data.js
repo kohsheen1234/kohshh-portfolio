@@ -46,7 +46,7 @@ ninja.data = [{
           },
         },{id: "nav-teaching",
           title: "teaching",
-          description: "Course materials, schedules, and resources for classes taught.",
+          description: "Courses taken at NYU Tandon School of Engineering.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
@@ -275,21 +275,41 @@ ninja.data = [{
           description: "A self-improving agent loop that autonomously optimizes coding agents through continuous iteration, failure analysis, and gated evaluation — no model upgrades required.",
           section: "Projects",handler: () => {
               window.location.href = "/kohshh-portfolio/projects/1_project/";
+            },},{id: "projects-graphrag-repair-chatbot",
+          title: 'GraphRAG Repair Chatbot',
+          description: "An appliance repair assistant powered by a Neo4j knowledge graph and dual-retrieval RAG — graph queries and semantic search working in parallel.",
+          section: "Projects",handler: () => {
+              window.location.href = "/kohshh-portfolio/projects/2_project/";
             },},{id: "projects-copula-pairs-trading",
           title: 'Copula Pairs Trading',
           description: "Time-varying and mixed copula models for nonlinear pairs trading — selected to represent NYU at the IAQF 2023 competition.",
           section: "Projects",handler: () => {
               window.location.href = "/kohshh-portfolio/projects/4_project/";
-            },},{id: "teachings-data-science-fundamentals",
-          title: 'Data Science Fundamentals',
-          description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
+            },},{id: "projects-fixed-income-quant-trading",
+          title: 'Fixed Income Quant Trading',
+          description: "Cointegrated butterfly strategies on Eurodollar futures — AR(1) signal forecasting, signal combination, and quality metrics across market regimes.",
+          section: "Projects",handler: () => {
+              window.location.href = "/kohshh-portfolio/projects/5_project/";
+            },},{id: "projects-hrl-goal-based-investing",
+          title: 'HRL Goal-Based Investing',
+          description: "Hierarchical reinforcement learning for goal-based investing — a two-tiered framework that unifies stock selection and portfolio optimization for medium-long horizon investment.",
+          section: "Projects",handler: () => {
+              window.location.href = "/kohshh-portfolio/projects/6_project/";
+            },},{id: "teachings-computational-finance-laboratory",
+          title: 'Computational Finance Laboratory',
+          description: "Hands-on computational methods for quantitative finance — numerical techniques, simulation, derivatives pricing, and risk modeling with practical implementations.",
           section: "Teachings",handler: () => {
-              window.location.href = "/kohshh-portfolio/teachings/data-science-fundamentals/";
-            },},{id: "teachings-introduction-to-machine-learning",
-          title: 'Introduction to Machine Learning',
-          description: "This course provides an introduction to machine learning concepts, algorithms, and applications. Students will learn about supervised and unsupervised learning, model evaluation, and practical implementations.",
+              window.location.href = "/kohshh-portfolio/teachings/computational-finance-lab/";
+            },},{id: "teachings-data-visualization-lab",
+          title: 'Data Visualization Lab',
+          description: "Principles and practice of data visualization — designing effective visual representations of complex datasets for analysis and communication.",
           section: "Teachings",handler: () => {
-              window.location.href = "/kohshh-portfolio/teachings/introduction-to-machine-learning/";
+              window.location.href = "/kohshh-portfolio/teachings/data-visualization-lab/";
+            },},{id: "teachings-nlp-and-the-investment-process",
+          title: 'NLP and The Investment Process',
+          description: "Natural language processing applied to finance — sentiment analysis, information extraction from filings, and NLP-driven trading signals.",
+          section: "Teachings",handler: () => {
+              window.location.href = "/kohshh-portfolio/teachings/nlp-investment-process/";
             },},{
         id: 'social-cv',
         title: 'CV',
