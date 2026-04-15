@@ -4,7 +4,7 @@ title: "Copula Pairs Trading"
 description: Time-varying and mixed copula models for nonlinear pairs trading — selected to represent NYU at the IAQF 2023 competition.
 img:
 importance: 1
-category: fun
+category: quant
 github: https://github.com/kohsheen1234/IAQF_PairsTrading2023
 ---
 
