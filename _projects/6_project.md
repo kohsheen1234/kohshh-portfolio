@@ -5,8 +5,9 @@ description: Hierarchical reinforcement learning for goal-based investing — a 
 img:
 importance: 3
 category: quant
-github: https://github.com/kohsheen1234/IAQF_PairsTrading2023
 ---
+
+[Read the full paper](https://drive.google.com/file/d/19cWcw8Y5YYCfWwljvUer1-Ge8dBs3lJt/view){:target="_blank"}
 
 Built during a research engagement at **Bank of America** (Summer 2023, Industry Advisor: Cristian Homescu), with Shiyu Hao, Peixin Tang, Nanyu Jiang, and Yu Gu.
 
