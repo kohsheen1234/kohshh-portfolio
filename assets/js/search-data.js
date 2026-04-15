@@ -275,9 +275,14 @@ ninja.data = [{
           description: "A self-improving agent loop that autonomously optimizes coding agents through continuous iteration, failure analysis, and gated evaluation — no model upgrades required.",
           section: "Projects",handler: () => {
               window.location.href = "/kohshh-portfolio/projects/1_project/";
-            },},{id: "projects-project-4",
-          title: 'project 4',
-          description: "another without an image",
+            },},{id: "projects-graphrag-repair-chatbot",
+          title: 'GraphRAG Repair Chatbot',
+          description: "An appliance repair assistant powered by a Neo4j knowledge graph and dual-retrieval RAG — graph queries and semantic search working in parallel.",
+          section: "Projects",handler: () => {
+              window.location.href = "/kohshh-portfolio/projects/2_project/";
+            },},{id: "projects-copula-pairs-trading",
+          title: 'Copula Pairs Trading',
+          description: "Time-varying and mixed copula models for nonlinear pairs trading — selected to represent NYU at the IAQF 2023 competition.",
           section: "Projects",handler: () => {
               window.location.href = "/kohshh-portfolio/projects/4_project/";
             },},{id: "teachings-data-science-fundamentals",
