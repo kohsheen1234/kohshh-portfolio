@@ -285,6 +285,11 @@ ninja.data = [{
           description: "Time-varying and mixed copula models for nonlinear pairs trading — selected to represent NYU at the IAQF 2023 competition.",
           section: "Projects",handler: () => {
               window.location.href = "/kohshh-portfolio/projects/4_project/";
+            },},{id: "projects-fixed-income-quant-trading",
+          title: 'Fixed Income Quant Trading',
+          description: "Cointegrated butterfly strategies on Eurodollar futures — AR(1) signal forecasting, signal combination, and quality metrics across market regimes.",
+          section: "Projects",handler: () => {
+              window.location.href = "/kohshh-portfolio/projects/5_project/";
             },},{id: "teachings-data-science-fundamentals",
           title: 'Data Science Fundamentals',
           description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
