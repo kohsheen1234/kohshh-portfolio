@@ -6,7 +6,7 @@ layout: default
 {% assign categories = page.categories | join: '' %}
 {% assign url_beginning = page.url | slice: 0, 6 %}
 {% assign words = content | number_of_words %}
-{% assign read_time = words | divided_by: 200 | plus: 1 %}
+{% assign read_time = words | divided_by: 400 | plus: 1 %}
 
 {% if page._styles %}
   <!-- Page/Post style -->
