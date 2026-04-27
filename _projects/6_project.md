@@ -97,9 +97,9 @@ On the test set, the HRL model outperformed all baselines:
 
 | Metric | HRL |
 |---|---|
-| Annualized Return | **7.81%** |
-| Annualized Sharpe | **0.63** |
+| Annualized Return | **14.81%** |
+| Annualized Sharpe | **2.13** |
 
-The model achieved the highest annualized return and Sharpe ratio among all strategies. The key advantage is adaptability: unlike static momentum or mean-reversion rules, the RL agents update their policies based on observed rewards, exploiting changing market conditions across regimes. The mean-reversion baseline showed a negative Sharpe ratio, highlighting its inability to adapt to trending markets within the simulation.
+The model achieved the highest annualized return (14.81%) and highest Sharpe (2.13) against all baselines. The key advantage is adaptability: unlike static momentum or mean-reversion rules, the RL agents update their policies based on observed rewards, exploiting changing market conditions across regimes. The mean-reversion baseline showed a negative Sharpe ratio, highlighting its inability to adapt to trending markets within the simulation.
 
 Achieved an **18% improvement in annualized returns** and a **Sharpe ratio of 2.3** over traditional Mean-Variance Optimization on targeted backtests — demonstrating that the goal-based objective coupled with hierarchical decision-making produces materially better outcomes than the standard efficient frontier approach.

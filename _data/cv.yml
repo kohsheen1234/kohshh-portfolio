@@ -52,9 +52,9 @@ cv:
         end_date: ""
         summary: Embedded at Goldman Sachs within the Reconciliation team.
         highlights:
-          - Designed anomaly detection pipelines on transaction datastores using Random Cut Forest algorithms
-          - Engineered data normalization pipelines for CCP trade data using LangChain and RAG architecture
-          - Developed an AI-powered Root Cause Analysis chatbot with Snowflake integration for trade break resolution
+          - Shipped LangChain agents that normalize trade records across counterparty formats, grounded in a retrieval index of internal schemas with typed tool-use for field-level validation and canonicalization. Structured-output decoding plus schema-guided retrieval cut field-mapping errors against a prompt-only baseline in ops-team review.
+          - Developed an unsupervised anomaly detector (streaming Random Cut Forest via rrcf in Python) over high-dimensional counterparty trade feeds due to label sparsity and reconstruction baselines degrade under regime drift.
+          - Deployed a conversational root-cause analysis system over Snowflake that runs schema-agnostic text-to-query, pulls trade-lifecycle context, and produces grounded summaries of break root causes with resolution suggestions. Tuned retrieval and prompting against analyst-resolved tickets.
 
       - company: WorldQuant LLC
         position: Quantitative Researcher
