@@ -55,6 +55,7 @@ cv:
           - Shipped LangChain agents that normalize trade records across counterparty formats, grounded in a retrieval index of internal schemas with typed tool-use for field-level validation and canonicalization. Structured-output decoding plus schema-guided retrieval cut field-mapping errors against a prompt-only baseline in ops-team review.
           - Developed an unsupervised anomaly detector (streaming Random Cut Forest via rrcf in Python) over high-dimensional counterparty trade feeds due to label sparsity and reconstruction baselines degrade under regime drift.
           - Deployed a conversational root-cause analysis system over Snowflake that runs schema-agnostic text-to-query, pulls trade-lifecycle context, and produces grounded summaries of break root causes with resolution suggestions. Tuned retrieval and prompting against analyst-resolved tickets.
+          - Partnered with multiple clients across industries to design and demo AI-native solutions, including agentic payments orchestration for Mastercard and M11 regulatory protocol digitization for pharma clients.
 
       - company: WorldQuant LLC
         position: Quantitative Researcher
