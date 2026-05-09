@@ -51,7 +51,29 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/kohshh-portfolio/teaching/";
           },
-        },{id: "post-chapter-19-evaluation-and-monitoring",
+        },{id: "post-chapter-10-contributing-to-ai-safety-paths-skills-and-getting-started",
+        
+          title: "Chapter 10: Contributing to AI Safety — Paths, Skills, and Getting Started",
+        
+        description: "The hardest part of contributing to AI safety isn&#39;t picking the right research direction — it&#39;s picking a route into the field that matches your background and timeline. This chapter is the field map for that decision.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/contributing-to-ai-safety/";
+          
+        },
+      },{id: "post-chapter-9-ai-control-safety-without-trusting-the-model",
+        
+          title: "Chapter 9: AI Control — Safety Without Trusting the Model",
+        
+        description: "Alignment tries to make models that won&#39;t betray you. Control assumes the model might, and engineers deployment so safety doesn&#39;t depend on the answer. This chapter walks through I/O filtering, Constitutional Classifiers, trusted/untrusted model splits, and the broader control paradigm.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/ai-control/";
+          
+        },
+      },{id: "post-chapter-19-evaluation-and-monitoring",
         
           title: "Chapter 19: Evaluation and Monitoring",
         
@@ -82,6 +104,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/kohshh-portfolio/blog/2026/reasoning-techniques/";
+          
+        },
+      },{id: "post-chapter-8-ai-evaluations-the-science-of-knowing-what-models-can-and-will-do",
+        
+          title: "Chapter 8: AI Evaluations — The Science of Knowing What Models Can and...",
+        
+        description: "If governance is the institutional layer (Ch. 5) and security is the adversarial layer (Ch. 4), evaluations are the evidentiary layer underneath both. This chapter walks through the science of evals, the major lab safety frameworks, and the domain-specific benchmarks that decide whether a frontier model ships.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/ai-evaluations/";
           
         },
       },{id: "post-chapter-16-resource-aware-optimization",
@@ -126,6 +159,17 @@ ninja.data = [{
         handler: () => {
           
             window.location.href = "/kohshh-portfolio/blog/2026/human-in-the-loop/";
+          
+        },
+      },{id: "post-chapter-7-a-field-map-of-alignment-approaches-agent-foundations-goal-misgeneralisation-superposition-and-activation-steering",
+        
+          title: "Chapter 7: A Field Map of Alignment Approaches — Agent Foundations, Goal Misgeneralisation,...",
+        
+        description: "There is no single AI alignment program — there&#39;s a portfolio. This chapter is the map: what each major research direction is trying to do, what its theory of impact is, what its current track record supports, and where it fits in the broader bet.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/alignment-approaches-survey/";
           
         },
       },{id: "post-chapter-12-exception-handling-and-recovery",
@@ -183,6 +227,17 @@ ninja.data = [{
             window.location.href = "/kohshh-portfolio/blog/2026/memory/";
           
         },
+      },{id: "post-chapter-6-critiques-and-counter-arguments-steelmanning-the-skeptics",
+        
+          title: "Chapter 6: Critiques and Counter-Arguments — Steelmanning the Skeptics",
+        
+        description: "If a safety case is unfalsifiable, it isn&#39;t a safety case. This chapter takes the strongest critiques of the AI-safety program — accelerationist, infohazard-based, and interpretability-skeptical — and engages them on their own terms, before deciding which to update on.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/critiques-counterarguments/";
+          
+        },
       },{id: "post-chapter-7-multi-agent-collaboration",
         
           title: "Chapter 7: Multi-Agent Collaboration",
@@ -227,6 +282,17 @@ ninja.data = [{
             window.location.href = "/kohshh-portfolio/blog/2026/reflection/";
           
         },
+      },{id: "post-chapter-5-ai-governance-approval-regulation-technical-levers-and-the-coordination-problem",
+        
+          title: "Chapter 5: AI Governance — Approval Regulation, Technical Levers, and the Coordination Problem...",
+        
+        description: "Alignment is what you build into the model. Governance is the institutional scaffolding that decides which models get built, who gets to run them, and what evidence we demand before they ship. This chapter walks through the technical AI governance toolkit and the FDA-style approval-regulation proposal.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2026/ai-governance/";
+          
+        },
       },{id: "post-chapter-3-parallelization",
         
           title: "Chapter 3: Parallelization",
@@ -260,6 +326,50 @@ ninja.data = [{
             window.location.href = "/kohshh-portfolio/blog/2026/prompt-chaining/";
           
         },
+      },{id: "post-chapter-4-ai-security-jailbreaks-adversarial-examples-and-model-theft",
+        
+          title: "Chapter 4: AI Security — Jailbreaks, Adversarial Examples, and Model Theft",
+        
+        description: "Alignment is what you want the model to do. Security is what an adversary can make it do anyway. This chapter walks through the attack surface — model weights, API endpoints, training pipelines, and the model itself — and the security disciplines that already know how to defend each one.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2025/ai-security/";
+          
+        },
+      },{id: "post-chapter-3-deception-inner-alignment-and-mechanistic-interpretability",
+        
+          title: "Chapter 3: Deception, Inner Alignment, and Mechanistic Interpretability",
+        
+        description: "Even a perfect training objective can produce a model that learns the wrong goal — and behaves well only while it&#39;s being watched. Inner alignment is what&#39;s left of the alignment problem after outer alignment is solved, and it&#39;s the part we can&#39;t address with reward tuning alone.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2025/inner-alignment-interpretability/";
+          
+        },
+      },{id: "post-chapter-2-outer-alignment-specification-gaming-and-learning-from-human-preferences",
+        
+          title: "Chapter 2: Outer Alignment — Specification Gaming and Learning from Human Preferences",
+        
+        description: "You get what you measure, not what you mean. Outer alignment is the engineering problem of writing down a goal that, when optimized hard, still produces the behavior you actually wanted.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2025/outer-alignment/";
+          
+        },
+      },{id: "post-chapter-1-scaling-laws-superintelligence-and-instrumental-convergence",
+        
+          title: "Chapter 1: Scaling Laws, Superintelligence, and Instrumental Convergence",
+        
+        description: "Bigger models keep getting predictably better. That single empirical fact — combined with the logic of instrumental convergence — turns AI safety from a science-fiction concern into a present engineering problem.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/kohshh-portfolio/blog/2025/scaling-laws-superintelligence/";
+          
+        },
       },{id: "books-the-godfather",
           title: 'The Godfather',
           description: "",
@@ -270,6 +380,11 @@ ninja.data = [{
           description: "A practical series on building intelligent AI systems — from prompt chaining to routing, orchestration, and beyond.",
           section: "Playlists",handler: () => {
               window.location.href = "/kohshh-portfolio/playlists/agentic-ai/";
+            },},{id: "playlists-ai-safety",
+          title: 'AI Safety',
+          description: "A reading series on the case for taking AI risk seriously — scaling laws, superintelligence, instrumental convergence, and what they imply for how we build increasingly capable systems.",
+          section: "Playlists",handler: () => {
+              window.location.href = "/kohshh-portfolio/playlists/ai-safety/";
             },},{id: "projects-sigmaloop",
           title: 'SigmaLoop',
           description: "A self-improving agent loop that autonomously optimizes coding agents through continuous iteration, failure analysis, and gated evaluation — no model upgrades required.",
@@ -311,46 +426,25 @@ ninja.data = [{
           section: "Teachings",handler: () => {
               window.location.href = "/kohshh-portfolio/teachings/nlp-investment-process/";
             },},{
-        id: 'social-cv',
-        title: 'CV',
-        section: 'Socials',
-        handler: () => {
-          window.open("/kohshh-portfolio/assets/pdf/example_pdf.pdf", "_blank");
-        },
-      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
         handler: () => {
-          window.open("mailto:%79%6F%75@%65%78%61%6D%70%6C%65.%63%6F%6D", "_blank");
+          window.open("mailto:%6B%6F%68%73%68%65%65%6E.%74@%67%6D%61%69%6C.%63%6F%6D", "_blank");
         },
       },{
-        id: 'social-inspire',
-        title: 'Inspire HEP',
+        id: 'social-linkedin',
+        title: 'LinkedIn',
         section: 'Socials',
         handler: () => {
-          window.open("https://inspirehep.net/authors/1010907", "_blank");
-        },
-      },{
-        id: 'social-rss',
-        title: 'RSS Feed',
-        section: 'Socials',
-        handler: () => {
-          window.open("/kohshh-portfolio/feed.xml", "_blank");
+          window.open("https://www.linkedin.com/in/kohsheentiku", "_blank");
         },
       },{
         id: 'social-scholar',
         title: 'Google Scholar',
         section: 'Socials',
         handler: () => {
-          window.open("https://scholar.google.com/citations?user=qc6CJjYAAAAJ", "_blank");
-        },
-      },{
-        id: 'social-custom_social',
-        title: 'Custom_social',
-        section: 'Socials',
-        handler: () => {
-          window.open("https://www.alberteinstein.com/", "_blank");
+          window.open("https://scholar.google.com/citations?user=jbEefpQAAAAJ", "_blank");
         },
       },{
       id: 'light-theme',
