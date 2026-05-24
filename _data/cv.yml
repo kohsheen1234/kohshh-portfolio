@@ -2,7 +2,7 @@ cv:
   name: Kohsheen Tiku
   label: AI Engineer
   email: kohsheen.t@gmail.com
-  location: Bangalore, India
+  location: New York, New York, USA
   image: ""
   summary: AI Engineer at Apexon (embedded at Goldman Sachs), with experience spanning quantitative finance, machine learning, and distributed systems.
 
@@ -11,11 +11,6 @@ cv:
       username: kohsheen1234
     - network: LinkedIn
       username: kohsheen-tiku
-
-  address:
-    city: Bangalore
-    region: Karnataka
-    countryCode: IN
 
   sections:
     Education:
@@ -46,7 +41,6 @@ cv:
     Experience:
       - company: Apexon
         position: AI Engineer
-        location: Bangalore, India
         url: https://www.apexon.com/
         start_date: 2025-03-01
         end_date: ""
