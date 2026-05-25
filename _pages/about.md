@@ -9,7 +9,6 @@ profile:
   image: prof_pic.jpg
   image_circular: false
   more_info: >
-    <p>New York, New York, USA</p>
     <p>kohsheen.t@gmail.com</p>
 
 selected_papers: true
